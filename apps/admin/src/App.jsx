@@ -17,7 +17,7 @@ import Alerts from "./pages/Alerts";
 import LiveFeed from "./pages/LiveFeed";
 import Dispatch from "./pages/Dispatch";
 import Inventory from "./pages/Inventory";
-import ProtectedRoute from "./middleware/ProtectedRoute";
+
 
 import "./theme.css";
 
@@ -42,14 +42,15 @@ export default function App() {
       {/* LOGIN */}
       <Route path="/login" element={<Login onLogin={handleLogin} />} />
 
-      {/* PROTECTED APP WITH LAYOUT */}
-      <Route
-        element={
-          <ProtectedRoute user={user}>
-            <AppLayout user={user} onLogout={handleLogout} />
-          </ProtectedRoute>
-        }
-      >
+<Route
+  element={
+    user ? (
+      <AppLayout user={user} onLogout={handleLogout} />
+    ) : (
+      <Navigate to="/login" replace />
+    )
+  }
+>
         <Route path="/" element={<Dashboard user={user} />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/products" element={<Products />} />

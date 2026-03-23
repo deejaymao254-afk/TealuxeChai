@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 import api from "../api/client";
-import "../customers.css";
+import "./Customers.jsx";
 
 export default function Customers() {
   const [customers, setCustomers] = useState([]);

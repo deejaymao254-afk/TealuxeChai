@@ -1,7 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // set this in env
+  baseURL: import.meta.env.VITE_API_URL,
 });
+
+// ✅ Export this properly
+export const getProducts = async () => {
+  const res = await api.get("/products");
+  return res.data;
+};
 
 export default api;
