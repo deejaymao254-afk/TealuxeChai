@@ -1,0 +1,318 @@
+:root {
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --border: #e2e2e2;
+  --text-main: #111;
+  --text-light: #555;
+  --orange-main: #ff8a00;
+  --orange-hover: #e07a00;
+  --shadow: rgba(0,0,0,0.08);
+  --transition-fast: 0.2s ease-in-out;
+}
+
+.dark {
+  --bg: #121212;
+  --panel: #1a1a1a;
+  --border: #2a2a2a;
+  --text-main: #eaeaea;
+  --text-light: #aaa;
+  --shadow: rgba(0,0,0,0.4);
+}
+
+/* =========================
+   GLOBAL INPUTS & BUTTONS
+========================= */
+input, select, textarea {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+  background: var(--panel);
+  color: var(--text-main);
+  transition: border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--orange-main);
+  box-shadow: 0 0 4px var(--orange-main);
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+button:focus {
+  outline: none;
+}
+
+/* =========================
+   SPLASH SCREEN / LOGO
+========================= */
+.splash-screen {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+}
+
+.floating-logo {
+  font-size: 36px;
+  font-weight: bold;
+    font-family: 'Titillium Web', sans-serif;
+  display: flex;
+  gap: 4px;
+  animation: floatLogo 1.5s ease-in-out infinite alternate;
+  color: var(--text-main);
+}
+
+.floating-logo .logo-orange {
+  color: var(--orange-main);
+}
+
+@keyframes floatLogo {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+/* =========================
+   INTRO SLIDES
+========================= */
+.intro-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  padding: 16px;
+}
+
+.intro-card {
+  background: var(--panel);
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 12px var(--shadow);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.intro-card h2 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.intro-card p {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+.intro-controls button {
+  background: var(--orange-main);
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  width: 100%;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.intro-controls button:hover {
+  background: var(--orange-hover);
+  transform: scale(1.02);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+.pin-field {
+  position: relative;
+}
+
+.pin-field input {
+  padding-right: 40px;
+}
+
+.pin-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.pin-toggle:hover {
+  opacity: 1;
+}
+
+/* =========================
+   LOGIN / REGISTER CARDS
+========================= */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.login-card {
+  background: var(--panel);
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 12px var(--shadow);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.login-card h1 {
+  font-size: 28px;
+  margin-bottom: 16px;
+  color: var(--text-main);
+}
+
+.login-btn {
+  background: var(--orange-main);
+  color: #fff;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  margin-top: 12px;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.login-btn:hover {
+  background: var(--orange-hover);
+  transform: scale(1.02);
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.auth-links span {
+  color: var(--orange-main);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.auth-links span:hover {
+  color: var(--orange-hover);
+}
+
+/* Remember Me checkbox alignment */
+.remember-check {
+  display: flex;
+  align-items: center;      /* vertical center */
+  justify-content: flex-start; /* left align */
+  gap: 6px;                 /* space between checkbox and label */
+  font-size: 13px;
+  background: none;
+  color: var(--text-main);  /* theme-aware */
+  width: 100%;              /* fill the parent width to respect flex start */
+  text-align: left;         /* ensure label text is left-aligned */
+}
+
+.remember-check input[type="checkbox"] {
+  width: auto;
+  height: auto;
+  margin: 0;
+  accent-color: var(--orange-main); /* matches theme */
+}
+
+.forgot-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* =========================
+   APP FOOTER
+========================= */
+
+.app-footer {
+  margin-top: 40px;
+  padding: 20px 10px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0.75;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.app-footer p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.app-footer span {
+  font-size: 11px;
+}
+
+
+/* =========================
+   FORM ROW LAYOUT (LABEL OUTSIDE)
+========================= */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  background: var(--panel-bg);
+}
+
+.form-row label {
+  width: 70px;
+  font-size: 13px;
+  color: var(--text-light);
+  text-align: left;
+  flex-shrink: 0;
+    background: var(--panel-bg);
+
+}
+
+.form-row input {
+  flex: 1;
+  margin: 0;
+}
+
+/* PIN FIELD FIX INSIDE ROW */
+.form-row .pin-field {
+  width: 100%;
+}
+
+/* MOBILE STACK (IMPORTANT) */
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row label {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+}

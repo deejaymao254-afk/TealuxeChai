@@ -1,0 +1,348 @@
+/* =========================
+   FONTS
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Titillium+Web:wght@400;700&display=swap');
+
+
+/* =========================
+   THEME VARIABLES
+========================= */
+:root {
+  --bg: #f9f9f9;
+  --panel-bg: #fff;
+  --card-bg: #fff;
+  --hero-bg: #fef6f0;
+  --hero-text: #ffffff;
+  --h-text: #111;
+  --p-text: #4d4d4d;
+  --accent-color: #ff8a00;
+  --btn-bg: #fff;
+  --btn-text: #111;
+  --btn-border: #eee;
+  --btn-hover-bg: #ff8a00;
+  --btn-hover-text: #fff;
+  --btn-primary-bg: #ff8a00;
+  --btn-primary-text: #fff;
+  --btn-primary-hover-bg: #e07a00;
+  --floating-bg: #ff8a00;
+  --floating-text: #fff;
+  --grey-border: #eee;
+  --shadow: rgba(0,0,0,0.1);
+  --label-text: #111; /* panel label text */
+  --text-main: #111;
+--text-light: #4d4d4d;
+--orange-main: #ff8a00;
+
+}
+
+[data-theme="dark"] {
+  --bg: #1c1c1c;
+  --panel-bg: #222;
+  --card-bg: #333;
+  --hero-bg: #222;
+  --hero-text: #eee;
+  --h-text: #eee;
+  --p-text: #ccc;
+  --accent-color: #ffb347;
+  --btn-bg: #444;
+  --btn-text: #eee;
+  --btn-border: #555;
+  --btn-hover-bg: #ffb347;
+  --btn-hover-text: #111;
+  --btn-primary-bg: #ffb347;
+  --btn-primary-text: #111;
+  --btn-primary-hover-bg: #ff9933;
+  --floating-bg: #ffb347;
+  --floating-text: #111;
+  --grey-border: #444;
+  --shadow: rgba(0,0,0,0.4);
+  --label-text: #eee; /* dark mode label text */
+  --text-main: #eee;
+--text-light: #ccc;
+--orange-main: #ffb347;
+
+}
+
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  transition: background 0.3s, color 0.3s;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+
+/* =========================
+   HEADINGS
+========================= */
+h1, h2, h3, .product-name {
+  color: var(--h-text);
+  font-family: 'Titillium Web', sans-serif;
+  margin: 0;
+}
+
+
+/* =========================
+   APP CONTAINER
+========================= */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-main);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--panel-bg);
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin-top: -16px;
+}
+
+.logo span {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.logo-black {
+  color: var(--h-text);
+}
+
+.logo-orange {
+  color: var(--accent-color);
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+/* -----------------------
+   Profile Dropdown
+------------------------- */
+.profile-wrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.profile-icon:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+
+/* PROFILE DROPDOWN FIX */
+.profile-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 180px;
+  background: var(--panel-bg);
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+
+  /* Higher priority than global .modal-overlay / cart-page */
+  transition: opacity 0.25s ease, transform 0.25s ease !important;
+  z-index: 1500; /* ensure above header & bottom nav */
+}
+
+.profile-dropdown.open {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 14px;
+  color: var(--text-main);
+  background: var(--bg);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.profile-dropdown button:hover {
+  background: var(--bg);
+  transform: translateX(4px);
+}
+
+.profile-dropdown .logout {
+  color: var(--btn-text);
+  font-weight: 600;
+}
+
+/* -----------------------
+   Smooth modal / cart animations
+------------------------- */
+.modal-overlay,
+.cart-page,
+.product-modal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-overlay.show,
+.cart-page.show,
+.product-modal.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+
+/* =========================
+   PAGE CONTENT
+========================= */
+.page-content {
+  flex: 1;
+  padding: 12px;
+    min-height: calc(100vh - 60px - 60px); /* header + bottom nav */
+  padding-bottom: 180px; /* safe space for sticky cart summary */
+}
+
+
+/* =========================
+   CART BADGE (FIXED)
+========================= */
+.icon-wrapper {
+  position:relative;
+}
+
+
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  background: var(--panel-bg);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -4px 12px var(--shadow);
+
+  z-index: 1000;
+  padding: 0 10px;
+}
+
+/* nav item */
+
+.bottom-nav__item {
+  background: none;
+  border: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 12px;
+
+  color: var(--text-muted);
+  cursor: pointer;
+
+  transition: color 0.2s, transform 0.2s;
+}
+
+.bottom-nav__item:hover {
+  color: var(--accent-color);
+  transform: translateY(-2px);
+}
+
+/* active state */
+
+.bottom-nav__item--active {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* icon wrapper */
+
+.bottom-nav__icon {
+  position: relative;
+  font-size: 20px;
+  color: var(--h-text);
+}
+
+/* cart badge */
+
+.bottom-nav__badge {
+  position: absolute;
+  top: -14px;
+  right: -16px;
+
+  background: var(--panel-bg);
+  color: var(--panel-bg);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================
+   DASHBOARD CONTAINER
+========================= */
+.dashboard-container {
+  padding-bottom: 80px; /* space for fixed nav */
+}

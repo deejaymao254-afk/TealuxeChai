@@ -1,0 +1,614 @@
+/* =========================
+   FONTS
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Titillium+Web:wght@400;700&display=swap');
+
+body, button, input, select, textarea, label {
+  font-family: 'Open Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: background 0.3s, color 0.3s;
+  background: var(--bg);
+  color: var(--p-text);
+}
+
+h1, h2, h3, h4, h5, h6, .product-name, .brand-name {
+  font-family: 'Titillium Web', sans-serif;
+  color: var(--h-text);
+  transition: color 0.3s;
+  padding-bottom: 7px;
+}
+
+
+
+/* =========================
+   DASHBOARD CONTAINER
+========================= */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  background: var(--panel-bg);
+  min-height: 100vh;
+  transition: background 0.3s, color 0.3s;
+}
+
+.pull-refresh-indicator {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: var(--text-muted);
+  z-index: 2000;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+/* =========================
+   HERO SECTION WITH IMAGE OVERLAY
+========================= */
+.hero {
+  position: relative;
+  background: 
+    linear-gradient(
+      to right, 
+      rgba(255, 255, 255, 0.6), 
+      rgba(255, 255, 255, 0) 70%
+    ), /* overlay */
+    url("../assets/herobg.jpg") center/cover no-repeat; /* background image */
+  color: var(--hero-text);
+  padding: 60px 28px;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] .hero {
+  background: 
+    linear-gradient(
+      to right, 
+      rgba(0, 0, 0, 0.6), 
+      rgba(0, 0, 0, 0) 70%
+    ),
+    url("../assets/herobg.jpg") center/cover no-repeat; /* same image, can darken via overlay if needed */
+  color: var(--hero-text);
+}
+
+/* Hero text */
+.hero h1 {
+  font-size: 24px;
+  z-index: 1;
+  position: relative;
+}
+
+.hero .accent {
+  color: var(--accent-color);
+}
+
+.hero p {
+  margin-top: 10px;
+  width: 70%;
+  margin-right: 14px;
+  font-size: 14px;
+  color: var(--p-text);
+  z-index: 1;
+  position: relative;
+}
+
+
+/* =========================
+   CATEGORIES
+========================= */
+.categories { overflow-x: auto; }
+.categories-scroll { display: flex; gap: 12px; padding-bottom: 8px; }
+.category-btn {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  color: var(--btn-text);
+  padding: 8px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.category-btn:hover {
+  background: var(--btn-hover-bg);
+  color: var(--btn-hover-text);
+}
+
+/* =========================
+   ORDER NOW SECTION
+========================= */
+.order-now {
+  padding-top: 64px;  border-radius: 6px;
+  overflow: hidden;
+  margin-top: -78px;
+}
+
+.order-bg {
+  position: relative;
+  background: url("../assets/snacks1.jpg") center/cover no-repeat;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(45, 158, 22, 0.678);
+  transition: background 0.3s;
+}
+
+[data-theme="dark"] .order-overlay {
+  background: rgba(255, 255, 255, 0.705);
+}
+
+.order-content {
+  position: relative;
+  color: #fff;
+  text-align: center;
+  padding: 12px 16px;
+  margin-top: 30px;
+}
+
+.order-content h2 {
+  font-size: 23px;
+  margin-bottom: 6px;
+  color: var(--btn-primary-text);
+  transition: color 0.3s;
+}
+
+.order-content p {
+  font-size: 11px;
+  margin-bottom: 12px;
+  color: var(--hero-bg);
+  transition: color 0.3s;
+}
+
+.order-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.order-btn:hover {
+  background: var(--btn-primary-hover-bg);
+  transform: scale(1.05);
+}
+
+
+/* =========================
+   BRANDS
+========================= */
+.panel-brands {
+ background: var(--panel-bg); padding: 16px; border-radius: 6px; transition: background 0.3s, color 0.3s;
+}
+
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  background: var(--panel-bg);
+}
+
+.brands-grid h2 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 13px; font-weight: 600; color: var(--h-text);
+}
+.brand-card {
+  background: white;
+  border-radius: 6px;
+  text-align: center;
+  padding: 4px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+}
+.brand-card img { width: 100%; height: 70px; object-fit: contain; margin-bottom: 2px; }
+.brand-name { font-family: 'Titillium Web', sans-serif; text-transform: uppercase; font-size: 13px; font-weight: 600; color: black; }
+
+/* =========================
+   PRODUCTS PANEL
+========================= */
+.panel.products { background: var(--panel-bg); padding: 16px; border-radius: 6px; transition: background 0.3s, color 0.3s; width: auto;}
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.product-card {
+    display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--card-bg);
+  border-radius: 6px;
+  text-align: center;
+  padding: 6px;
+  box-shadow: 0 4px 12px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s, color 0.3s;
+
+  min-width: 0;
+  overflow: hidden;
+}
+.product-card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.15); }
+.product-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background: #fff; /* optional – prevents transparent edges */
+}
+.product-name { font-size: 14px; font-weight: 600; color: var(--h-text); }
+.product-price { display: block; font-size: 12px; margin-bottom: 8px; color: var(--h-text); }
+
+/* Add-cart button */
+.add-cart { background: var(--btn-primary-bg); width: 95%; margin: auto; color: var(--btn-primary-text); border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+.add-cart:hover { background: var(--btn-primary-hover-bg); transform: scale(1.05); }
+
+/* =========================
+   PRODUCT MODAL
+========================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  backdrop-filter: blur(2px);
+}
+
+.product-modal {
+  width: 340px;
+  max-width: 92%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--panel-bg);
+  padding: 22px;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: var(--p-text);
+}
+
+/* Modal title */
+.product-modal h3 {
+  font-family: 'Titillium Web', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--h-text);
+}
+
+/* Sections */
+.modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Labels */
+.modal-section label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-text);
+}
+
+/* Inputs */
+.modal-section select,
+.modal-section textarea,
+.modal-section input {
+  padding: 8px;
+  background: var(--btn-bg);
+  color: var(--p-text);
+  border: 1px solid var(--btn-border);
+  border-radius: 4px;
+}
+
+.modal-section select:focus,
+.modal-section textarea:focus,
+.modal-section input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 2px rgba(255,138,0,0.2);
+}
+
+/* Pricing */
+.modal-pricing {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.unit-price {
+  font-size: 13px;
+  color: var(--p-text);
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Confirm button */
+.confirm-btn {
+  padding: 12px;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.confirm-btn:hover {
+  background: var(--btn-primary-hover-bg);
+}
+
+
+/* =========================
+   QUANTITY CONTROLS
+========================= */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centers quantity */
+  gap: 6px;
+  margin: 8px 0;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+}
+
+.qty-controls button {
+  min-width: 36px;
+  height: 36px;
+  font-size: 16px;
+  border: 1px solid var(--btn-border);
+  background: var(--btn-bg);
+  color: var(--text-main);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.qty-controls button:hover {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  transform: scale(1.05);
+}
+
+.qty-controls span {
+  min-width: 36px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+
+.qty-input {
+  width: 60px;
+  text-align: center;
+  font-size: 16px;
+  padding: 6px 8px;
+  border: 1px solid var(--btn-border);
+  border-radius: 6px;
+  background: var(--btn-bg);
+  color: var(--text-main);
+  transition: border-color 0.3s, background 0.3s, color 0.3s;
+}
+
+.qty-input:focus {
+  outline: none;
+  border-color: var(--orange-main);
+  box-shadow: 0 0 0 2px rgba(255,138,0,0.2);
+}
+
+/* Dynamic modal adjustment for mobile keyboards */
+@media (max-width: 768px) {
+  .product-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Ensure input remains visible when keyboard opens */
+  .qty-input:focus {
+    scroll-margin-top: 150px; /* pushes input into view */
+  }
+}
+
+
+textarea {
+  resize: none;
+  min-height: 60px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.confirm-btn {
+  padding: 12px;
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.confirm-btn:hover {
+  background: var(--btn-primary-hover-bg);
+  transform: scale(1.03);
+}
+
+/* Dark theme support */
+[data-theme="dark"] .product-modal {
+  background: var(--panel-bg);
+  color: var(--text-main);
+}
+
+[data-theme="dark"] .modal-section label,
+[data-theme="dark"] .qty-controls span {
+  color: var(--text-main);
+}
+
+[data-theme="dark"] .modal-section select,
+[data-theme="dark"] .modal-section textarea,
+[data-theme="dark"] .modal-section input {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  border-color: var(--btn-border);
+}
+
+[data-theme="dark"] .qty-controls button {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  border-color: var(--btn-border);
+}
+
+[data-theme="dark"] .confirm-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+/* =========================
+   PRODUCT MODAL LABELS FIX
+========================= */
+.product-modal label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--label-text);
+  transition: color 0.3s;
+}
+
+/* Quantity span inside modal */
+.qty-controls span {
+  color: var(--label-text);
+  font-weight: 600;
+}
+/* =========================
+   MODAL IMAGE (CIRCULAR)
+========================= */
+
+.modal-image-wrapper {
+  width: 100%;
+  height: auto;
+
+  background: var(--card-bg);
+
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+    object-fit: cover;
+
+  transition: transform 0.25s ease;
+}
+
+.modal-image-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.modal-product-image {
+  width: 50%;
+  height: 55%;
+  object-fit: contain;
+}
+
+/* =========================
+   HEADER ROW
+========================= */
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-pricing {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.unit-price {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+/* Ensure labels theme properly */
+.product-modal label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* Prevent background scroll when modal open */
+body.modal-open {
+  overflow: hidden;
+}
+
+
+
+/* =========================
+   FLOATING ELEMENTS
+========================= */
+.floating-cart {
+  position: fixed;
+  bottom: 130px;
+  right: 20px;
+  background: var(--accent-color);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.floating-cart:hover { transform: scale(1.05); }
+.theme-switch { position: fixed; bottom: 80px; right: 24px; width: 38px; height: 38px; border-radius: 10%; border: none; background: var(--btn-primary-bg); color: var(--btn-primary-text); font-size: 22px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: background 0.3s, color 0.3s; }
+
+/* =========================
+   BOTTOM NAV
+========================= */
+.bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 64px; display: flex; justify-content: space-around; align-items: center; background: var(--panel-bg); border-top: 1px solid var(--grey-border); box-shadow: 0 -2px 8px rgba(0,0,0,0.1); z-index: 1000; padding: 0 12px; border-radius: 12px 12px 0 0; transition: background 0.3s, color 0.3s; }
+.bottom-nav button { background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 14px; color: var(--text-main); padding: 6px 8px; transition: color 0.2s, transform 0.2s; }
+.bottom-nav button span { font-size: 20px; }
+.bottom-nav button:hover { color: var(--accent-color); transform: translateY(-2px); }
+.bottom-nav button.active { color: var(--accent-color); font-weight: 600; }
+
+/* =========================
+   PARAGRAPH & TITLE FIXES
+========================= */
+h1,h2,h3,h4,h5,h6 { color: var(--h-text); transition: color 0.3s; }
+p, span, label, small { color: var(--p-text); transition: color 0.3s; }
+
+/* =========================
+   SHADOWS
+========================= */
+.shadow-light { box-shadow: 0 4px 12px var(--shadow); }
+.shadow-strong { box-shadow: 0 6px 18px var(--shadow); }

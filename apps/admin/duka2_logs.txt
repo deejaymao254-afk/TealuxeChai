@@ -1,0 +1,197 @@
+[2026-03-16T10:34:21.601Z] [WARN] Failed login attempt {"phone":"254712345678","reason":"Invalid server response"}
+[2026-03-16T10:34:24.584Z] [WARN] Failed registration attempt {"phone":"254712345678","reason":"Invalid server response"}
+[2026-03-16T10:36:00.695Z] [WARN] Failed registration attempt {"phone":"254712345678","reason":"Invalid server response"}
+[2026-03-16T10:39:52.607Z] [WARN] Failed registration attempt {"phone":"254712345678","reason":"Invalid server response"}
+[2026-03-16T10:40:13.161Z] [WARN] Failed registration attempt {"phone":"254712345678","reason":"Invalid server response"}
+[2026-03-16T10:41:08.469Z] [WARN] Failed registration attempt {"phone":"254712345672","reason":"Invalid server response"}
+[2026-03-16T11:04:09.900Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:04:54.658Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:16:10.754Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:18:14.286Z] [ERROR] Admin fetch users error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:22:47.411Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:22:49.177Z] [WARN] Failed registration attempt {"phone":"254712345672","reason":"Registration failed"}
+[2026-03-16T11:22:56.147Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:22:57.784Z] [WARN] Failed login attempt {"phone":"254712345672","reason":"Login failed"}
+[2026-03-16T11:28:57.749Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:28:59.872Z] [WARN] Failed login attempt {"phone":"254712345672","reason":"Login failed"}
+[2026-03-16T11:29:06.987Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:29:09.080Z] [WARN] Failed registration attempt {"phone":"254712345672","reason":"Registration failed"}
+[2026-03-16T11:30:57.146Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:30:59.162Z] [WARN] Failed registration attempt {"phone":"254712345672","reason":"Registration failed"}
+[2026-03-16T11:31:52.140Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:31:54.447Z] [WARN] Failed registration attempt {"phone":"254712345677","reason":"Registration failed"}
+[2026-03-16T11:35:05.046Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:35:07.403Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T11:39:07.895Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:39:09.851Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T11:43:54.182Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:43:56.182Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T11:44:19.342Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:44:21.300Z] [WARN] Failed registration attempt {"phone":"254700000002","reason":"Registration failed"}
+[2026-03-16T11:45:28.292Z] [ERROR] Login error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:45:30.204Z] [WARN] Failed login attempt {"phone":"254700000002","reason":"Login failed"}
+[2026-03-16T11:45:33.748Z] [ERROR] Registration error {
+  "err": "SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string"
+}
+[2026-03-16T11:45:35.272Z] [WARN] Failed registration attempt {"phone":"254700000002","reason":"Registration failed"}
+[2026-03-16T13:09:36.629Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-16T13:09:38.559Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T13:09:46.871Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-16T13:09:48.820Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-16T13:34:42.496Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-16T13:34:46.735Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T13:36:15.212Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-16T13:36:17.408Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T13:43:08.545Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-16T13:44:13.778Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-16T13:47:35.323Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-16T13:49:49.856Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-16T13:58:43.740Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-16T13:59:07.647Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-16T13:59:09.986Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-16T18:30:08.311Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T03:54:31.686Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T03:57:23.600Z] [WARN] Failed registration attempt {"phone":"","reason":"Phone and PIN required"}
+[2026-03-20T03:58:02.038Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T03:58:03.808Z] [WARN] Failed login attempt {"phone":"","reason":"Login failed"}
+[2026-03-20T04:26:02.681Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:21:13.089Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T05:21:15.246Z] [WARN] Failed registration attempt {"phone":"254783920202","reason":"Registration failed"}
+[2026-03-20T05:32:11.015Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:33:07.191Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:33:17.083Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:34:13.656Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:34:26.124Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T05:34:27.696Z] [WARN] Failed login attempt {"phone":"254783920202","reason":"Login failed"}
+[2026-03-20T05:34:31.019Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T05:34:33.179Z] [WARN] Failed registration attempt {"phone":"254783920202","reason":"Registration failed"}
+[2026-03-20T05:43:47.357Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:50:55.331Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T05:52:05.131Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T06:03:39.092Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T06:05:46.109Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T06:07:48.156Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T06:11:45.210Z] [ERROR] Super admin creation failed {"error":"role \"Admin\" does not exist"}
+[2026-03-20T07:40:48.492Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T07:40:50.694Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-20T07:53:11.145Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T07:53:13.129Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-20T07:57:03.966Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T07:57:05.781Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-20T07:58:57.476Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-20T07:58:59.459Z] [WARN] Failed registration attempt {"phone":"254700007687","reason":"Registration failed"}
+[2026-03-21T17:31:37.626Z] [ERROR] Login error {
+  "err": "user is not defined"
+}
+[2026-03-21T17:31:39.274Z] [WARN] Failed login attempt {"phone":"254700007687","reason":"Login failed"}
+[2026-03-21T17:31:56.238Z] [ERROR] Login error {
+  "err": "user is not defined"
+}
+[2026-03-21T17:31:57.858Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T17:32:02.371Z] [ERROR] Login error {
+  "err": "user is not defined"
+}
+[2026-03-21T17:32:06.020Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T17:32:24.429Z] [ERROR] Login error {
+  "err": "user is not defined"
+}
+[2026-03-21T17:32:26.059Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T18:39:42.149Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-21T18:39:45.195Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T18:45:52.855Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-21T18:45:54.502Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T18:55:44.028Z] [ERROR] Login error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-21T18:55:45.687Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-21T19:04:45.162Z] [ERROR] error: role "Admin" does not exist 
+[2026-03-21T19:05:19.191Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-22T08:22:46.585Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-22T08:22:48.741Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-22T10:27:21.385Z] [ERROR] Registration error {
+  "err": "role \"Admin\" does not exist"
+}
+[2026-03-22T10:27:24.916Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-22T10:57:19.732Z] [ERROR] Registration error {
+  "err": "database \"Admin\" does not exist"
+}
+[2026-03-22T10:57:21.546Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-22T11:28:02.072Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-22T11:28:06.232Z] [ERROR] Registration error {
+  "err": "database \"Admin\" does not exist"
+}
+[2026-03-22T11:28:07.834Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-22T18:25:25.932Z] [WARN] Failed login attempt {"phone":"254700000001","reason":"Login failed"}
+[2026-03-22T18:25:29.601Z] [ERROR] Registration error {
+  "err": "database \"Admin\" does not exist"
+}
+[2026-03-22T18:25:31.387Z] [WARN] Failed registration attempt {"phone":"254700000001","reason":"Registration failed"}
+[2026-03-22T20:11:09.851Z] [ERROR] Login error {"phone":"254700000001","error":"Invalid credentials"}
+[2026-03-22T20:11:43.906Z] [ERROR] Registration error {"phone":"254700000001","error":"Registration failed"}
+[2026-03-22T20:20:09.120Z] [ERROR] Login error {"phone":"254700000001","error":"Invalid credentials"}
+[2026-03-22T20:20:20.225Z] [ERROR] Login error {"phone":"25470000001","error":"Invalid credentials"}
+[2026-03-22T20:20:45.006Z] [ERROR] Registration error {"phone":"254700000001","error":"Registration failed"}

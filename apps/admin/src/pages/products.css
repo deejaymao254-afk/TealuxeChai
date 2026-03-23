@@ -1,0 +1,247 @@
+/* =========================
+   PAGE LAYOUT (MATCH ORDERS)
+========================= */
+.products-page {
+  padding: 20px 30px;
+  color: var(--text-main);
+  margin-left: 90px; /* same as Orders */
+  width: calc(100% - 90px);
+  box-sizing: border-box;
+}
+
+/* =========================
+   HEADER
+========================= */
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.products-header h2 {
+  font-size: 22px;
+  font-family: "Titillium Web", sans-serif;
+  color: var(--text-main);
+}
+
+/* =========================
+   FILTERS (same as Orders)
+========================= */
+.filters {
+  display: flex;
+  gap: 10px;
+}
+
+.filters input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-border);
+  background: var(--panel);
+  color: var(--text-main);
+  outline: none;
+  font-size: 13px;
+}
+
+.filters input:focus {
+  border-color: var(--orange-main);
+}
+
+/* =========================
+   TABLE WRAPPER
+========================= */
+.products-table {
+  margin-top: 20px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px var(--shadow);
+}
+
+/* =========================
+   TABLE STRUCTURE (MATCH ORDERS GRID)
+========================= */
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.table-header {
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--grey-border);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--grey-border);
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.table-row:hover {
+  background: rgba(255, 138, 0, 0.05);
+}
+
+/* =========================
+   STATUS (MATCH STYLE)
+========================= */
+.active {
+  color: #4caf50;
+}
+
+.inactive {
+  color: #f44336;
+}
+
+/* =========================
+   ACTION BUTTONS (MATCH ORDERS)
+========================= */
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.actions button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  color: var(--text-main);
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   EXPANDED VIEW
+========================= */
+.product-details {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px var(--shadow);
+  animation: fadeIn 0.3s ease;
+}
+
+.product-details h3 {
+  margin-bottom: 10px;
+}
+
+.product-details p {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* =========================
+   VARIATION CARDS
+========================= */
+.variation-card {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--grey-border);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.02);
+}
+
+.variation-card h5 {
+  margin-bottom: 8px;
+}
+
+.weights {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.weights span {
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid var(--grey-border);
+  border-radius: 6px;
+}
+
+/* =========================
+   DETAIL ACTIONS (MATCH ORDERS)
+========================= */
+.detail-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.detail-actions button {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.detail-actions button:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+.detail-actions .danger {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.detail-actions .danger:hover {
+  background: #f44336;
+  color: #fff;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .products-page {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .products-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .filters {
+    width: 100%;
+  }
+
+  .filters input {
+    width: 100%;
+  }
+}

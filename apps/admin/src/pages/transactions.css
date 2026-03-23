@@ -1,0 +1,95 @@
+/* PAGE */
+.transactions-page {
+  padding: 20px;
+  color: #fff;
+  margin-left: 60px;
+}
+
+/* HEADER */
+.transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.transactions-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.transactions-controls input,
+.transactions-controls select {
+  padding: 8px 10px;
+  border-radius: 6px;
+
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #0b0f14;
+
+  color: #fff;
+}
+
+/* TABLE */
+.transactions-table-wrapper {
+  overflow-x: auto;
+
+  background: #0b0f14;
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+th, td {
+  padding: 12px 14px;
+  text-align: left;
+}
+
+th {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #aaa;
+
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+td {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* STATUS BADGES */
+.status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+/* SUCCESS */
+.status.completed {
+  background: rgba(0, 200, 100, 0.15);
+  color: #00c864;
+}
+
+/* PENDING */
+.status.pending {
+  background: rgba(255, 165, 0, 0.15);
+  color: #ffa500;
+}
+
+/* FAILED */
+.status.failed {
+  background: rgba(255, 0, 0, 0.15);
+  color: #ff4d4d;
+}
+
+/* LOADING */
+.transactions-loading {
+  padding: 40px;
+  color: #aaa;
+}
