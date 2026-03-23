@@ -23,7 +23,7 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 const logFile = path.join(__dirname, "duka2_logs.txt");
 
 /* ===================== */
@@ -43,6 +43,10 @@ const logFile = path.join(__dirname, "duka2_logs.txt");
 /* ===================== */
 app.get("/", (req, res) => {
   res.send("API running");
+});
+
+app.get("/test", (req, res) => {
+  res.json({ ok: true });
 });
 
 app.use("/api/users", loginRoutes);
