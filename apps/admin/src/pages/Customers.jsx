@@ -15,11 +15,21 @@ export default function Customers() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ================= FETCH CUSTOMERS =================
   const fetchCustomers = useCallback(async () => {
     try {
       setLoading(true);
+
       const res = await api.get(`/users?page=${page}&limit=20`);
-      setCustomers(res.data);
+
+      let data = res.data;
+
+      // 🔁 FALLBACK: If backend does NOT include totals
+      if (!data[0]?.total_spent) {
+        data = await enrichCustomersWithOrders(data);
+      }
+
+      setCustomers(data);
       setError(null);
     } catch (err) {
       console.error(err);
@@ -30,15 +40,18 @@ export default function Customers() {
     }
   }, [page]);
 
+  // ================= FETCH STATS =================
   const fetchStats = useCallback(async () => {
     try {
       const res = await api.get("/users/stats");
       setStats(res.data);
     } catch {
-      setStats(generateMockStats());
+      // 🔁 fallback from customers
+      setStats(generateStatsFromCustomers(customers));
     }
-  }, []);
+  }, [customers]);
 
+  // ================= OPEN CUSTOMER =================
   const openCustomer = async (id) => {
     setSelected(id);
 
@@ -46,14 +59,24 @@ export default function Customers() {
       const res = await api.get(`/users/${id}/details`);
       setDetails(res.data);
     } catch {
-      setDetails(generateMockDetails(id));
+      // 🔁 fallback: fetch orders directly
+      try {
+        const ordersRes = await api.get(`/orders?user_id=${id}`);
+
+        setDetails(buildDetailsFromOrders(id, ordersRes.data));
+      } catch {
+        setDetails(generateMockDetails(id));
+      }
     }
   };
 
   useEffect(() => {
     fetchCustomers();
+  }, [fetchCustomers]);
+
+  useEffect(() => {
     fetchStats();
-  }, [fetchCustomers, fetchStats]);
+  }, [fetchStats]);
 
   // ================= FILTER =================
   const filtered = customers
@@ -112,8 +135,8 @@ export default function Customers() {
             <div key={c.id} className="row">
               <span>{c.phone}</span>
               <span>{c.first_name}</span>
-              <span>KES {c.total_spent}</span>
-              <span>{c.total_orders}</span>
+              <span>KES {c.total_spent || 0}</span>
+              <span>{c.total_orders || 0}</span>
               <span className={`status ${getStatus(c)}`}>
                 {getStatus(c)}
               </span>
@@ -146,7 +169,6 @@ export default function Customers() {
             <p>Total Spent: KES {details.total_spent}</p>
             <p>Avg Order: KES {details.avg_order}</p>
             <p>Last Order: {details.last_order}</p>
-            <p>Top Product: {details.top_product}</p>
 
             <h4>Orders</h4>
             {details.orders.map((o) => (
@@ -163,7 +185,64 @@ export default function Customers() {
   );
 }
 
-// ================= COMPONENTS =================
+// ================= HELPERS =================
+
+// 🔁 attach totals if backend doesn’t provide
+async function enrichCustomersWithOrders(users) {
+  return Promise.all(
+    users.map(async (u) => {
+      try {
+        const res = await api.get(`/orders?user_id=${u.id}`);
+        const orders = res.data;
+
+        const total_spent = orders.reduce((s, o) => s + Number(o.amount || 0), 0);
+
+        return {
+          ...u,
+          total_spent,
+          total_orders: orders.length,
+        };
+      } catch {
+        return {
+          ...u,
+          total_spent: 0,
+          total_orders: 0,
+        };
+      }
+    })
+  );
+}
+
+function buildDetailsFromOrders(id, orders) {
+  const total_spent = orders.reduce((s, o) => s + Number(o.amount || 0), 0);
+
+  return {
+    id,
+    first_name: "User " + id,
+    phone: "",
+    total_spent,
+    avg_order: orders.length ? total_spent / orders.length : 0,
+    last_order: orders[0]?.created_at,
+    orders,
+  };
+}
+
+function generateStatsFromCustomers(customers) {
+  return {
+    total: customers.length,
+    active: customers.filter((c) => c.total_orders > 0).length,
+    new: customers.slice(0, 5).length,
+    top_spender: Math.max(...customers.map((c) => c.total_spent || 0), 0),
+  };
+}
+
+function getStatus(c) {
+  if (c.total_orders > 5) return "active";
+  if (c.total_orders > 0) return "normal";
+  return "inactive";
+}
+
+// ================= COMPONENT =================
 function Stat({ label, value }) {
   return (
     <div className="stat">
@@ -173,14 +252,7 @@ function Stat({ label, value }) {
   );
 }
 
-// ================= HELPERS =================
-function getStatus(c) {
-  if (c.total_orders > 5) return "active";
-  if (c.total_orders > 0) return "normal";
-  return "inactive";
-}
-
-// ================= MOCK DATA =================
+// ================= MOCK =================
 function generateMockCustomers() {
   return Array.from({ length: 10 }).map((_, i) => ({
     id: i + 1,
@@ -191,15 +263,6 @@ function generateMockCustomers() {
   }));
 }
 
-function generateMockStats() {
-  return {
-    total: 1245,
-    active: 320,
-    new: 58,
-    top_spender: 45200,
-  };
-}
-
 function generateMockDetails(id) {
   return {
     id,
@@ -208,14 +271,6 @@ function generateMockDetails(id) {
     total_spent: 12000,
     avg_order: 2400,
     last_order: "2026-03-20",
-    top_product: "Krackles",
-
-    orders: Array.from({ length: 5 }).map((_, i) => ({
-      id: "ORD-" + (i + 1),
-      amount: Math.floor(Math.random() * 5000),
-      status: ["paid", "pending", "failed"][
-        Math.floor(Math.random() * 3)
-      ],
-    })),
+    orders: [],
   };
 }
