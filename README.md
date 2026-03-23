@@ -77,7 +77,8 @@ Duka2
 │  │     │  └─ initAdmin.js
 │  │     ├─ index.js
 │  │     ├─ middleware
-│  │     │  └─ authMiddleware.js
+│  │     │  ├─ authMiddleware.js
+│  │     │  └─ ProtectedRoute.jsx
 │  │     ├─ modules
 │  │     │  ├─ orders
 │  │     │  │  ├─ orderController.js

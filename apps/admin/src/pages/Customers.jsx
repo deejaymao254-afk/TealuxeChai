@@ -17,9 +17,13 @@ export default function Customers() {
     setCustomers(res.data);
   };
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
+useEffect(() => {
+  const load = async () => {
+    await fetchCustomers();
+  };
+
+  load();
+}, []);
 
   const openCustomer = async (id) => {
     setSelected(id);
