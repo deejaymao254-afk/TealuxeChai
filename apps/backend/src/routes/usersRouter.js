@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import pool from "../config/db.js";
+import { pool } from "../config/db.js";
 import { generateToken } from "../controllers/auth.js";
 import { createUser, getUserByPhone } from "../services/userService.js";
 
