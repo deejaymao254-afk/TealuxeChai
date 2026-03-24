@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./login.css";
 
-export default function Login() {
-  const navigate = useNavigate();
+export default function Login({ onLogin }) {
 
   const [loading, setLoading] = useState(true);
   const [showPin, setShowPin] = useState(false);
@@ -13,21 +11,6 @@ export default function Login() {
     pin: "",
   });
 
-  /* ===================== */
-  /* REDIRECT IF LOGGED IN */
-  /* ===================== */
-  useEffect(() => {
-    try {
-      const token = localStorage.getItem("duka2_token");
-      const user = JSON.parse(localStorage.getItem("duka2_current_user"));
-
-      if (token && user) {
-        navigate("/", { replace: true });
-      }
-    } catch {
-      // invalid JSON → ignore
-    }
-  }, [navigate]);
 
   /* ===================== */
   /* SPLASH */
@@ -84,11 +67,13 @@ export default function Login() {
       }
 
       // 💾 Save auth
-      localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
-      localStorage.setItem("duka2_token", data.token);
+localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
+localStorage.setItem("duka2_token", data.token);
 
-      // 🚀 Redirect once (no loop)
-      navigate("/", { replace: true });
+// notify App.jsx
+if (typeof onLogin === "function") {
+  onLogin(data.user, data.token);
+}
 
     } catch (err) {
       console.error("LOGIN ERROR:", err);
