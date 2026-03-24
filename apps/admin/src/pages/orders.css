@@ -1,6 +1,6 @@
 .main {
-  margin-left: 260px; /* MUST match sidebar width */
-  width: calc(100% - 260px);
+  margin-left: 160px; /* MUST match sidebar width */
+  width: calc(100% - 160px);
 }
 
 
