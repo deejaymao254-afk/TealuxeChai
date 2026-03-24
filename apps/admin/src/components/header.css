@@ -1,69 +1,142 @@
+/* =========================
+   HEADER LAYOUT (MATCH SYSTEM)
+========================= */
 .app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 60px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--grey-border);
+
+  padding: 0 30px;
+  margin-left: 90px; /* matches sidebar */
+  width: calc(100% - 90px);
+
   background: var(--panel);
+  border-bottom: 1px solid var(--grey-border);
+  box-shadow: 0 4px 20px var(--shadow);
+  box-sizing: border-box;
 }
 
-/* TITLE */
-.app-header h2 {
-  font-size: 18px;
-  letter-spacing: 0.5px;
+/* =========================
+   TITLE
+========================= */
+.header-left h2 {
+  font-size: 20px;
+  font-family: "Titillium Web", sans-serif;
+  color: var(--text-main);
+  margin: 0;
 }
 
-/* RIGHT SIDE */
-.app-header .right {
+/* =========================
+   RIGHT SECTION
+========================= */
+.header-right {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* ICON BUTTON */
-.icon-btn {
-  background: transparent;
-  border: 1px solid var(--grey-border);
-  padding: 6px 10px;
+/* =========================
+   BUTTON SYSTEM REUSE
+========================= */
+.btn {
+  padding: 8px 12px;
   border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  color: var(--text-main);
+  font-size: 13px;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* ICON BUTTON */
+.btn.icon {
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+}
+
+/* DANGER */
+.btn.danger {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.btn.danger:hover {
+  background: #f44336;
+  color: #fff;
+}
+
+/* =========================
+   USER INFO
+========================= */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-name {
+  font-size: 13px;
   color: var(--text-main);
 }
 
-.icon-btn:hover {
-  border-color: var(--orange-main);
-  color: var(--orange-main);
+/* =========================
+   NOTIFICATIONS
+========================= */
+.notif-wrapper {
+  position: relative;
 }
 
-/* USER */
-.user {
-  font-size: 13px;
-  color: var(--text-light);
-}
-
-/* LOGOUT */
-.logout-btn {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--grey-border);
-  background: transparent;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.logout-btn:hover {
-  border-color: var(--orange-main);
-  color: var(--orange-main);
-}
-
-/* NOTIF DROPDOWN */
 .dropdown {
   position: absolute;
-  top: 50px;
-  right: 120px;
+  top: 45px;
+  right: 0;
+
+  width: 220px;
+  padding: 12px;
+
   background: var(--panel);
   border: 1px solid var(--grey-border);
-  padding: 12px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 10px 25px var(--shadow);
+
+  font-size: 13px;
+  color: var(--text-main);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .app-header {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-right {
+    gap: 8px;
+  }
+
+  .user-name {
+    display: none;
+  }
 }
