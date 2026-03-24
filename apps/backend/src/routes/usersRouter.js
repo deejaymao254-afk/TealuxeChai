@@ -4,6 +4,12 @@ import { pool } from "../config/db.js";
 import { generateToken } from "../controllers/auth.js";
 import { createUser, getUserByPhone } from "../services/userService.js";
 
+import {
+  getAllUsers,
+  getUserStats,
+  getUserDetails
+} from "../services/userService.js";
+
 const router = express.Router();
 
 /* ===================== */

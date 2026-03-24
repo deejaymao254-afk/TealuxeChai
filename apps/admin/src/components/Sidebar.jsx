@@ -39,15 +39,6 @@ export default function Sidebar() {
 
         <div className="divider" />
 
-        {/* OPERATIONS */}
-        <NavLink to="/live-feed" className={linkClass}>
-          Live Feed
-        </NavLink>
-
-        <NavLink to="/dispatch" className={linkClass}>
-          Dispatch
-        </NavLink>
-
         <NavLink to="/inventory" className={linkClass}>
           Inventory
         </NavLink>
@@ -57,21 +48,6 @@ export default function Sidebar() {
         {/* INSIGHTS */}
         <NavLink to="/analytics" className={linkClass}>
           Analytics
-        </NavLink>
-
-        <NavLink to="/reports" className={linkClass}>
-          Reports
-        </NavLink>
-
-        <div className="divider" />
-
-        {/* SYSTEM */}
-        <NavLink to="/network" className={linkClass}>
-          Network
-        </NavLink>
-
-        <NavLink to="/alerts" className={linkClass}>
-          Alerts
         </NavLink>
 
         <NavLink to="/settings" className={linkClass}>

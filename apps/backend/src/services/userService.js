@@ -45,27 +45,35 @@ export async function getAllUsers({ page = 1, limit = 20 }) {
 /* ===================== */
 /* GET CUSTOMER STATS (FOR /users/stats) */
 /* ===================== */
-/* ===================== */
-/* GET STATS */
-/* ===================== */
 export async function getUserStats() {
-  const [[stats]] = await pool.query(`
-    SELECT 
-      COUNT(DISTINCT u.id) AS total,
-      COUNT(DISTINCT CASE WHEN o.id IS NOT NULL THEN u.id END) AS active,
-      COALESCE(MAX(t.total_spent), 0) AS top_spender
-    FROM users u
-    LEFT JOIN (
+  try {
+    const result = await pool.query(`
       SELECT 
-        user_id,
-        SUM(amount) AS total_spent
-      FROM orders
-      GROUP BY user_id
-    ) t ON t.user_id = u.id
-    LEFT JOIN orders o ON o.user_id = u.id
-  `);
+        (SELECT COUNT(*) FROM users) AS total_users,
 
-  return result.rows[0];
+        (SELECT COUNT(DISTINCT user_id)
+         FROM orders
+         WHERE user_id IS NOT NULL
+        ) AS active_customers,
+
+        (SELECT COALESCE(SUM(amount), 0)
+         FROM orders
+        ) AS total_revenue,
+
+        (SELECT COALESCE(MAX(total_spent), 0)
+         FROM (
+           SELECT user_id, SUM(amount) AS total_spent
+           FROM orders
+           GROUP BY user_id
+         ) t
+        ) AS top_spender
+    `);
+
+    return result.rows[0];
+  } catch (err) {
+    logger?.error?.(err);
+    throw err;
+  }
 }
 
 /* ===================== */
@@ -203,3 +211,16 @@ export async function createUser(user) {
 
   return result.rows[0];
 }
+
+/* ===================== */
+/* EXPORTS (SAFE GUARANTEE) */
+/* ===================== */
+export {
+  getUserByPhone,
+  getAllUsers,
+  getUserStats,
+  getUserDetails,
+  updateUserPin,
+  updateUserRole,
+  createUser,
+};
