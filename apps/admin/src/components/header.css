@@ -1,47 +1,37 @@
 /* =========================
-   HEADER LAYOUT (MATCH SYSTEM)
-========================= */
-.app-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  height: 60px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 0 30px;
-  margin-left: 90px; /* matches sidebar */
-  width: calc(100% - 90px);
-
-  background: var(--panel);
-  border-bottom: 1px solid var(--grey-border);
-  box-shadow: 0 4px 20px var(--shadow);
-  box-sizing: border-box;
-}
-
-/* =========================
-   TITLE
-========================= */
-.header-left h2 {
-  font-size: 20px;
-  font-family: "Titillium Web", sans-serif;
-  color: var(--text-main);
-  margin: 0;
-}
-
-/* =========================
-   RIGHT SECTION
+   RIGHT SIDE ALIGNMENT FIX
 ========================= */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+}
+
+/* ROW: NOTIFICATION + BUTTON */
+.right-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* USER BLOCK (STACKED) */
+.user-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* ADMIN LABEL */
+.user-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  text-transform: uppercase;
 }
 
 /* =========================
-   BUTTON SYSTEM REUSE
+   BUTTON FIX
 ========================= */
 .btn {
   padding: 8px 12px;
@@ -59,20 +49,14 @@
   color: var(--orange-main);
 }
 
-/* ICON BUTTON */
 .btn.icon {
-  padding: 8px;
   width: 36px;
   height: 36px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 8px;
 }
 
-/* DANGER */
 .btn.danger {
   border-color: #f44336;
   color: #f44336;
@@ -84,21 +68,7 @@
 }
 
 /* =========================
-   USER INFO
-========================= */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-name {
-  font-size: 13px;
-  color: var(--text-main);
-}
-
-/* =========================
-   NOTIFICATIONS
+   DROPDOWN POSITION FIX
 ========================= */
 .notif-wrapper {
   position: relative;
@@ -108,35 +78,10 @@
   position: absolute;
   top: 45px;
   right: 0;
-
   width: 220px;
   padding: 12px;
-
   background: var(--panel);
   border: 1px solid var(--grey-border);
   border-radius: 10px;
   box-shadow: 0 10px 25px var(--shadow);
-
-  font-size: 13px;
-  color: var(--text-main);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 1024px) {
-  .app-header {
-    margin-left: 0;
-    width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-right {
-    gap: 8px;
-  }
-
-  .user-name {
-    display: none;
-  }
 }

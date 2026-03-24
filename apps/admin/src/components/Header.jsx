@@ -23,7 +23,6 @@ export default function Header({ user, onLogout }) {
     }
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) {
@@ -41,12 +40,11 @@ export default function Header({ user, onLogout }) {
       </div>
 
       <div className="header-right">
-        {/* Notifications */}
-        <div className="notif-wrapper" ref={notifRef}>
+        {/* RIGHT SIDE ROW */}
+        <div className="right-row">
           <button
             className="btn icon"
             onClick={() => setShowNotif(!showNotif)}
-            aria-label="Notifications"
           >
             🔔
           </button>
@@ -56,6 +54,10 @@ export default function Header({ user, onLogout }) {
               <p>No new notifications</p>
             </div>
           )}
+
+          <button className="btn danger" onClick={onLogout}>
+            Sign Out
+          </button>
         </div>
 
         {/* User */}
@@ -63,10 +65,6 @@ export default function Header({ user, onLogout }) {
           <span className="user-name">{user?.name || "Admin"}</span>
         </div>
 
-        {/* Logout */}
-        <button className="btn danger" onClick={onLogout}>
-          Sign Out
-        </button>
       </div>
     </header>
   );
