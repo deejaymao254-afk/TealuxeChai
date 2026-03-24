@@ -1,0 +1,69 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--grey-border);
+  background: var(--panel);
+}
+
+/* TITLE */
+.app-header h2 {
+  font-size: 18px;
+  letter-spacing: 0.5px;
+}
+
+/* RIGHT SIDE */
+.app-header .right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ICON BUTTON */
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--grey-border);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+.icon-btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* USER */
+.user {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* LOGOUT */
+.logout-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.logout-btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* NOTIF DROPDOWN */
+.dropdown {
+  position: absolute;
+  top: 50px;
+  right: 120px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px var(--shadow);
+}

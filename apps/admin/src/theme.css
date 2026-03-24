@@ -17,31 +17,33 @@ body {
 
 
 :root {
-  /* LIGHT MODE */
   --bg-main: #ffffff;
   --panel: #ffffff;
-  --text-main: #0e0e0e;
-  --text-light: #555;
+  --text-main: #111;
+  --text-light: #666;
+
+  --primary-dark: #1a1a1a;
+  --primary-mid: #2a2a2a;
 
   --orange-main: #ff8a00;
-  --orange-soft: #ffb347;
 
-  --grey-border: #e2e2e2;
-  --grey-light: #8e8e8e;
-
+  --grey-border: #e6e6e6;
   --shadow: rgba(0,0,0,0.08);
 }
 
-/* DARK MODE */
 body.dark {
-  --bg-main: #0e1116;
-  --panel: #161a22;
-  --text-main: #e6eaf0;
+  --bg-main: #0d0f12;
+  --panel: #14161a;
+  --text-main: #eaeaea;
   --text-light: #9aa4b2;
 
-  --grey-border: #1f2430;
-  --shadow: rgba(0,0,0,0.4);
+  --grey-border: #222831;
+  --shadow: rgba(0,0,0,0.5);
 }
+
+
+
+
 
 /* GLOBAL RESET */
 * {
