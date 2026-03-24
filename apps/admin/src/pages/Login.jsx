@@ -16,7 +16,9 @@ export default function Login() {
   useEffect(() => {
   const token = localStorage.getItem("duka2_token");
   if (token) {
-    navigate("/");
+
+navigate("/", { replace: true });
+
   }
 }, []);
 
@@ -41,55 +43,36 @@ export default function Login() {
   // LOGIN
 const handleLogin = async (e) => {
   e.preventDefault();
+
+  if (loading) return;
+
   setLoading(true);
 
   const phone = normalizePhone(form.phone);
   const API_URL = import.meta.env.VITE_API_URL;
 
   try {
-    console.log("➡️ Sending login request to:", API_URL);
-
     const res = await fetch(`${API_URL}/api/users/login`, {
       method: "POST",
-headers: {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem("duka2_token")}`
-},
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({ phone, pin: form.pin }),
     });
 
-    console.log("⬅️ Response status:", res.status);
-
-    const text = await res.text();
-    console.log("⬅️ Raw response:", text);
-
-    let data;
-    try {
-      data = text ? JSON.parse(text) : {};
-    } catch (err) {
-      console.error("❌ JSON parse failed:", err);
-      throw new Error("Invalid server response");
-    }
+    const data = await res.json();
 
     if (!res.ok) {
-      console.error("❌ Login failed:", data);
-      throw new Error(data.message || `Login failed (${res.status})`);
+      throw new Error(data.message || "Login failed");
     }
 
-    console.log("✅ Login success:", data);
+    localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
+    localStorage.setItem("duka2_token", data.token);
 
-
-
-localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
-localStorage.setItem("duka2_token", data.token);
-
-    navigate("/");
+    navigate("/", { replace: true });
 
   } catch (err) {
-    console.error("🔥 LOGIN ERROR:", err);
-
-    alert(err.message || "Login failed — check console");
-
+    alert(err.message || "Login failed");
   } finally {
     setLoading(false);
   }
