@@ -4,7 +4,7 @@
 .customers-page {
   padding: 20px 30px;
   color: var(--text-main);
-  margin-left: 90px;
+  margin-left: 90px; /* same as Orders */
   width: calc(100% - 90px);
   box-sizing: border-box;
 }
@@ -32,13 +32,17 @@
 /* =========================
    BUTTON SYSTEM (IMPORTANT)
 ========================= */
+/* =========================
+   ACTION BUTTONS (MATCH ORDERS)
+========================= */
+
 .btn {
-  padding: 8px 12px;
+  padding: 6px 10px;
   border-radius: 6px;
   border: 1px solid var(--grey-border);
   background: transparent;
   color: var(--text-main);
-  font-size: 13px;
+  font-size: 12px;
   cursor: pointer;
   transition: 0.2s;
 }

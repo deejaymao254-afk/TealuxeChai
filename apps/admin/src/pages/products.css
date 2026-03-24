@@ -9,21 +9,7 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   HEADER
-========================= */
-.products-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
 
-.products-header h2 {
-  font-size: 22px;
-  font-family: "Titillium Web", sans-serif;
-  color: var(--text-main);
-}
 
 /* =========================
    FILTERS (same as Orders)
