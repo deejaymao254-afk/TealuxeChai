@@ -1,0 +1,199 @@
+/* =========================
+   PAGE LAYOUT (MATCH SYSTEM)
+========================= */
+.settings-page {
+  display: flex;
+  gap: 20px;
+
+  padding: 20px 30px;
+  margin-left: 90px;
+  width: calc(100% - 90px);
+
+  box-sizing: border-box;
+}
+
+/* =========================
+   MINI SIDEBAR
+========================= */
+.settings-sidebar {
+  width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* TABS */
+.settings-tab {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-border);
+  background: var(--panel);
+  color: var(--text-main);
+  text-align: left;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.settings-tab:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* ACTIVE TAB */
+.settings-tab.active {
+  border-color: var(--orange-main);
+  background: rgba(255, 138, 0, 0.08);
+  color: var(--orange-main);
+}
+
+/* =========================
+   CONTENT PANEL
+========================= */
+.settings-content {
+  flex: 1;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 25px var(--shadow);
+}
+
+/* =========================
+   SECTION
+========================= */
+.settings-section h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-family: "Titillium Web", sans-serif;
+}
+
+/* =========================
+   FORM GRID
+========================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+/* INPUTS (MATCH SYSTEM) */
+.form-grid input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-border);
+  background: var(--panel);
+  color: var(--text-main);
+  font-size: 13px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form-grid input:focus {
+  border-color: var(--orange-main);
+}
+
+/* =========================
+   TOGGLES
+========================= */
+.toggle-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.toggle-group input {
+  margin-right: 8px;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.form-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* =========================
+   BUTTON SYSTEM
+========================= */
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* PRIMARY */
+.btn.primary {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+.btn.primary:hover {
+  background: var(--orange-main);
+  color: #fff;
+}
+
+/* DANGER */
+.btn.danger {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.btn.danger:hover {
+  background: #f44336;
+  color: #fff;
+}
+
+/* =========================
+   INTEGRATIONS
+========================= */
+.integration-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px;
+  margin-bottom: 10px;
+
+  border: 1px solid var(--grey-border);
+  border-radius: 8px;
+  background: rgba(0,0,0,0.02);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .settings-page {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .settings-page {
+    flex-direction: column;
+  }
+
+  .settings-sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
