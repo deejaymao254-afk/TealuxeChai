@@ -145,9 +145,36 @@
 }
 
 /* =========================
-   TABLE
+   TABLE STRUCTURE (MATCH ORDERS GRID)
 ========================= */
-.table {
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.table-header {
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--grey-border);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--grey-border);
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.table-row:hover {
+  background: rgba(255, 138, 0, 0.05);
+}
+
+.card {  
   margin-top: 20px;
   background: var(--panel);
   border: 1px solid var(--grey-border);
@@ -256,16 +283,19 @@
 .drawer {
   margin-top: 20px;
   padding: 20px;
-  border-radius: 12px;
   background: var(--panel);
   border: 1px solid var(--grey-border);
-  box-shadow: 0 10px 30px var(--shadow);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px var(--shadow);
+  animation: fadeIn 0.3s ease;
 }
 
-.drawer-header {
+.page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+    margin-top: 10px;
+font-size: 12px;
 }
 
 .drawer-body {
