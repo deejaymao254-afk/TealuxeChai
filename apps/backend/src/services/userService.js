@@ -211,16 +211,3 @@ export async function createUser(user) {
 
   return result.rows[0];
 }
-
-/* ===================== */
-/* EXPORTS (SAFE GUARANTEE) */
-/* ===================== */
-export {
-  getUserByPhone,
-  getAllUsers,
-  getUserStats,
-  getUserDetails,
-  updateUserPin,
-  updateUserRole,
-  createUser,
-};
