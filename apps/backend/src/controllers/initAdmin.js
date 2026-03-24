@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import {
   getUserByPhone,
   createUser,
@@ -7,22 +6,29 @@ import {
 } from "../services/userService.js";
 
 /* =============================== */
+/* HELPERS */
+/* =============================== */
+function normalizePhone(phone) {
+  let p = phone.replace(/\D/g, "");
+  if (p.startsWith("0")) p = "254" + p.slice(1);
+  if (!p.startsWith("254")) p = "254" + p;
+  return p;
+}
+
+/* =============================== */
 /* ENSURE SUPER ADMIN */
 /* =============================== */
 export async function ensureSuperAdmin() {
   try {
-    const phone = "254700000001";
+    const phone = normalizePhone("254700000001");
     const defaultPin = "1234";
 
     const existing = await getUserByPhone(phone);
 
-    // ===============================
-    // CREATE IF NOT EXISTS
-    // ===============================
     if (!existing) {
       await createUser({
         phone,
-        pin: defaultPin, // 🔥 send raw pin, service will hash it
+        pin: defaultPin,
         firstName: "Super",
         lastName: "Admin",
         idNo: "00000000",
@@ -37,23 +43,16 @@ export async function ensureSuperAdmin() {
 
     let updated = false;
 
-    // ===============================
-    // ENSURE ROLE
-    // ===============================
     if ((existing.role || "").toLowerCase() !== "superadmin") {
       await updateUserRole(phone, "superadmin");
       updated = true;
     }
 
-    // ===============================
-    // ENSURE PIN IS HASHED
-    // ===============================
     const isHashed =
       existing.pin?.startsWith("$2a$") ||
       existing.pin?.startsWith("$2b$");
 
     if (!isHashed) {
-      // ⚠️ IMPORTANT: pass RAW pin, let service handle hashing
       await updateUserPin(phone, defaultPin);
       updated = true;
     }

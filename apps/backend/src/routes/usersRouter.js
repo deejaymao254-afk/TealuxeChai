@@ -1,10 +1,9 @@
 import express from "express";
 import bcrypt from "bcryptjs";
-import { pool } from "../config/db.js";
 import { generateToken } from "../controllers/auth.js";
-import { createUser, getUserByPhone } from "../services/userService.js";
-
-import {
+import { 
+  createUser, 
+  getUserByPhone,
   getAllUsers,
   getUserStats,
   getUserDetails
@@ -17,10 +16,8 @@ const router = express.Router();
 /* ===================== */
 function normalizePhone(phone) {
   let p = phone.replace(/\D/g, "");
-
-  if (p.startsWith("0")) p = "254" + p.substring(1);
+  if (p.startsWith("0")) p = "254" + p.slice(1);
   if (!p.startsWith("254")) p = "254" + p;
-
   return p;
 }
 
@@ -39,11 +36,11 @@ router.post("/register", async (req, res) => {
       shopAddress,
     } = req.body;
 
-    phone = normalizePhone(phone);
-
     if (!phone || !pin || !firstName) {
       return res.status(400).json({ message: "Required fields missing" });
     }
+
+    phone = normalizePhone(phone);
 
     if (pin.length < 4) {
       return res.status(400).json({ message: "PIN too short" });
@@ -81,12 +78,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 /* ===================== */
-/* GET USERS (PAGINATED + TOTALS) */
-/* ===================== */
-/* ===================== */
-/* GET CUSTOMERS (LIST) */
+/* GET USERS */
 /* ===================== */
 router.get("/", async (req, res) => {
   try {
@@ -110,11 +103,9 @@ router.get("/", async (req, res) => {
 router.get("/stats", async (req, res) => {
   try {
     const stats = await getUserStats();
-    console.log("STATS RESULT:", stats); // 👈 add this
-
     return res.json(stats);
   } catch (err) {
-    console.error("STATS ERROR:", err); // 👈 THIS WILL SHOW REAL ISSUE
+    console.error(err);
     return res.status(500).json({ message: "Failed to load stats" });
   }
 });
@@ -138,6 +129,5 @@ router.get("/:id/details", async (req, res) => {
     return res.status(500).json({ message: "Failed to load user details" });
   }
 });
-
 
 export default router;
