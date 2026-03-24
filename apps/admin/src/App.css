@@ -33,7 +33,7 @@ body.dark {
 
 /* RIGHT SIDE WRAPPER */
 .app-content {
-  width: calc(100% - 260px);
+  width: calc(100% - 60px);
   display: flex;
   flex-direction: column;
   height: 100vh;
