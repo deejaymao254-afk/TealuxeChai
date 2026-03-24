@@ -81,46 +81,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/* ===================== */
-/* LOGIN */
-/* ===================== */
-router.post("/login", async (req, res) => {
-  try {
-    let { phone, pin } = req.body;
-
-    if (!phone || !pin) {
-      return res.status(400).json({ message: "Phone and PIN required" });
-    }
-
-    phone = normalizePhone(phone);
-
-    const user = await getUserByPhone(phone);
-
-    if (!user || !user.pin) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const valid = await bcrypt.compare(pin, user.pin);
-
-    if (!valid) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const token = generateToken(user);
-
-    const { pin: _, ...safeUser } = user;
-
-    return res.json({
-      user: safeUser,
-      token,
-      message: "Login successful",
-    });
-
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ message: "Login failed" });
-  }
-});
 
 /* ===================== */
 /* GET USERS (PAGINATED + TOTALS) */

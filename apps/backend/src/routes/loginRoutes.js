@@ -20,6 +20,7 @@ router.post("/login", async (req, res) => {
     }
 
     const user = await getUserByPhone(phone);
+    phone = normalizePhone(phone);
 
     console.log("USER FOUND:", user);
 
