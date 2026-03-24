@@ -144,9 +144,11 @@ router.get("/", async (req, res) => {
 router.get("/stats", async (req, res) => {
   try {
     const stats = await getUserStats();
+    console.log("STATS RESULT:", stats); // 👈 add this
+
     return res.json(stats);
   } catch (err) {
-    console.error(err);
+    console.error("STATS ERROR:", err); // 👈 THIS WILL SHOW REAL ISSUE
     return res.status(500).json({ message: "Failed to load stats" });
   }
 });
