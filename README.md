@@ -201,7 +201,6 @@ Duka2
 │  │  └─ {
 │  └─ database
 │     └─ schema.sql
-├─ package-lock.json
 ├─ package.json
 └─ README.md
 

@@ -1,97 +1,129 @@
+/* Header Base */
 .app-header {
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  height: 70px;
+  background: #111; /* Dark header */
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  gap: 1rem;
 }
-/* =========================
-   RIGHT SIDE ALIGNMENT FIX
-========================= */
+
+/* Left Section */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+/* Hamburger - Mobile Only */
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #ffd700; /* gold accent */
+  transition: transform 0.2s ease;
+}
+
+.hamburger:hover {
+  transform: scale(1.2);
+}
+
+/* Right Section */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
-/* ROW: NOTIFICATION + BUTTON */
 .right-row {
   display: flex;
   align-items: center;
-  gap: 10px;
-}
-
-.header-left {
-    display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-/* USER BLOCK (STACKED) */
-.user-block {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-/* ADMIN LABEL */
-.user-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--text-light);
-  text-transform: uppercase;
-}
-
-/* =========================
-   BUTTON FIX
-========================= */
-.btn {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--grey-border);
-  background: transparent;
-  color: var(--text-main);
-  font-size: 13px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  border-color: var(--orange-main);
-  color: var(--orange-main);
-}
-
-.btn.icon {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn.danger {
-  border-color: #f44336;
-  color: #f44336;
-}
-
-.btn.danger:hover {
-  background: #f44336;
-  color: #fff;
-}
-
-/* =========================
-   DROPDOWN POSITION FIX
-========================= */
-.notif-wrapper {
+  gap: 1rem;
   position: relative;
 }
 
+/* Buttons */
+.btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+/* Notification button */
+.btn.icon {
+  background: transparent;
+  font-size: 1.4rem;
+}
+
+.btn.icon:hover {
+  color: #ffd700;
+}
+
+/* Danger (Sign Out) */
+.btn.danger {
+  background: #ff4d4f;
+  color: #fff;
+}
+
+.btn.danger:hover {
+  background: #e03e3f;
+  transform: translateY(-1px);
+}
+
+/* User info */
+.user-info {
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+/* Notification Dropdown */
 .dropdown {
   position: absolute;
-  top: 45px;
+  top: 40px;
   right: 0;
   width: 220px;
-  padding: 12px;
-  background: var(--panel);
-  border: 1px solid var(--grey-border);
-  border-radius: 10px;
-  box-shadow: 0 10px 25px var(--shadow);
+  background: #222;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  padding: 0.8rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  color: #fff;
+  z-index: 999;
+  animation: fadeIn 0.15s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hamburger {
+    display: block;
+  }
+
+  .user-info {
+    display: none; /* hide on mobile for cleaner layout */
+  }
+
+  .right-row .btn.danger {
+    padding: 0.5rem 0.7rem;
+  }
 }

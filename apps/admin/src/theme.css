@@ -300,3 +300,115 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* =========================
+   HEADER LAYOUT
+========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* LEFT + RIGHT GROUPING */
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* =========================
+   HAMBURGER
+========================= */
+.menu-toggle {
+  display: none;
+  font-size: 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+}
+
+/* =========================
+   SYSTEM INFO
+========================= */
+.sys {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.sep {
+  width: 1px;
+  height: 14px;
+  background: var(--grey-border);
+}
+
+/* =========================
+   USER SECTION
+========================= */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.user-name {
+  font-weight: 600;
+}
+
+.user-role {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+/* =========================
+   LOGOUT BUTTON
+========================= */
+.logout-btn {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .sys {
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+}

@@ -1,9 +1,9 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import "../App.css";
+import "./header.css";
 
-
-export default function Header({ user, onLogout }) {
+export default function Header({ user, onLogout, toggleSidebar }) {
   const location = useLocation();
   const [showNotif, setShowNotif] = useState(false);
   const notifRef = useRef(null);
@@ -38,21 +38,20 @@ export default function Header({ user, onLogout }) {
   return (
     <header className="app-header">
       <div className="header-left">
+        <button className="menu-toggle" onClick={toggleSidebar}>
+          ☰
+        </button>
         <h2>{getTitle()}</h2>
       </div>
 
       <div className="header-right">
-        {/* RIGHT SIDE ROW */}
         <div className="right-row">
-          <button
-            className="btn icon"
-            onClick={() => setShowNotif(!showNotif)}
-          >
+          <button className="btn icon" onClick={() => setShowNotif(!showNotif)}>
             🔔
           </button>
 
           {showNotif && (
-            <div className="dropdown">
+            <div className="dropdown" ref={notifRef}>
               <p>No new notifications</p>
             </div>
           )}
@@ -62,11 +61,9 @@ export default function Header({ user, onLogout }) {
           </button>
         </div>
 
-        {/* User */}
         <div className="user-info">
           <span className="user-name">{user?.name || ""}</span>
         </div>
-
       </div>
     </header>
   );
