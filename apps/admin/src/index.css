@@ -57,26 +57,15 @@
 }
 
 
-body {
-  margin: 0;
-}
 
 #root {
   width: 1200px;
   max-width: 100%;
-  text-align: center;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
 
 h1 {
   font-size: 56px;
