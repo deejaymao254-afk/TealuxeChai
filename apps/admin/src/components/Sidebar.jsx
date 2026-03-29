@@ -8,10 +8,6 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
 
-      {/* LOGO */}
-      <div className="logo">
-        Duka<span>2</span>
-      </div>
 
       {/* NAV */}
       <nav>
