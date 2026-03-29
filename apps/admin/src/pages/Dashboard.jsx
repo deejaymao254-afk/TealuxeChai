@@ -72,7 +72,7 @@ export default function Dashboard({ user, onLogout }) {
       <span className="label">Active Orders</span>
       <span className="trend up">+12%</span>
     </div>
-    <span className="value">1248</span>
+    <span className="value">124</span>
     <span className="sub">vs yesterday</span>
   </div>
 
