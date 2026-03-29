@@ -3,7 +3,7 @@
 ================================= */
 .sidebar {
   width: var(--sidebar-width, 260px);
-  min-width: var(--sidebar-width, 260px);
+  min-width: var(--sidebar-width, 160px);
   height: 100vh;
 
   position: fixed;
