@@ -131,7 +131,7 @@ button, input {
    INTRO
 ========================= */
 .intro-container {
-  min-height: 100dvh;
+  min-height: 140dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -176,7 +176,7 @@ button, input {
    LOGIN
 ========================= */
 .login-container {
-  min-height: 100dvh;
+  min-height: 140dvh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -188,7 +188,7 @@ button, input {
   background: var(--panel);
   padding: var(--spacing);
   border-radius: 12px;
-  max-width: 280px;
+  max-width: 380px;
   width: 100%;
   text-align: center;
   box-shadow: 0 4px 12px var(--shadow);
