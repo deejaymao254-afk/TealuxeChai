@@ -2,27 +2,35 @@
    HEADER
 ========================= */
 .app-header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: #ffffff; /* dark panel bg */
-  color: #5a5a5a;
+  padding: 12px 20px;
+  background: #222; /* dark panel bg */
+  color: #fff;
   position: sticky;
   top: 0;
   z-index: 1000;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  width: 100%;
 }
 
-/* Left: Logo + Page Title */
+/* Left: Logo + Menu */
 .header-left {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-left: 190px;
 }
 
+.menu-toggle {
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Logo style like app */
 .logo {
   font-family: 'Titillium Web', sans-serif;
   font-weight: 700;
@@ -31,43 +39,25 @@
   gap: 2px;
 }
 
-.logo-black {
-  color: #000000;
+.logo-white {
+  color: #fff;
 }
 
 .logo-orange {
   color: #ff8a00;
 }
 
-.page-title {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  color: #ccc;
-}
-
-/* Right: Profile Dropdown */
+/* Right: profile/menu dropdown */
 .header-right {
-  display: flex;
-  align-items: center;
   position: relative;
 }
 
-.profile-wrapper {
-  position: relative;
+.profile-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
   cursor: pointer;
-}
-
-.profile-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  transition: transform 0.2s ease;
-}
-
-.profile-icon:hover {
-  transform: scale(1.05);
 }
 
 /* Dropdown Menu */
@@ -75,7 +65,7 @@
   position: absolute;
   top: 48px;
   right: 0;
-  width: 200px;
+  width: 220px;
   background: #333;
   border-radius: 6px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -95,47 +85,39 @@
   pointer-events: auto;
 }
 
-.profile-dropdown .menu-item,
+.dropdown-link,
 .profile-dropdown button {
   background: none;
   border: none;
   padding: 10px 16px;
-  text-align: left;
   font-size: 14px;
+  text-align: left;
   color: #fff;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s;
 }
 
-.profile-dropdown .menu-item.user-name {
-  font-weight: 600;
-  cursor: default;
-  color: #ff8a00;
-}
-
+.dropdown-link:hover,
 .profile-dropdown button:hover {
   background: #444;
-  transform: translateX(4px);
 }
 
-.profile-dropdown .logout {
-  font-weight: 600;
+.divider {
+  height: 1px;
+  background: #555;
+  margin: 4px 0;
+}
+
+.logout {
   color: #ff8a00;
+  font-weight: 600;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
-  .page-title {
-    display: none;
-  }
-
-  .app-header{
-    width: 100%;
-  }
-
-  .header-left h1.logo {
+  .logo {
     font-size: 20px;
   }
 }

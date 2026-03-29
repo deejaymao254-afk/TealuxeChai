@@ -1,33 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import profileIcon from "../assets/profile.png"; // fallback avatar
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./header.css";
 
-export default function Header({ user, toggleSidebar }) {
-  const [openMenu, setOpenMenu] = useState(false);
+export default function Header({ sidebarLinks = [], toggleSidebar }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const wrapperRef = useRef(null);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const getTitle = () => {
-    switch (location.pathname) {
-      case "/dashboard":
-        return "Dashboard";
-      case "/orders":
-        return "Orders";
-      case "/customers":
-        return "Customers";
-      case "/products":
-        return "Products";
-      case "/analytics":
-        return "Analytics";
-      default:
-        return "Admin Panel";
-    }
-  };
 
   const handleSignOut = () => {
-    setOpenMenu(false);
+    setMenuOpen(false);
     if (window.confirm("Are you sure you want to sign out?")) {
       localStorage.removeItem("duka2_current_user");
       navigate("/");
@@ -38,7 +19,7 @@ export default function Header({ user, toggleSidebar }) {
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setOpenMenu(false);
+        setMenuOpen(false);
       }
     };
     document.addEventListener("click", handleClickOutside);
@@ -47,41 +28,43 @@ export default function Header({ user, toggleSidebar }) {
 
   return (
     <header className="app-header">
-      {/* Left: Logo + Page Title */}
+      {/* LEFT: Logo */}
       <div className="header-left">
         <button className="menu-toggle" onClick={toggleSidebar}>
           ☰
         </button>
 
-        <h1 className="logo">
-          <span className="logo-black">Duka</span>
+        <div className="logo">
+          <span className="logo-white">Duka</span>
           <span className="logo-orange">2</span>
-        </h1>
-
-        <h2 className="page-title">{getTitle()}</h2>
+        </div>
       </div>
 
-      {/* Right: Profile Hamburger */}
-      <div className="header-right">
-        <div className="profile-wrapper" ref={wrapperRef}>
-          <img
-            src={profileIcon}
-            alt="Profile"
-            className="profile-icon"
-            onClick={() => setOpenMenu((o) => !o)}
-          />
+      {/* RIGHT: Profile + Dropdown */}
+      <div className="header-right" ref={wrapperRef}>
+        <button className="profile-btn" onClick={() => setMenuOpen((o) => !o)}>
+          ☰
+        </button>
 
-          {openMenu && (
-            <div className="profile-dropdown open">
-              <div className="menu-item user-name">{user?.name || "Admin"}</div>
-              <button onClick={() => navigate("/profile")}>My Profile</button>
-              <button onClick={() => navigate("/orders")}>Orders</button>
-              <button className="logout" onClick={handleSignOut}>
-                Sign Out
-              </button>
-            </div>
-          )}
-        </div>
+        {menuOpen && (
+          <div className="profile-dropdown open">
+            {sidebarLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className="dropdown-link"
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </NavLink>
+            ))}
+
+            <div className="divider" />
+            <button className="logout" onClick={handleSignOut}>
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

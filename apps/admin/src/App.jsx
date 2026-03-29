@@ -77,6 +77,8 @@ export default function App() {
     };
   }, [user, resetTimer]);
 
+  
+
   /* ===================== */
   /* ROUTES */
   /* ===================== */
