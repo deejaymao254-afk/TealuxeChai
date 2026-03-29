@@ -92,6 +92,7 @@ h1, h2, h3, h4 {
 margin-left: 190px;
   min-height: 100vh;
   background: var(--bg-main);
+  align-items: center;
 }
 
 /* SIDEBAR */
