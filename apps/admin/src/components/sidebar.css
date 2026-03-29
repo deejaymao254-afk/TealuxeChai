@@ -19,6 +19,7 @@
   border: 1px solid var(--btn-border);
   padding: 10px;
   border-radius: 4px;
+  display: none;
   cursor: pointer;
 }
 

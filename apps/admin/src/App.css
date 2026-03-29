@@ -51,6 +51,7 @@ body.dark {
 
 html {
   font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -60,6 +61,7 @@ body {
   color: var(--text-main);
   overflow-x: hidden;
 }
+
 
 /* =================================
    ROOT APP STRUCTURE
