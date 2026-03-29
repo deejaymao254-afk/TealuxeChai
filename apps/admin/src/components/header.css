@@ -20,6 +20,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-left: 190px;
 }
 
 .logo {
@@ -128,6 +129,10 @@
 @media (max-width: 768px) {
   .page-title {
     display: none;
+  }
+
+  .app-header{
+    width: 100%;
   }
 
   .header-left h1.logo {
