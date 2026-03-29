@@ -50,6 +50,14 @@
   }
 }
 
+
+.main {
+  margin-left: 190px;/* MATCH SIDEBAR */
+  width: 100%;
+  padding: 20px 30px;
+}
+
+
 body {
   margin: 0;
 }
