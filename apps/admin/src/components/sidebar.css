@@ -3,6 +3,7 @@
   height: 100vh;
   background: var(--panel-bg);
   padding: 20px;
+  position: fixed;
   display: flex;
   flex-direction: column;
   gap: 12px;

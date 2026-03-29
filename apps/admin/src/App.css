@@ -88,7 +88,6 @@ h1, h2, h3, h4 {
 .app-shell {
   display: flex;
   width: 100%;
-margin-left: 190px;
   min-height: 100vh;
   background: var(--bg-main);
 }
@@ -97,11 +96,14 @@ margin-left: 190px;
 
 /* MAIN CONTENT */
 .main {
-  width: 100%;
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding: var(--spacing);
+
   transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
