@@ -182,7 +182,7 @@ h1, h2, h3, h4 {
 ========================= */
 .main {
   margin-left: 90px; /* MATCH SIDEBAR */
-  width: calc(100% - 90px);
+  width: calc(100% - 120px);
   padding: 20px 30px;
 }
 
@@ -411,7 +411,7 @@ h1, h2, h3, h4 {
 @media (max-width: 1024px) {
 
   .main {
-    margin-left: 0 !important;
+    margin: 0 !important;
     width: 100% !important;
     padding: 16px;
   }
