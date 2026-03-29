@@ -1,63 +1,147 @@
 /* =========================
-   Orders Table Enhancements
+   APP HEADER
 ========================= */
 
-/* Table wrapper with scroll */
-.orders-table {
-  background: #1b1b1b;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-  max-height: 60vh; /* allows scroll if many orders */
-  overflow-y: auto;
-}
-
-/* Sticky Header */
-.table-header {
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding: 0 1.5rem;
+  background: #111; /* black theme */
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
   position: sticky;
   top: 0;
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-toggle {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #ffd700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffd700;
+}
+
+/* Right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.btn {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.btn.icon {
   background: #222;
-  z-index: 10;
+  color: #ffd700;
 }
 
-/* Scrollbar styling */
-.orders-table::-webkit-scrollbar {
-  width: 8px;
+.btn.icon:hover {
+  background: #333;
 }
 
-.orders-table::-webkit-scrollbar-thumb {
-  background: rgba(255, 215, 0, 0.5);
-  border-radius: 4px;
+.btn.danger {
+  background: #ffd700;
+  color: #111;
+  font-weight: 600;
 }
 
-.orders-table::-webkit-scrollbar-track {
-  background: #111;
+.btn.danger:hover {
+  opacity: 0.85;
 }
 
-/* Mobile/Tablet Card View */
+/* Notification dropdown */
+.dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 220px;
+  background: #222;
+  color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  z-index: 1000;
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.user-info .user-name {
+  font-weight: 600;
+  color: #ffd700;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
-  .table-header {
-    display: none; /* hide header, rows become cards */
-  }
-
-  .table-row {
-    display: flex;
+  .app-header {
     flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 0.75rem 1rem;
     gap: 0.5rem;
-    background: #222;
-    padding: 0.8rem 1rem;
-    border-radius: 10px;
-    margin-bottom: 0.8rem;
-    transition: all 0.2s ease;
   }
 
-  .table-row span {
-    display: flex;
+  .header-left {
+    width: 100%;
     justify-content: space-between;
   }
 
-  .actions {
-    justify-content: flex-start;
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-actions {
     gap: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1rem;
+  }
+
+  .user-info {
+    font-size: 0.8rem;
   }
 }

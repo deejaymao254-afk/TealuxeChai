@@ -20,11 +20,14 @@ export default function Header({ user, onLogout, toggleSidebar }) {
         return "Products";
       case "/analytics":
         return "Analytics";
+      case "/settings":
+        return "Settings";
       default:
         return "Admin Panel";
     }
   };
 
+  // Close notifications on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (notifRef.current && !notifRef.current.contains(e.target)) {
@@ -41,12 +44,15 @@ export default function Header({ user, onLogout, toggleSidebar }) {
         <button className="menu-toggle" onClick={toggleSidebar}>
           ☰
         </button>
-        <h2>{getTitle()}</h2>
+        <h2 className="page-title">{getTitle()}</h2>
       </div>
 
       <div className="header-right">
-        <div className="right-row">
-          <button className="btn icon" onClick={() => setShowNotif(!showNotif)}>
+        <div className="header-actions">
+          <button
+            className="btn icon"
+            onClick={() => setShowNotif((prev) => !prev)}
+          >
             🔔
           </button>
 
@@ -62,7 +68,8 @@ export default function Header({ user, onLogout, toggleSidebar }) {
         </div>
 
         <div className="user-info">
-          <span className="user-name">{user?.name || ""}</span>
+          <span className="user-name">{user?.name || "Admin"}</span>
+          <span className="user-role">Preview</span>
         </div>
       </div>
     </header>
