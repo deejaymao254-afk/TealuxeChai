@@ -46,8 +46,3 @@ body.dark {
   height: 100vh;
 }
 
-
-/* REMOVE ANY EXTRA SPACING BUGS */
-* {
-  box-sizing: border-box;
-}
