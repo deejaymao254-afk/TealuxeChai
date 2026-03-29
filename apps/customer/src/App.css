@@ -139,6 +139,31 @@ h1, h2, h3, .product-name {
 }
 
 
+
+/* =========================
+   INTRO / LOGIN
+========================= */
+.intro-container,
+.login-container {
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing);
+}
+
+.intro-card,
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  padding: var(--spacing);
+  border-radius: var(--radius);
+  background: white;
+  border: 1px solid var(--grey-border);
+  box-shadow: 0 10px 40px var(--shadow);
+  animation: fadeIn 0.3s ease;
+}
+
 /* =========================
    PROFILE
 ========================= */

@@ -142,7 +142,7 @@ h1, h2, h3, h4 {
   height: 100dvh;
   position: fixed;
   left: 0;
-  top: 0;
+  margin-top: 30px;
   background: #0b0f14;
   padding: 20px;
   display: flex;
