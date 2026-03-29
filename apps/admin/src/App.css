@@ -96,7 +96,6 @@ right: 0;
 
 /* MAIN CONTENT */
 .main {
-  margin-left: var(--sidebar-width);
   width: calc(100% - var(--sidebar-width));
 
   display: flex;
