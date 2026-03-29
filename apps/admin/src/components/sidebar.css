@@ -1,34 +1,119 @@
+/* =================================
+   SIDEBAR (FINAL SYSTEM)
+================================= */
 .sidebar {
-  width: 200px;
+  width: var(--sidebar-width, 260px);
+  min-width: var(--sidebar-width, 260px);
   height: 100vh;
-  background: var(--panel-bg);
-  padding: 20px;
+
   position: fixed;
+  top: 0;
+  left: 0; /* ✅ CRITICAL FIX */
+
+  background: #0b0f14; /* consistent dark panel */
+  padding: 20px;
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 4px 0 12px var(--shadow);
+  gap: 14px;
+
+  box-shadow: 4px 0 20px rgba(0,0,0,0.25);
   z-index: 1000;
+
+  transition: transform 0.3s ease;
 }
 
-.sidebar h2 {
-  color: white;
-}
-
+/* =================================
+   LOGO
+================================= */
 .logo {
-  margin-bottom: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
 }
 
+/* =================================
+   NAV LINKS
+================================= */
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar nav a {
+  padding: 12px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+
+  color: #9aa4b2;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.sidebar nav a:hover {
+  background: rgba(255, 138, 0, 0.08);
+  color: var(--orange-main);
+}
+
+/* ACTIVE LINK */
+.sidebar nav a.active {
+  background: rgba(255, 138, 0, 0.12);
+  color: var(--orange-main);
+  border: 1px solid rgba(255, 138, 0, 0.25);
+}
+
+/* =================================
+   OPTIONAL BUTTON (e.g logout)
+================================= */
 .sidebar button {
-  background: var(--btn-bg);
-  border: 1px solid var(--btn-border);
+  margin-top: auto; /* pushes to bottom */
+  background: transparent;
+  border: 1px solid var(--grey-border);
   padding: 10px;
-  border-radius: 4px;
-  display: none;
+  border-radius: 8px;
+
+  color: var(--text-light);
   cursor: pointer;
+
+  transition: 0.2s;
 }
 
 .sidebar button:hover {
-  background: var(--btn-primary-bg);
-  color: var(--btn-primary-text);
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+}
+
+/* =================================
+   COLLAPSE (OPTIONAL)
+================================= */
+.sidebar.collapsed {
+  width: 80px;
+  min-width: 80px;
+}
+
+.sidebar.collapsed .logo,
+.sidebar.collapsed nav a span {
+  display: none;
+}
+
+/* =================================
+   MOBILE RESPONSIVE
+================================= */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
 }
