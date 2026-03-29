@@ -82,8 +82,8 @@ h1, h2, h3, h4 {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  align-items: center;
-}
+  justify-content: space-between;
+  align-items: center;}
 
 /* APP SHELL: Sidebar + Content */
 .app-shell {
@@ -92,8 +92,8 @@ h1, h2, h3, h4 {
 margin-left: 190px;
   min-height: 100vh;
   background: var(--bg-main);
-  align-items: center;
-}
+  justify-content: space-between;
+  align-items: center;}
 
 /* SIDEBAR */
 .sidebar {
