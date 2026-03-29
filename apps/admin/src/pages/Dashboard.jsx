@@ -14,7 +14,7 @@ export default function Dashboard({ user, onLogout }) {
     getProducts().then(setProducts);
   }, []);
 
-  // KPI COUNTER ANIMATION
+  // KPI ANIMATION (UNCHANGED)
   useEffect(() => {
     const counters = document.querySelectorAll(".value");
 
@@ -42,52 +42,12 @@ export default function Dashboard({ user, onLogout }) {
     });
   }, []);
 
-  // FAKE LIVE ORDER STREAM
-  useEffect(() => {
-    const feed = document.querySelector(".order-feed");
-    if (!feed) return;
-
-    const locations = ["Kilimani", "Westlands", "Embakasi", "Rongai"];
-    const statuses = ["processing", "dispatched", "delivered"];
-
-    const interval = setInterval(() => {
-      const id = Math.floor(Math.random() * 9000 + 1000);
-      const loc = locations[Math.floor(Math.random() * locations.length)];
-      const status = statuses[Math.floor(Math.random() * statuses.length)];
-
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>#${id}</strong> · ${loc}
-        <span class="status ${status}">${status.toUpperCase()}</span>
-      `;
-      feed.prepend(li);
-
-      if (feed.children.length > 6) {
-        feed.removeChild(feed.lastChild);
-      }
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className={`app ${sidebarOpen ? "sidebar-open" : ""}`}>
       <main className="main">
-        {/* HEADER */}
-        <header className="header">
-          <div className="header-left">
-            <button className="menu-toggle" onClick={toggleSidebar}>
-              ☰
-            </button>
-            <div className="sys">
-              <span className="dot online"></span>
-              <span>Network Online</span>
-              <span className="sep"></span>
-              <span>
-                Sync: <strong>2s ago</strong>
-              </span>
-            </div>
-          </div>
+        {/* HEADER (UNCHANGED BUT CLEAN) */}
+        <div className="orders-header">
+          <h2>Dashboard</h2>
 
           <div className="header-right">
             <div className="user">
@@ -95,73 +55,112 @@ export default function Dashboard({ user, onLogout }) {
               <span className="user-role">Preview</span>
             </div>
 
+            <button className="menu-toggle" onClick={toggleSidebar}>
+  ☰
+</button>
+
             <button className="logout-btn" onClick={onLogout}>
               Logout
             </button>
           </div>
-        </header>
+        </div>
 
-        {/* KPI STRIP */}
+        {/* KPI STRIP (MATCH ORDERS SPACING) */}
         <section className="kpis">
           <div className="kpi">
             <span className="label">Active Orders</span>
             <span className="value">1248</span>
           </div>
+
           <div className="kpi">
-            <span className="label">Nodes Online</span>
-            <span className="value">98%</span>
+            <span className="label">Revenue Today</span>
+            <span className="value">KES 84K</span>
           </div>
+
           <div className="kpi">
-            <span className="label">Fulfillment</span>
+            <span className="label">Customers</span>
+            <span className="value">342</span>
+          </div>
+
+          <div className="kpi">
+            <span className="label">Conversion</span>
             <span className="value">94%</span>
-          </div>
-          <div className="kpi">
-            <span className="label">Avg Delivery</span>
-            <span className="value">2.4h</span>
           </div>
         </section>
 
-        {/* GRID */}
-        <section className="grid">
-          {/* LIVE ORDERS */}
-          <div className="panel feed">
-            <h3>Live Orders</h3>
-            <ul className="order-feed">
-              {products.slice(0, 6).map((product) => (
-                <li key={product.id}>
-                  <strong>#{product.id}</strong> · {product.name}
-                  <span className="status processing">
-                    {product.status || "ACTIVE"}
-                  </span>
-                </li>
-              ))}
-            </ul>
+        {/* MAIN CONTENT */}
+        <div className="grid">
+          {/* RECENT ORDERS TABLE */}
+          <div className="table-container">
+            <div className="table-header">
+              <span>ID</span>
+              <span>Product</span>
+              <span>Status</span>
+              <span>Action</span>
+            </div>
+
+            {products.slice(0, 6).map((p) => (
+              <div key={p.id} className="table-row">
+                <span>#{p.id}</span>
+                <span>{p.name}</span>
+
+                <span className="status processing">
+                  {p.status || "ACTIVE"}
+                </span>
+
+                <span className="actions">
+                  <button className="btn-sm">View</button>
+                </span>
+              </div>
+            ))}
           </div>
 
-          {/* NETWORK */}
-          <div className="panel network">
-            <h3>Network Health</h3>
-            <div className="metric">
-              Regions Active <strong>12 / 14</strong>
+          {/* SYSTEM SUMMARY (converted to structured panel) */}
+          <div className="table-container">
+            <div className="table-header">
+              <span>Metric</span>
+              <span>Value</span>
             </div>
-            <div className="metric">
-              Latency <strong>LOW</strong>
+
+            <div className="table-row">
+              <span>Regions Active</span>
+              <span>12 / 14</span>
             </div>
-            <div className="metric">
-              Sync State <span className="sync live">STABLE</span>
+
+            <div className="table-row">
+              <span>Latency</span>
+              <span>Low</span>
+            </div>
+
+            <div className="table-row">
+              <span>Sync Status</span>
+              <span className="status confirmed">Stable</span>
             </div>
           </div>
 
           {/* ALERTS */}
-          <div className="panel alerts">
-            <h3>System Alerts</h3>
-            <ul>
-              <li>✔ Inventory sync completed</li>
-              <li>⚠ Route delay detected · Kisumu</li>
-              <li>⟳ Reconciliation running</li>
-            </ul>
+          <div className="table-container">
+            <div className="table-header">
+              <span>System Alerts</span>
+              <span>Status</span>
+            </div>
+
+            <div className="table-row">
+              <span>Inventory sync completed</span>
+              <span className="status delivered">OK</span>
+            </div>
+
+            <div className="table-row">
+              <span>Route delay · Kisumu</span>
+              <span className="status pending">Warning</span>
+            </div>
+
+            <div className="table-row">
+              <span>Reconciliation running</span>
+              <span className="status confirmed">Active</span>
+            </div>
           </div>
-        </section>
+        </div>
       </main>
     </div>
   );
