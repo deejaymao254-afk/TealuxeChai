@@ -1,3 +1,13 @@
+
+/* =========================
+   MAIN CONTENT
+========================= */
+.main {
+  margin-left: 90px; /* MATCH SIDEBAR */
+  width: calc(100% - 120px);
+  padding: 20px 30px;
+}
+
 :root {
   --bg-main: #ffffff;
   --panel: #ffffff;

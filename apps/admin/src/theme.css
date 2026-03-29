@@ -177,14 +177,7 @@ h1, h2, h3, h4 {
   }
 }
 
-/* =========================
-   MAIN CONTENT
-========================= */
-.main {
-  margin-left: 90px; /* MATCH SIDEBAR */
-  width: calc(100% - 120px);
-  padding: 20px 30px;
-}
+
 
 /* =========================
    HEADER
