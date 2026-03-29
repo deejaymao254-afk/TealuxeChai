@@ -217,31 +217,61 @@ margin-left: 60px;
 ========================= */
 .kpis {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* FORCE 2x2 GRID */
-  gap: 14px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
 }
 
 /* CARD */
 .kpi {
-  background: var(--panel);
+  position: relative;
+  padding: 18px;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.7),
+    rgba(255,255,255,0.4)
+  );
+
   border: 1px solid var(--grey-border);
-  border-radius: 12px;
-  padding: 16px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  position: relative;
+  gap: 10px;
+
+  transition: all 0.3s ease;
   overflow: hidden;
-  transition: 0.25s ease;
 }
 
 /* SUBTLE HOVER */
 .kpi:hover {
-  border-color: var(--orange-main);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  transform: translateY(-2px);
+  transform: translateY(-6px) scale(1.01);
+  border-color: rgba(255, 138, 0, 0.4);
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(255,138,0,0.15);
 }
+
+.kpi-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,138,0,0.1);
+  color: var(--orange-main);
+
+  font-size: 16px;
+}
+
 
 /* TOP ROW */
 .kpi-top {
@@ -250,6 +280,21 @@ margin-left: 60px;
   align-items: center;
 }
 
+.kpi::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--orange-main),
+    transparent
+  );
+  opacity: 0.6;
+}
 
 .kpi::after {
   content: "";
@@ -269,21 +314,21 @@ margin-left: 60px;
 
 /* LABEL */
 .label {
-  font-size: 12px;
-  color: var(--text-light);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
 }
 
-/* VALUE */
 .value {
-  font-size: 22px;
-  font-weight: 600;
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 
-/* SUBTEXT */
 .sub {
-  font-size: 11px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: var(--text-light);
 }
 
 /* TREND BADGES */
