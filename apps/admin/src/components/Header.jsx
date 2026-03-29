@@ -15,7 +15,7 @@ export default function Header({ sidebarLinks = [] }) {
     }
   };
 
-  // Close menu if clicked outside
+  // Close dropdown if clicked outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -30,16 +30,18 @@ export default function Header({ sidebarLinks = [] }) {
     <header className="app-header">
       {/* LEFT: Logo */}
       <div className="header-left">
-
         <div className="logo">
           <span className="logo-white">Duka</span>
           <span className="logo-orange">2</span>
         </div>
       </div>
 
-      {/* RIGHT: Profile + Dropdown */}
+      {/* RIGHT: Profile Dropdown */}
       <div className="header-right" ref={wrapperRef}>
-        <button className="profile-btn" onClick={() => setMenuOpen((o) => !o)}>
+        <button
+          className="profile-btn"
+          onClick={() => setMenuOpen((o) => !o)}
+        >
           ☰
         </button>
 
