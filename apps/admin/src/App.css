@@ -87,7 +87,7 @@ h1, h2, h3, h4 {
 /* APP SHELL: Sidebar + Content */
 .app-shell {
   display: flex;
-  position: relative;
+right: 0;
   width: 100%;
   min-height: 100vh;
   background: var(--bg-main);
