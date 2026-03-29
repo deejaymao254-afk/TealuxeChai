@@ -51,7 +51,7 @@ export default function Products() {
     <div className="products-page">
       {/* HEADER */}
 <div className="orders-header">
-        <h2>Orders</h2>
+        <h2>Products</h2>
 
         <div className="filters">
           <input
