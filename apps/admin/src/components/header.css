@@ -8,17 +8,18 @@
   background: var(--primary-dark);
   color: var(--text-main);
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 9999;
 }
 
 /* LOGO */
 .logo {
-  font-family: "Raleway", sans-serif;
-  font-weight: 700;
-  font-size: var(--font-lg);
+    font-size: var(--font-lg);
+  font-weight: bold;
+  font-family: 'Titillium Web', sans-serif;
   display: flex;
+  gap: 4px;
   align-items: center;
 }
 
