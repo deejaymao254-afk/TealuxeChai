@@ -54,6 +54,7 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: var(--bg);
+  width: 100%;
   color: var(--text-main);
   overflow-x: hidden;
 }
