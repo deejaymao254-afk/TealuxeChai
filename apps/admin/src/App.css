@@ -103,7 +103,6 @@ right: 0;
   min-height: 100vh;
   padding: var(--spacing);
 
-  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
 /* =================================
