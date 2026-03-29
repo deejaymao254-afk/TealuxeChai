@@ -168,7 +168,7 @@ h1, h2, h3, h4 {
 
 
 .app.sidebar-open .main {
-  margin-left: 160px;
+  margin-left: 90px;
 }
 
 @media (max-width: 1024px) {
@@ -181,8 +181,8 @@ h1, h2, h3, h4 {
    MAIN CONTENT
 ========================= */
 .main {
-  margin-left: 160px; /* MATCH SIDEBAR */
-  width: calc(100% - 160px);
+  margin-left: 90px; /* MATCH SIDEBAR */
+  width: calc(100% - 90px);
   padding: 20px 30px;
 }
 
