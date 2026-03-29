@@ -2,15 +2,16 @@
    SIDEBAR (FINAL SYSTEM)
 ================================= */
 .sidebar {
-  width: var(--sidebar-width, 260px);
+  width: var(--sidebar-width, 160px);
   min-width: var(--sidebar-width, 160px);
-  height: 100vh;
 
-  position: relative;
-  top: 0;
-  left: 0; /* ✅ CRITICAL FIX */
+  position: fixed; /* ✅ FIXED */
+  top: 70px;       /* 👈 below header */
+  left: 0;
 
-  background: #0b0f14; /* consistent dark panel */
+  height: calc(100vh - 70px); /* 👈 avoid header overlap */
+
+  background: #0b0f14;
   padding: 20px;
 
   display: flex;
