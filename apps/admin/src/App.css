@@ -3,8 +3,8 @@
    MAIN CONTENT
 ========================= */
 .main {
-  margin-left: 90px; /* MATCH SIDEBAR */
-  width: calc(100%);
+  margin-left: 190px; /* MATCH SIDEBAR */
+  width: 100%;
   padding: 20px 30px;
 }
 
