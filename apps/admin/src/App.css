@@ -30,8 +30,8 @@
 
 /* DARK MODE */
 body.dark {
-  --bg-main: #0d0f12;
-  --panel: #14161a;
+  --bg-main: #ffffff;
+  --panel: #ffffff;
   --text-main: #eaeaea;
   --text-light: #9aa4b2;
   --text-muted: #777;
@@ -81,7 +81,6 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-    background: white;
 }
 
 /* APP SHELL: Sidebar + Content */
@@ -98,7 +97,7 @@ html, body, #root {
 /* MAIN CONTENT */
 .main {
   position: relative;
-  z-index: 1;
+  z-index: 1300;
 
   margin-left: var(--sidebar-width);
   margin-top: 70px;
@@ -134,16 +133,6 @@ html, body, #root {
 }
 
 
-.sidebar {
-  position: fixed;
-  top: 70px;
-  left: 0;
-
-  width: var(--sidebar-width);
-  height: calc(100vh - 70px);
-
-  z-index: 1000;
-}
 
 
 /* =================================
