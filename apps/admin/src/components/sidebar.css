@@ -2,11 +2,10 @@
    SIDEBAR (FINAL SYSTEM)
 ================================= */
 .sidebar {
-  width: var(--sidebar-width, 160px);
-  min-width: var(--sidebar-width, 160px);
+  width: var(--sidebar-width, 260px);
+  min-width: var(--sidebar-width, 260px);
 
   position: fixed; /* ✅ FIXED */
-  top: 70px;       /* 👈 below header */
   left: 0;
 
   height: calc(100vh - 70px); /* 👈 avoid header overlap */
@@ -24,16 +23,6 @@
   transition: transform 0.3s ease;
 }
 
-/* =================================
-   LOGO
-================================= */
-.logo {
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 40px;
-  letter-spacing: 0.5px;
-}
 
 /* =================================
    NAV LINKS
