@@ -4,7 +4,7 @@
 ========================= */
 .main {
   margin-left: 90px; /* MATCH SIDEBAR */
-  width: calc(100% - 120px);
+  width: calc(100%);
   padding: 20px 30px;
 }
 
