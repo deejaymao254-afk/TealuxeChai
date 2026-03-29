@@ -87,7 +87,7 @@ h1, h2, h3, h4 {
 .app-shell {
   display: flex;
   width: 80%;
-margin: auto;
+margin-left: 190px;
   min-height: 100vh;
   background: var(--bg-main);
 }
