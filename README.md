@@ -20,7 +20,8 @@ Duka2
 │  │  ├─ src
 │  │  │  ├─ api
 │  │  │  │  ├─ api.js
-│  │  │  │  └─ client.js
+│  │  │  │  ├─ client.js
+│  │  │  │  └─ products.js
 │  │  │  ├─ App.css
 │  │  │  ├─ App.jsx
 │  │  │  ├─ assets
@@ -76,7 +77,10 @@ Duka2
 │  │     ├─ controllers
 │  │     │  ├─ auth.js
 │  │     │  ├─ init.js
-│  │     │  └─ initAdmin.js
+│  │     │  ├─ initAdmin.js
+│  │     │  ├─ productsController.js
+│  │     │  ├─ variationsController.js
+│  │     │  └─ weightsController.js
 │  │     ├─ index.js
 │  │     ├─ middleware
 │  │     │  ├─ authMiddleware.js
@@ -130,6 +134,7 @@ Duka2
 │  │  ├─ README.md
 │  │  ├─ setMounted(true)
 │  │  ├─ src
+│  │  │  ├─ api
 │  │  │  ├─ App.css
 │  │  │  ├─ App.jsx
 │  │  │  ├─ assets
@@ -168,10 +173,7 @@ Duka2
 │  │  │  │  └─ whatnotslogo.gif
 │  │  │  ├─ components
 │  │  │  │  └─ BottomNav.jsx
-│  │  │  ├─ context
-│  │  │  ├─ hooks
 │  │  │  ├─ index.css
-│  │  │  ├─ layouts
 │  │  │  ├─ main.jsx
 │  │  │  ├─ pages
 │  │  │  │  ├─ analytics.css
