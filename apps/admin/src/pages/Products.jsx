@@ -2,16 +2,15 @@ import { useState, useEffect } from "react";
 import "./products.css";
 import "../App.css";
 
-// API
 import {
   fetchProducts,
   createProduct,
   updateProduct,
-  updateVariation as apiUpdateVariation,   
-  updateWeight as apiUpdateWeight,        
   addVariation as apiAddVariation,
+  updateVariation as apiUpdateVariation,
   deleteVariation as apiDeleteVariation,
   addWeight as apiAddWeight,
+  updateWeight as apiUpdateWeight,
   deleteWeight as apiDeleteWeight,
   deleteProduct as apiDeleteProduct
 } from "../api/products";
@@ -53,13 +52,11 @@ export default function Products() {
   }, []);
 
   const filtered = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase())
+    (p.name || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  // ========== PRODUCT ACTIONS ==========
-  const handleNameChange = (id, value) => {
-    setEditedNames(prev => ({ ...prev, [id]: value }));
-  };
+  // ===== PRODUCT ACTIONS =====
+  const handleNameChange = (id, value) => setEditedNames(prev => ({ ...prev, [id]: value }));
 
   const saveNameChange = async (product) => {
     if (!editedNames[product.id]) return;
@@ -100,7 +97,6 @@ export default function Products() {
     formData.append("name", product.name);
     formData.append("active", product.active);
     formData.append("image", file);
-
     try {
       await updateProduct(product.id, formData, true);
       const res = await fetchProducts();
@@ -108,7 +104,7 @@ export default function Products() {
     } catch (err) { console.error(err); }
   };
 
-  // ========== VARIATIONS & WEIGHTS ==========
+  // ===== VARIATIONS & WEIGHTS =====
   const addVariation = async (productId) => {
     try { 
       await apiAddVariation({ product_id: productId, flavour: "New Flavour", image_url: "" }); 
@@ -117,7 +113,7 @@ export default function Products() {
     } catch (err) { console.error(err); }
   };
 
-  const updateVariation = (productId, varId, field, value) => {
+  const updateVariationLocal = (productId, varId, field, value) => {
     setProducts(prev =>
       prev.map(p => p.id === productId ? {
         ...p,
@@ -126,16 +122,16 @@ export default function Products() {
     );
   };
 
-  const saveVariation = async (variation) => {
+  const saveVariation = async (v) => {
     try {
-      await apiUpdateVariation(variation.id, { flavour: variation.flavour });
+      await apiUpdateVariation(v.id, { flavour: v.flavour });
       const res = await fetchProducts();
       setProducts(res.data);
     } catch (err) { console.error(err); }
   };
 
-  const deleteVariation = async (varId) => {
-    try { await apiDeleteVariation(varId); const res = await fetchProducts(); setProducts(res.data); }
+  const deleteVariation = async (id) => {
+    try { await apiDeleteVariation(id); const res = await fetchProducts(); setProducts(res.data); }
     catch (err) { console.error(err); }
   };
 
@@ -144,7 +140,7 @@ export default function Products() {
     catch (err) { console.error(err); }
   };
 
-  const updateWeight = (productId, varId, weightId, field, value) => {
+  const updateWeightLocal = (productId, varId, weightId, field, value) => {
     setProducts(prev =>
       prev.map(p => p.id === productId ? {
         ...p,
@@ -156,11 +152,6 @@ export default function Products() {
     );
   };
 
-  const deleteWeight = async (weightId) => {
-    try { await apiDeleteWeight(weightId); const res = await fetchProducts(); setProducts(res.data); }
-    catch (err) { console.error(err); }
-  };
-
   const saveWeight = async (w) => {
     try {
       await apiUpdateWeight(w.id, { weight: w.weight, price: w.price });
@@ -169,37 +160,33 @@ export default function Products() {
     } catch (err) { console.error(err); }
   };
 
-  // ========== RENDER ==========
+  const deleteWeight = async (id) => {
+    try { await apiDeleteWeight(id); const res = await fetchProducts(); setProducts(res.data); }
+    catch (err) { console.error(err); }
+  };
+
+  // ===== RENDER =====
   return (
     <div className="products-page">
       <h2>Products</h2>
       <input 
-        type="text" 
-        placeholder="Search products..." 
-        value={search} 
-        onChange={e => setSearch(e.target.value)} 
-        style={{ marginBottom: 10, padding: 5, width: "100%" }}
+        type="text" placeholder="Search products..." 
+        value={search} onChange={e => setSearch(e.target.value)}
+        style={{ width: "100%", marginBottom: 10, padding: 5 }}
       />
       <button onClick={handleAddProduct} style={{ marginBottom: 20 }}>+ Add Product</button>
 
       {filtered.map(product => (
         <div key={product.id} style={{ border: "1px solid #ccc", padding: 10, marginBottom: 10 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <img 
-              src={localImages[product.id] || product.image || "https://via.placeholder.com/50"} 
-              alt="" 
-              width={50} height={50} 
-            />
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <img src={localImages[product.id] || product.image || "https://via.placeholder.com/50"} alt="" width={50} height={50} />
             <input type="file" accept="image/*" onChange={e => {
               const file = e.target.files[0];
               if (!file) return;
               setLocalImages(prev => ({ ...prev, [product.id]: URL.createObjectURL(file) }));
               handleImageUpload(product, file);
             }} />
-            <input 
-              value={editedNames[product.id] ?? product.name} 
-              onChange={e => handleNameChange(product.id, e.target.value)} 
-            />
+            <input value={editedNames[product.id] ?? product.name} onChange={e => handleNameChange(product.id, e.target.value)} />
             <span>{product.category}</span>
             <span>{product.active ? "Active" : "Inactive"}</span>
             <button onClick={() => toggleActive(product)}>{product.active ? "Deactivate" : "Activate"}</button>
@@ -214,23 +201,14 @@ export default function Products() {
             <div style={{ marginTop: 10, paddingLeft: 20 }}>
               {product.variations.length > 0 ? product.variations.map(v => (
                 <div key={v.id} style={{ border: "1px dashed #aaa", padding: 5, marginBottom: 5 }}>
-                  <input 
-                    value={v.flavour} 
-                    onChange={e => updateVariation(product.id, v.id, "flavour", e.target.value)} 
-                  />
+                  <input value={v.flavour} onChange={e => updateVariationLocal(product.id, v.id, "flavour", e.target.value)} />
                   <button onClick={() => saveVariation(v)}>Save</button>
                   <button onClick={() => deleteVariation(v.id)}>Delete</button>
 
                   {(v.weights || []).map(w => (
                     <div key={w.id} style={{ display: "flex", gap: 5, marginTop: 5 }}>
-                      <input 
-                        value={w.weight} 
-                        onChange={e => updateWeight(product.id, v.id, w.id, "weight", e.target.value)} 
-                      />
-                      <input 
-                        value={w.price} 
-                        onChange={e => updateWeight(product.id, v.id, w.id, "price", e.target.value)} 
-                      />
+                      <input value={w.weight} onChange={e => updateWeightLocal(product.id, v.id, w.id, "weight", e.target.value)} />
+                      <input value={w.price} onChange={e => updateWeightLocal(product.id, v.id, w.id, "price", e.target.value)} />
                       <button onClick={() => saveWeight(w)}>Save</button>
                       <button onClick={() => deleteWeight(w.id)}>x</button>
                     </div>

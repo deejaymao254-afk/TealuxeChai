@@ -1,31 +1,25 @@
-import api from "./client";
+// api/products.js
 import axios from "axios";
 
+const BASE_URL = "/api/full";
 
-// GET ALL
-export const fetchProducts = () => api.get("/products/full");
+// Products
+export const fetchProducts = () => axios.get(`${BASE_URL}/`);
+export const createProduct = (data) => axios.post(`${BASE_URL}/`, data);
+export const updateProduct = (id, data, isMultipart = false) => {
+  if (isMultipart) {
+    return axios.put(`${BASE_URL}/${id}`, data, { headers: { "Content-Type": "multipart/form-data" } });
+  }
+  return axios.put(`${BASE_URL}/${id}`, data);
+};
+export const deleteProduct = (id) => axios.delete(`${BASE_URL}/${id}`);
 
-// PRODUCT
-export const createProduct = (data) => api.post("/products", data);
-export const updateProduct = (id, data) =>
-  api.put(`/products/${id}`, data);
+// Variations
+export const addVariation = (data) => axios.post(`${BASE_URL}/variation`, data);
+export const updateVariation = (id, data) => axios.put(`${BASE_URL}/variation/${id}`, data);
+export const deleteVariation = (id) => axios.delete(`${BASE_URL}/variation/${id}`);
 
-// VARIATIONS
-export const addVariation = (data) =>
-  api.post("/products/variation", data);
-
-export const deleteVariation = (id) =>
-  api.delete(`/products/variation/${id}`);
-
-export const updateVariation = (id, data) =>
-  axios.put(`/api/products/variation/${id}`, data);
-
-// WEIGHTS
-export const addWeight = (data) =>
-  api.post("/products/weight", data);
-
-export const deleteWeight = (id) =>
-  api.delete(`/products/weight/${id}`);
-
-export const updateWeight = (id, data) =>
-  axios.put(`/api/products/weight/${id}`, data);
+// Weights
+export const addWeight = (data) => axios.post(`${BASE_URL}/weight`, data);
+export const updateWeight = (id, data) => axios.put(`${BASE_URL}/weight/${id}`, data);
+export const deleteWeight = (id) => axios.delete(`${BASE_URL}/weight/${id}`);
