@@ -8,7 +8,9 @@
   padding: 20px 30px;
   color: var(--text-main);
   box-sizing: border-box;
-  width: 90%;
+  width: 100%;
+    margin-top: 50px;
+
 }
 
 /* =========================
