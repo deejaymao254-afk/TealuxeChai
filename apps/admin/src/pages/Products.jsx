@@ -21,45 +21,42 @@ export default function Products() {
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState(null);
   const [editedNames, setEditedNames] = useState({});
-  const [localImages, setLocalImages] = useState({}); // store local image previews
+  const [localImages, setLocalImages] = useState({});
 
-useEffect(() => {
-  const loadProducts = async () => {
-    try {
-      const res = await fetchProducts();
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const res = await fetchProducts();
+        const safeData = (res.data || []).map(p => ({
+          ...p,
+          name: p.name || "",
+          category: p.category || "",
+          image: p.image || "",
+          active: p.active ?? true,
+          variations: (p.variations || []).map(v => ({
+            ...v,
+            flavour: v.flavour || "",
+            weights: (v.weights || []).map(w => ({
+              ...w,
+              weight: w.weight || "",
+              price: w.price ?? 0
+            }))
+          }))
+        }));
+        setProducts(safeData);
+      } catch (err) {
+        console.error("LOAD ERROR:", err);
+      }
+    };
 
-      // 🔥 normalize data to prevent crashes
-      const safeData = (res.data || []).map(p => ({
-        ...p,
-        name: p.name || "",
-        category: p.category || "",
-        image: p.image || "",
-        active: p.active ?? true,
-        variations: (p.variations || []).map(v => ({
-          ...v,
-          flavour: v.flavour || "",
-          weights: v.weights || []
-        }))
-      }));
+    loadProducts();
+  }, []);
 
-      console.log("PRODUCTS:", safeData); // 👈 DEBUG
-      setProducts(safeData);
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
 
-    } catch (err) {
-      console.error("LOAD ERROR:", err);
-    }
-  };
-
-  loadProducts();
-}, []);
-
-const filtered = (products || []).filter(p =>
-  (p.name || "").toLowerCase().includes(search.toLowerCase())
-);
-
-  // =========================
-  // PRODUCT ACTIONS
-  // =========================
+  // ========== PRODUCT ACTIONS ==========
   const handleNameChange = (id, value) => {
     setEditedNames(prev => ({ ...prev, [id]: value }));
   };
@@ -73,8 +70,6 @@ const filtered = (products || []).filter(p =>
       setEditedNames(prev => ({ ...prev, [product.id]: "" }));
     } catch (err) { console.error(err); }
   };
-
-  
 
   const toggleActive = async (product) => {
     try {
@@ -100,27 +95,26 @@ const filtered = (products || []).filter(p =>
     } catch (err) { console.error(err); }
   };
 
-const handleImageUpload = async (product, file) => {
-  const formData = new FormData();
-  formData.append("name", product.name);
-  formData.append("active", product.active);
-  formData.append("image", file);
+  const handleImageUpload = async (product, file) => {
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("active", product.active);
+    formData.append("image", file);
 
-  try {
-    await updateProduct(product.id, formData, true); // 👈 pass flag for multipart
-    const res = await fetchProducts();
-    setProducts(res.data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+    try {
+      await updateProduct(product.id, formData, true);
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) { console.error(err); }
+  };
 
-  // =========================
-  // VARIATIONS & WEIGHTS
-  // =========================
+  // ========== VARIATIONS & WEIGHTS ==========
   const addVariation = async (productId) => {
-    try { await apiAddVariation({ product_id: productId, flavour: "New Flavour", image_url: "" }); const res = await fetchProducts(); setProducts(res.data); }
-    catch (err) { console.error(err); }
+    try { 
+      await apiAddVariation({ product_id: productId, flavour: "New Flavour", image_url: "" }); 
+      const res = await fetchProducts(); 
+      setProducts(res.data); 
+    } catch (err) { console.error(err); }
   };
 
   const updateVariation = (productId, varId, field, value) => {
@@ -133,17 +127,12 @@ const handleImageUpload = async (product, file) => {
   };
 
   const saveVariation = async (variation) => {
-  try {
-    await apiUpdateVariation(variation.id, {
-      flavour: variation.flavour
-    });
-
-    const res = await fetchProducts();
-    setProducts(res.data);
-  } catch (err) {
-    console.error(err);
-  }
-};
+    try {
+      await apiUpdateVariation(variation.id, { flavour: variation.flavour });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) { console.error(err); }
+  };
 
   const deleteVariation = async (varId) => {
     try { await apiDeleteVariation(varId); const res = await fetchProducts(); setProducts(res.data); }
@@ -173,156 +162,88 @@ const handleImageUpload = async (product, file) => {
   };
 
   const saveWeight = async (w) => {
-  try {
-    await apiUpdateWeight(w.id, {
-      weight: w.weight,
-      price: w.price
-    });
+    try {
+      await apiUpdateWeight(w.id, { weight: w.weight, price: w.price });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) { console.error(err); }
+  };
 
-    const res = await fetchProducts();
-    setProducts(res.data);
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-
-
-
-  // =========================
-  // RENDER
-  // =========================
+  // ========== RENDER ==========
   return (
-    <div className="products-page orders-page">
-      <div className="orders-header">
-        <h2>Products</h2>
-        <input type="text" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)} />
-      </div>
+    <div className="products-page">
+      <h2>Products</h2>
+      <input 
+        type="text" 
+        placeholder="Search products..." 
+        value={search} 
+        onChange={e => setSearch(e.target.value)} 
+        style={{ marginBottom: 10, padding: 5, width: "100%" }}
+      />
+      <button onClick={handleAddProduct} style={{ marginBottom: 20 }}>+ Add Product</button>
 
-      <div className="orders-table">
-        <div className="table-header">
-          <span>Image</span>
-          <span>Name</span>
-          <span>Category</span>
-          <span>Status</span>
-          <span>Manage</span>
-          <span>Actions</span>
-        </div>
-
-        {filtered.map(product => (
-          <div key={product.id} className="table-row">
-            {/* IMAGE */}
-            <div className="product-left">
-              <img
-  src={
-    localImages[product.id] ||
-    product.image ||
-    "https://via.placeholder.com/50"
-  }
-/>
-<input
-  type="file"
-  accept="image/*"
-  onChange={e => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // preview instantly
-    const url = URL.createObjectURL(file);
-    setLocalImages(prev => ({ ...prev, [product.id]: url }));
-
-    // upload to backend
-    handleImageUpload(product, file);
-  }}
-/>
-            </div>
-
-            {/* NAME */}
-            <div>
-              <input
-value={editedNames[product.id] !== undefined 
-  ? editedNames[product.id] 
-  : product.name}
-                onChange={e => handleNameChange(product.id, e.target.value)}
-              />
-            </div>
-
-            {/* CATEGORY */}
-            <div>{product.category}</div>
-
-            {/* STATUS */}
-            <div className={product.active ? "status confirmed" : "status cancelled"}>
-              {product.active ? "Active" : "Inactive"}
-            </div>
-
-            {/* MANAGE */}
-            <div>
-              <button onClick={() => setExpandedId(expandedId === product.id ? null : product.id)}>
-                {expandedId === product.id ? "Close" : "Manage"}
-              </button>
-            </div>
-
-            {/* ACTIONS */}
-            <div className="actions">
-              <button onClick={() => toggleActive(product)}>{product.active ? "Deactivate" : "Activate"}</button>
-              <button className="danger" onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-              <button onClick={() => saveNameChange(product)}>Save</button>
-            </div>
-
-            {/* EXPANDED VARIATIONS */}
-            {expandedId === product.id && (
-              <div className="order-details">
-{product.variations?.length > 0 ? product.variations.map(v => (
-                    <div key={v.id} className="variation-card">
-<div className="variation-header">
-  <input
-    value={v.flavour}
-    onChange={e =>
-      updateVariation(product.id, v.id, "flavour", e.target.value)
-    }
-  />
-
-  <div className="actions">
-    <button onClick={() => saveVariation(v)}>Save</button>
-    <button className="danger" onClick={() => deleteVariation(v.id)}>Delete</button>
-  </div>
-</div>
-
-                    <div className="weights">
-                      {(v.weights || []).map(w => (
-                        <div key={w.id} className="weight-row">
-                          <input
-                            value={w.weight}
-                            onChange={e => updateWeight(product.id, v.id, w.id, "weight", e.target.value)}
-                          />
-                          <input
-                            value={w.price}
-                            onChange={e => updateWeight(product.id, v.id, w.id, "price", e.target.value)}
-                          />
-<div className="actions">
-  <button onClick={() => saveWeight(w)}>Save</button>
-  <button className="danger" onClick={() => deleteWeight(w.id)}>x</button>
-</div>
-                        </div>
-                      ))}
-                      <button onClick={() => addWeight(v.id)}>+ Add Weight</button>
-                    </div>
-                  </div>
-                  
-                )) : <p style={{ fontSize: 12, color: "#888" }}>No variations</p>}
-
-                <div className="detail-actions">
-                  <button onClick={() => addVariation(product.id)}>+ Add Variation</button>
-                </div>
-              </div>
-            )}
+      {filtered.map(product => (
+        <div key={product.id} style={{ border: "1px solid #ccc", padding: 10, marginBottom: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <img 
+              src={localImages[product.id] || product.image || "https://via.placeholder.com/50"} 
+              alt="" 
+              width={50} height={50} 
+            />
+            <input type="file" accept="image/*" onChange={e => {
+              const file = e.target.files[0];
+              if (!file) return;
+              setLocalImages(prev => ({ ...prev, [product.id]: URL.createObjectURL(file) }));
+              handleImageUpload(product, file);
+            }} />
+            <input 
+              value={editedNames[product.id] ?? product.name} 
+              onChange={e => handleNameChange(product.id, e.target.value)} 
+            />
+            <span>{product.category}</span>
+            <span>{product.active ? "Active" : "Inactive"}</span>
+            <button onClick={() => toggleActive(product)}>{product.active ? "Deactivate" : "Activate"}</button>
+            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+            <button onClick={() => saveNameChange(product)}>Save</button>
+            <button onClick={() => setExpandedId(expandedId === product.id ? null : product.id)}>
+              {expandedId === product.id ? "Close" : "Manage"}
+            </button>
           </div>
-        ))}
 
-        <div className="detail-actions">
-          <button className="add-product" onClick={handleAddProduct}>+ Add Product</button>
+          {expandedId === product.id && (
+            <div style={{ marginTop: 10, paddingLeft: 20 }}>
+              {product.variations.length > 0 ? product.variations.map(v => (
+                <div key={v.id} style={{ border: "1px dashed #aaa", padding: 5, marginBottom: 5 }}>
+                  <input 
+                    value={v.flavour} 
+                    onChange={e => updateVariation(product.id, v.id, "flavour", e.target.value)} 
+                  />
+                  <button onClick={() => saveVariation(v)}>Save</button>
+                  <button onClick={() => deleteVariation(v.id)}>Delete</button>
+
+                  {(v.weights || []).map(w => (
+                    <div key={w.id} style={{ display: "flex", gap: 5, marginTop: 5 }}>
+                      <input 
+                        value={w.weight} 
+                        onChange={e => updateWeight(product.id, v.id, w.id, "weight", e.target.value)} 
+                      />
+                      <input 
+                        value={w.price} 
+                        onChange={e => updateWeight(product.id, v.id, w.id, "price", e.target.value)} 
+                      />
+                      <button onClick={() => saveWeight(w)}>Save</button>
+                      <button onClick={() => deleteWeight(w.id)}>x</button>
+                    </div>
+                  ))}
+                  <button onClick={() => addWeight(v.id)}>+ Add Weight</button>
+                </div>
+              )) : <p style={{ fontSize: 12, color: "#888" }}>No variations</p>}
+
+              <button onClick={() => addVariation(product.id)}>+ Add Variation</button>
+            </div>
+          )}
         </div>
-      </div>
+      ))}
     </div>
   );
 }
