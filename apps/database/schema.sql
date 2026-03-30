@@ -77,10 +77,11 @@ CREATE TABLE IF NOT EXISTS products (
 -- ===============================
 -- VARIATIONS
 -- ===============================
+
 CREATE TABLE IF NOT EXISTS product_variations (
     id SERIAL PRIMARY KEY,
     product_id INT REFERENCES products(id) ON DELETE CASCADE,
-    variations JSONB,
+
     flavour VARCHAR(100) NOT NULL,
     image_url TEXT,
 

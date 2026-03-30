@@ -4,408 +4,216 @@ import gsap from "gsap";
 import "../App.css";
 import "./Dashboard.css";
 
-import kripsiiChilliImg from "../assets/kripsii-chilli.png";
-import kripsiiBbqImg from "../assets/kripsii-bbq.png";
-import kripsiiSaltedImg from "../assets/kripsii-salted.png";
-import kripsiiTomatoImg from "../assets/kripsii-tomato.png";
-import barbcueImg from "../assets/krackles5.jpg";
-import bambaImg from "../assets/Kracles4.jpg";
-import tangImg from "../assets/whatnotslogo.gif";
-import chipstixImg from "../assets/chipstix.jpg"
-import RipplesImg from "../assets/ripples.png"
-import ToonsImg from "../assets/ola1.jpg"
-
-
-
-const products = [
-  // =======================
-  // Snacks
-  // =======================
-
-  {
-    id: 1,
-    name: "Krackles",
-    category: "Snacks",
-    variations: [
-      {
-        flavour: "Tangy Tomato",
-        image: bambaImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      },
-      {
-        flavour: "Bar-B-Cue",
-        image: barbcueImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      }
-    ]
-  },
-
-{
-  id: 2,
-  name: "Kripsii",
-  category: "Snacks",
-  variations: [
-    {
-      flavour: "Chilli Lemon",
-      image: kripsiiChilliImg,
-      weights: [
-        { weight: "20g", price: 20 },
-        { weight: "30g", price: 30 }
-      ]
-    },
-    {
-      flavour: "BBQ Chicken",
-      image: kripsiiBbqImg,
-      weights: [
-        { weight: "20g", price: 20 },
-        { weight: "30g", price: 30 }
-      ]
-    },
-    {
-      flavour: "Salted",
-      image: kripsiiSaltedImg,
-      weights: [
-        { weight: "20g", price: 20 },
-        { weight: "30g", price: 30 }
-      ]
-    },
-    {
-      flavour: "Tomato Ketchup",
-      image: kripsiiTomatoImg,
-      weights: [
-        { weight: "20g", price: 20 },
-        { weight: "30g", price: 30 }
-      ]
-    }
-  ]
-},
-
-  {
-    id: 3,
-    name: "WhatNots",
-    category: "Snacks",
-    variations: [
-      {
-        flavour: "Original",
-        image: tangImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      }
-    ]
-  },
-
-  {
-    id: 4,
-    name: "Chipstix",
-    category: "Snacks",
-    variations: [
-      {
-        flavour: "Salted",
-        image: chipstixImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      }
-    ]
-  },
-
-  {
-    id: 5,
-    name: "Ripples",
-    category: "Snacks",
-    variations: [
-      {
-        flavour: "BBQ",
-        image: RipplesImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      }
-    ]
-  },
-
-  {
-    id: 6,
-    name: "Ola",
-    category: "Snacks",
-    variations: [
-      {
-        flavour: "Mexican Crunch",
-        image: ToonsImg,
-        weights: [
-          { weight: "20g", price: 20 },
-          { weight: "30g", price: 30 }
-        ]
-      }
-    ]
-  },
-
-
-
-];
-
-
-
 const categories = ["All", "Snacks"];
 
 export default function Dashboard() {
+  // =========================
+  // STATE
+  // =========================
+  const [products, setProducts] = useState([]);
   const { cart, setCart } = useOutletContext();
   const [darkMode, setDarkMode] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
-  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("All");
-
-
   const [pullStart, setPullStart] = useState(null);
-const [pullDistance, setPullDistance] = useState(0);
-
+  const [pullDistance, setPullDistance] = useState(0);
   const [selectedFlavour, setSelectedFlavour] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
-
   const [searchTerm, setSearchTerm] = useState("");
-  
-  
 
-const unitPrice = selectedWeight?.price || 16;
-const totalPrice = unitPrice * quantity;
+  const navigate = useNavigate();
 
-useEffect(() => {
-  const refreshLayout = () => {
-    window.dispatchEvent(new Event("resize"));
-  };
+  // =========================
+  // PRICING
+  // =========================
+  const unitPrice = Number(selectedWeight?.price || 0);
 
-  const timer = setTimeout(refreshLayout, 200);
+  // =========================
+  // FETCH PRODUCTS (API)
+  // =========================
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(
+          "https://duka2repo-production.up.railway.app/products"
+        );
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Failed to fetch products", err);
+      }
+    };
+    fetchData();
+  }, []);
 
-  return () => clearTimeout(timer);
-}, []);
+  // =========================
+  // UI EFFECTS
+  // =========================
+  useEffect(() => {
+    const refreshLayout = () => window.dispatchEvent(new Event("resize"));
+    const timer = setTimeout(refreshLayout, 200);
+    return () => clearTimeout(timer);
+  }, []);
 
-useEffect(() => {
-  const handleTouchMove = (e) => {
-    if (selectedProduct) e.preventDefault(); // prevent scroll on background
-  };
-  document.body.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-  return () => document.body.removeEventListener("touchmove", handleTouchMove);
-}, [selectedProduct]);
-
-const handleTouchStart = (e) => {
-  if (window.scrollY === 0) {
-    setPullStart(e.touches[0].clientY);
-  }
-};
-
-const handleTouchMove = (e) => {
-  if (pullStart !== null) {
-    const distance = e.touches[0].clientY - pullStart;
-
-    if (distance > 0) {
-      setPullDistance(distance);
-    }
-  }
-};
-
+  useEffect(() => {
+    const handleTouchMove = (e) => {
+      if (selectedProduct) e.preventDefault();
+    };
+    document.body.addEventListener("touchmove", handleTouchMove, { passive: false });
+    return () =>
+      document.body.removeEventListener("touchmove", handleTouchMove);
+  }, [selectedProduct]);
 
   useEffect(() => {
     gsap.from(".hero", { y: -50, opacity: 0, duration: 0.8 });
-     window.addEventListener("load", () => {
-    gsap.from(".product-card", {
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1
+    window.addEventListener("load", () => {
+      gsap.from(".product-card", {
+        y: 30,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1
+      });
     });
-  });
   }, []);
 
+  useEffect(() => {
+    if (selectedProduct) {
+      document.body.classList.add("modal-open");
+      gsap.fromTo(
+        ".product-modal",
+        { y: 50, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.3 }
+      );
+      gsap.fromTo(
+        ".modal-overlay",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3 }
+      );
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+  }, [selectedProduct]);
 
+  // =========================
+  // TOUCH HANDLERS
+  // =========================
+  const handleTouchStart = (e) => {
+    if (window.scrollY === 0) setPullStart(e.touches[0].clientY);
+  };
 
-useEffect(() => {
-  if (selectedProduct) {
-    document.body.classList.add("modal-open");
+  const handleTouchMove = (e) => {
+    if (pullStart !== null) {
+      const distance = e.touches[0].clientY - pullStart;
+      if (distance > 0) setPullDistance(distance);
+    }
+  };
 
-    // GSAP fade-in modal
-    gsap.fromTo(
-      ".product-modal",
-      { y: 50, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.3, ease: "power2.out" }
-    );
+  // =========================
+  // FILTERING
+  // =========================
+  const filteredProducts = products
+    .filter((p) => p.active)
+    .filter((p) => (activeCategory === "All" ? true : p.category === activeCategory))
+    .filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    gsap.fromTo(
-      ".modal-overlay",
-      { opacity: 0 },
-      { opacity: 1, duration: 0.3 }
-    );
-  } else {
-    document.body.classList.remove("modal-open");
-  }
-}, [selectedProduct]);
+  // =========================
+  // PRODUCT ACTIONS
+  // =========================
+  const openProductPopup = (product) => {
+    setSelectedProduct(product);
+    const firstVar = product.variations?.[0];
+    const firstWeight = firstVar?.weights?.[0];
+    setSelectedFlavour(firstVar || null);
+    setSelectedWeight(firstWeight || null);
+    setQuantity(1);
+    setNotes("");
+  };
 
-
+  const confirmAddToCart = () => {
+    setCart((prev) => [
+      ...prev,
+      {
+        productId: selectedProduct.id,
+        variationId: selectedFlavour.id,
+        weightId: selectedWeight.id,
+        name: selectedProduct.name,
+        flavour: selectedFlavour.flavour,
+        weight: selectedWeight.weight,
+        unitPrice,
+        quantity,
+        total: unitPrice * quantity,
+        notes
+      }
+    ]);
+    setSelectedProduct(null);
+  };
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
     document.documentElement.setAttribute("data-theme", !darkMode ? "dark" : "light");
   };
-  
-const filteredProducts =
-  products
-    .filter(p => p.name === "Kripsii") // show only Kripsii
-    .filter(p =>
-      activeCategory === "All"
-        ? true
-        : p.category === activeCategory
-    )
-    .filter(p =>
-      p.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
-const openProductPopup = (product) => {
-  setSelectedProduct(product);
-
-  // FORCE salted flavour
-  const saltedFlavour = product.variations.find(
-    f => f.flavour.toLowerCase() === "salted"
-  ) || product.variations[0];
-
-  // FORCE 20g with price 16
-  const forcedWeight = {
-    weight: "20g",
-    price: 16
-  };
-
-  setSelectedFlavour(saltedFlavour);
-  setSelectedWeight(forcedWeight);
-  setQuantity(1);
-  setNotes("");
-};
-
-
-const confirmAddToCart = () => {
-  setCart(prev => [
-    ...prev,
-    {
-      productId: selectedProduct.id,
-      name: selectedProduct.name,
-      flavour: selectedFlavour.flavour,
-      weight: selectedWeight.weight,
-      unitPrice,
-      quantity,
-      total: totalPrice,
-      notes
-    }
-  ]);
-
-  setSelectedProduct(null);
-};
-{pullDistance > 0 && (
-  <div className="pull-refresh-indicator">
-    ↓ Pull to refresh
-  </div>
-)}
-
+  // =========================
+  // UI
+  // =========================
   return (
     <div
-  className="dashboard-container"
-  onTouchStart={handleTouchStart}
-  onTouchMove={handleTouchMove}
->
+      className="dashboard-container"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
+      {pullDistance > 0 && (
+        <div className="pull-refresh-indicator">↓ Pull to refresh</div>
+      )}
 
-
-
-{/* Order Now Section */}
-<section className="panel order-now">
-  <div className="order-bg">
-    <div className="order-overlay"></div>
-    <div className="order-content">
-      <h2>Order Your Products Fast</h2>
-      <p>Get what you need delivered to your shop with just a click.</p>
-      <button className="order-btn" onClick={() => alert("Redirect to order page")}>
-        Order Now
-      </button>
-    </div>
-  </div>
-</section>
-
-
-{/* 
-{/* Brands 
-<section className="panel-brands">
-  <h2>Our Brands</h2>
-  <div className="brands-grid">
-    {brands.map((b) => (
-      <div key={b.id} className="brand-card">
-        <img src={b.image} alt={b.name} />
-        <span className="brand-name">{b.name}</span>
+      <div className="search-wrapper">
+        <input
+          type="text"
+          placeholder="Search products..."
+          className="search-bar"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
-    ))}
-  </div>
-</section> */}
 
-{/* Search */}
-<div className="search-wrapper">
-  <input
-    type="text"
-    placeholder="Search products..."
-    className="search-bar"
-    value={searchTerm}
-    onChange={(e) => setSearchTerm(e.target.value)}
-  />
-</div>
-
-
-
-      {/* Categories */}
-<section className="categories">
-  <div className="categories-scroll">
-{categories.map((c, i) => (
-  <button
-    key={i}
-    className={`category-btn ${activeCategory === c ? "active" : ""}`}
-    onClick={() => setActiveCategory(c)}
-  >
-    {c}
-  </button>
-))}
-
-  </div>
-</section>
-
-
-      {/* Products */}
+      <section className="categories">
+        <div className="categories-scroll">
+          {categories.map((c, i) => (
+            <button
+              key={i}
+              className={`category-btn ${activeCategory === c ? "active" : ""}`}
+              onClick={() => setActiveCategory(c)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </section>
 
       <section className="panel products">
         <h2>Order Now</h2>
         <div className="product-grid">
-{filteredProducts.map((p) => {
-  const previewImage = p.variations[0].image;
-  const previewPrice = p.variations[0].weights[0].price;
+          {filteredProducts.map((p) => {
+            const firstVar = p.variations?.[0];
+            const firstWeight = firstVar?.weights?.[0];
+            const previewImage = firstVar?.image_url || "/default-product.jpg";
+            const previewPrice = firstWeight?.price || 0;
 
-  return (
-    <div key={p.id} className="product-card">
-      <img src={previewImage} alt={p.name} loading="lazy" />
-      <span className="product-name">{p.name}</span>
-      <span className="product-price">
-        From KES {previewPrice.toLocaleString()}
-      </span>
-      <button className="add-cart" onClick={() => openProductPopup(p)}>
-        Order
-      </button>
-    </div>
-  );
-})}
-
+            return (
+              <div key={p.id} className="product-card">
+                <img src={previewImage} alt={p.name} />
+                <span className="product-name">{p.name}</span>
+                <span className="product-price">
+                  From KES {Number(previewPrice).toLocaleString()}
+                </span>
+                <button className="add-cart" onClick={() => openProductPopup(p)}>
+                  Order
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -419,76 +227,67 @@ const confirmAddToCart = () => {
         {darkMode ? "☀️" : "🌙"}
       </button>
 
-{selectedProduct && (
-  <div
-    className="modal-overlay"
-    onClick={() => setSelectedProduct(null)}
-  >
-    <div
-      className="product-modal"
-      onClick={(e) => e.stopPropagation()}
-    >
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
+          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={selectedFlavour?.image_url || "/default-product.jpg"}
+              alt=""
+              className="modal-product-image"
+            />
+            <h3>{selectedProduct.name}</h3>
 
-      {/* PRODUCT IMAGE */}
-      <div className="modal-image-wrapper">
-        <img
-          src={selectedFlavour?.image}
-          alt={selectedProduct.name}
-          className="modal-product-image"
-        />
-      </div>
+            <select
+              value={selectedFlavour?.id || ""}
+              onChange={(e) => {
+                const flavour = selectedProduct.variations.find(
+                  (v) => v.id === Number(e.target.value)
+                );
+                setSelectedFlavour(flavour);
+                setSelectedWeight(flavour?.weights?.[0]);
+              }}
+            >
+              {selectedProduct.variations.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.flavour}
+                </option>
+              ))}
+            </select>
 
-      {/* TITLE */}
-      <div className="modal-header-row">
-        <h3>{selectedProduct.name}</h3>
-      </div>
+            <select
+              value={selectedWeight?.id || ""}
+              onChange={(e) => {
+                const weight = selectedFlavour.weights.find(
+                  (w) => w.id === Number(e.target.value)
+                );
+                setSelectedWeight(weight);
+              }}
+            >
+              {selectedFlavour?.weights?.map((w) => (
+                <option key={w.id} value={w.id}>
+                  {w.weight} – KES {Number(w.price).toLocaleString()}
+                </option>
+              ))}
+            </select>
 
-{/* FLAVOUR */}
-<div className="modal-section">
-  <label>Assorted Flavour</label>
-  <select value="Salted" disabled>
-    <option value="Salted">Salted</option>
-  </select>
-</div>
+            <div className="qty-controls">
+              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+                -
+              </button>
+              <span>{quantity}</span>
+              <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+            </div>
 
-{/* WEIGHT */}
-<div className="modal-section">
-  <label>Weight (grams)</label>
-  <select value="20g" disabled>
-    <option value="20g">20g – KES 16</option>
-  </select>
-</div>
+            <div style={{ textAlign: "right", marginTop: 10 }}>
+              <strong>Total: KES {(unitPrice * quantity).toLocaleString()}</strong>
+            </div>
 
-      {/* QUANTITY CARTONS */}
-      <div className="modal-section">
-        <label>Quantity (Cartons)</label>
-        <div className="qty-controls">
-          <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
-          <span>{quantity}</span>
-          <button onClick={() => setQuantity(q => q + 1)}>+</button>
+            <button className="confirm-btn" onClick={confirmAddToCart}>
+              Add Order
+            </button>
+          </div>
         </div>
-
-        {/* TOTALS */}
-<div style={{ marginTop: "10px", textAlign: "right" }}>
-  <span style={{ fontWeight: 600 }}>
-    Unit Snacks: {quantity * 12} pcs
-  </span>
-  <br />
-  <span style={{ fontWeight: 700, color: "var(--accent-color)" }}>
-    Total: KES {(unitPrice * quantity * 12).toLocaleString()}
-  </span>
-</div>
-      </div>
-
-      {/* CONFIRM */}
-      <button className="confirm-btn" onClick={confirmAddToCart}>
-        Add Order
-      </button>
-
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 }

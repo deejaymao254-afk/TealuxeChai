@@ -1,144 +1,275 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
 import "./products.css";
 
+// ✅ API
+import {
+  fetchProducts,
+  createProduct,
+  updateProduct,
+  addVariation as apiAddVariation,
+  deleteVariation as apiDeleteVariation,
+  addWeight as apiAddWeight,
+  deleteWeight as apiDeleteWeight
+} from "../api/products";
+
 export default function Products() {
+  // =========================
+  // STATE
+  // =========================
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState(null);
 
-  // 🔹 PLACEHOLDER DATA (replace with API later)
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Kripsii",
-      category: "Snacks",
-      active: true,
-      variations: [
-        {
-          id: 1,
-          flavour: "BBQ Chicken",
-          image: "/images/kripsii-bbq.png",
-          weights: [
-            { weight: "20g", price: 20 },
-            { weight: "30g", price: 30 }
-          ]
-        },
-        {
-          id: 2,
-          flavour: "Chilli Lemon",
-          image: "/images/kripsii-chilli.png",
-          weights: [
-            { weight: "20g", price: 20 },
-            { weight: "30g", price: 30 }
-          ]
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "Kripsii - Salted",
-      category: "General",
-      active: false,
-      variations: []
-    }
-  ]);
+  // =========================
+  // EFFECTS
+  // =========================
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const res = await fetchProducts();
+        setProducts(res.data);
+      } catch (err) {
+        console.error("Failed to load products", err);
+      }
+    };
 
-  const filtered = products.filter((p) =>
+    loadProducts();
+  }, []);
+
+  const filtered = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  // =========================
+  // PRODUCT ACTIONS (API)
+  // =========================
+  const toggleActive = async (product) => {
+    try {
+      await updateProduct(product.id, {
+        name: product.name,
+        active: !product.active
+      });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateProductName = async (product, value) => {
+    try {
+      await updateProduct(product.id, {
+        name: value,
+        active: product.active
+      });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleAddProduct = async () => {
+    try {
+      await createProduct({
+        name: "New Product",
+        category: "Snacks"
+      });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // =========================
+  // VARIATIONS (API)
+  // =========================
+  const addVariation = async (productId) => {
+    try {
+      await apiAddVariation({
+        product_id: productId,
+        flavour: "New Flavour",
+        image_url: ""
+      });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateVariation = (productId, varId, field, value) => {
+    setProducts(prev =>
+      prev.map(p =>
+        p.id === productId
+          ? {
+              ...p,
+              variations: p.variations.map(v =>
+                v.id === varId ? { ...v, [field]: value } : v
+              )
+            }
+          : p
+      )
+    );
+  };
+
+  const deleteVariation = async (varId) => {
+    try {
+      await apiDeleteVariation(varId);
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // =========================
+  // WEIGHTS (API)
+  // =========================
+  const addWeight = async (variationId) => {
+    try {
+      await apiAddWeight({
+        variation_id: variationId,
+        weight: "10g",
+        price: 10
+      });
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const updateWeight = (productId, varId, weightId, field, value) => {
+    setProducts(prev =>
+      prev.map(p =>
+        p.id === productId
+          ? {
+              ...p,
+              variations: p.variations.map(v =>
+                v.id === varId
+                  ? {
+                      ...v,
+                      weights: v.weights.map(w =>
+                        w.id === weightId ? { ...w, [field]: value } : w
+                      )
+                    }
+                  : v
+              )
+            }
+          : p
+      )
+    );
+  };
+
+  const deleteWeight = async (weightId) => {
+    try {
+      await apiDeleteWeight(weightId);
+      const res = await fetchProducts();
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // =========================
+  // UI
+  // =========================
   return (
     <div className="products-page">
-      {/* HEADER */}
-<div className="orders-header">
+      <div className="orders-header">
         <h2>Products</h2>
-
-        <div className="filters">
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-      </div>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
 
-      {/* TABLE */}
-      <div className="products-table">
-        <div className="table-header">
-          <span>ID</span>
-          <span>Name</span>
-          <span>Category</span>
-          <span>Status</span>
-          <span>Actions</span>
-        </div>
+      <div className="product-list">
+        {filtered.map(product => (
+          <div key={product.id} className="product-row">
+            {/* IMAGE */}
+            <div className="product-left">
+              <img src={product.image} alt="" />
+            </div>
 
-        {filtered.map((product) => (
-          <div key={product.id} className="table-row">
-            <span>{product.id}</span>
-            <span>{product.name}</span>
-            <span>{product.category}</span>
+            {/* INFO */}
+            <div className="product-center">
+              <input
+                value={product.name}
+                onBlur={(e) => updateProductName(product, e.target.value)}
+              />
+              <span>{product.category}</span>
+            </div>
 
-            <span className={product.active ? "active" : "inactive"}>
-              {product.active ? "Active" : "Inactive"}
-            </span>
-
-            <span className="actions">
-              <button
-                onClick={() =>
-                  setExpandedId(
-                    expandedId === product.id ? null : product.id
-                  )
-                }
-              >
-                View
+            {/* ACTIONS */}
+            <div className="product-actions">
+              <button onClick={() =>
+                setExpandedId(expandedId === product.id ? null : product.id)
+              }>
+                Manage
               </button>
 
-              <button>Edit</button>
-            </span>
-          </div>
-        ))}
-      </div>
+              <button
+                className={product.active ? "active" : "inactive"}
+                onClick={() => toggleActive(product)}
+              >
+                {product.active ? "Active" : "Inactive"}
+              </button>
+            </div>
 
-      {/* EXPANDED VIEW */}
-      {expandedId && (
-        <div className="product-details">
-          {products
-            .filter((p) => p.id === expandedId)
-            .map((product) => (
-              <div key={product.id}>
-                <h3>{product.name}</h3>
-                <p>Category: {product.category}</p>
-
-                <h4>Variations</h4>
-
-                {product.variations.length === 0 && (
-                  <p>No variations added.</p>
-                )}
-
-                {product.variations.map((v) => (
-                  <div key={v.id} className="variation-card">
-                    <h5>{v.flavour}</h5>
+            {/* EXPAND */}
+            {expandedId === product.id && (
+              <div className="product-expand">
+                {product.variations.map(v => (
+                  <div key={v.id} className="variation-block">
+                    <div className="variation-header">
+                      <input
+                        value={v.flavour}
+                        onChange={(e) =>
+                          updateVariation(product.id, v.id, "flavour", e.target.value)
+                        }
+                      />
+                      <button className="danger" onClick={() => deleteVariation(v.id)}>
+                        Delete
+                      </button>
+                    </div>
 
                     <div className="weights">
-                      {v.weights.map((w, i) => (
-                        <span key={i}>
-                          {w.weight} — KES {w.price}
-                        </span>
+                      {v.weights.map(w => (
+                        <div key={w.id} className="weight-row">
+                          <input
+                            value={w.weight}
+                            onChange={(e) =>
+                              updateWeight(product.id, v.id, w.id, "weight", e.target.value)
+                            }
+                          />
+                          <input
+                            value={w.price}
+                            onChange={(e) =>
+                              updateWeight(product.id, v.id, w.id, "price", e.target.value)
+                            }
+                          />
+                          <button onClick={() => deleteWeight(w.id)}>x</button>
+                        </div>
                       ))}
+                      <button onClick={() => addWeight(v.id)}>+ Add Weight</button>
                     </div>
                   </div>
                 ))}
-
-                <div className="detail-actions">
-                  <button>Add Variation</button>
-                  <button>Add Weight</button>
-                  <button className="danger">Deactivate</button>
-                </div>
+                <button onClick={() => addVariation(product.id)}>+ Add Variation</button>
               </div>
-            ))}
-        </div>
-      )}
+            )}
+          </div>
+        ))}
+        <button className="add-product" onClick={handleAddProduct}>
+          + Add Product
+        </button>
+      </div>
     </div>
   );
 }

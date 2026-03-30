@@ -1,6 +1,7 @@
 
 ```
 Duka2
+├─ (
 ├─ apps
 │  ├─ admin
 │  │  ├─ .vercel
@@ -40,30 +41,29 @@ Duka2
 │  │  │  ├─ middleware
 │  │  │  │  ├─ ErrorBoundary.jsx
 │  │  │  │  └─ ProtectedRoute.jsx
-│  │  │  ├─ pages
-│  │  │  │  ├─ Admin
-│  │  │  │  │  └─ ProductsAdmin.jsx
-│  │  │  │  ├─ analytics.css
-│  │  │  │  ├─ Analytics.jsx
-│  │  │  │  ├─ Customers.css
-│  │  │  │  ├─ Customers.jsx
-│  │  │  │  ├─ Dashboard.jsx
-│  │  │  │  ├─ inventory.css
-│  │  │  │  ├─ Inventory.jsx
-│  │  │  │  ├─ login.css
-│  │  │  │  ├─ Login.jsx
-│  │  │  │  ├─ orders.css
-│  │  │  │  ├─ Orders.jsx
-│  │  │  │  ├─ page.css
-│  │  │  │  ├─ Placeholder.jsx
-│  │  │  │  ├─ products.css
-│  │  │  │  ├─ Products.jsx
-│  │  │  │  ├─ settings.css
-│  │  │  │  ├─ Settings.jsx
-│  │  │  │  ├─ transactions.css
-│  │  │  │  ├─ Transactions.jsx
-│  │  │  │  └─ Users.jsx
-│  │  │  └─ theme.css
+│  │  │  └─ pages
+│  │  │     ├─ Admin
+│  │  │     │  └─ ProductsAdmin.jsx
+│  │  │     ├─ analytics.css
+│  │  │     ├─ Analytics.jsx
+│  │  │     ├─ Customers.css
+│  │  │     ├─ Customers.jsx
+│  │  │     ├─ Dashboard.jsx
+│  │  │     ├─ inventory.css
+│  │  │     ├─ Inventory.jsx
+│  │  │     ├─ login.css
+│  │  │     ├─ Login.jsx
+│  │  │     ├─ orders.css
+│  │  │     ├─ Orders.jsx
+│  │  │     ├─ page.css
+│  │  │     ├─ Placeholder.jsx
+│  │  │     ├─ products.css
+│  │  │     ├─ Products.jsx
+│  │  │     ├─ settings.css
+│  │  │     ├─ Settings.jsx
+│  │  │     ├─ transactions.css
+│  │  │     ├─ Transactions.jsx
+│  │  │     └─ Users.jsx
 │  │  ├─ vercel.json
 │  │  ├─ vite.config.js
 │  │  └─ {
@@ -199,9 +199,13 @@ Duka2
 │  │  ├─ vite
 │  │  ├─ vite.config.js
 │  │  └─ {
-│  └─ database
-│     └─ schema.sql
+│  ├─ database
+│  │  └─ schema.sql
+│  └─ theme.css
+├─ document.removeEventListener(click
 ├─ package.json
-└─ README.md
+├─ README.md
+├─ setMenuOpen(false)}
+└─ {
 
 ```
