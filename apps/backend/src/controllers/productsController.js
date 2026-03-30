@@ -1,4 +1,3 @@
-import db from "../config/db.js";
 
 // ==============================
 // GET FULL PRODUCT TREE
