@@ -89,7 +89,6 @@ html, body, #root {
   width: 100%;
   min-height: 100vh;
     background: var(--bg-main); /* fallback, not red */
-margin-top: 70px;
 }
 
 
@@ -118,7 +117,7 @@ margin-top: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   font-size: var(--font-sm);
   flex-wrap: wrap;
   gap: 10px;
