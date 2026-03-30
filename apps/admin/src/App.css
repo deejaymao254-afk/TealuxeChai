@@ -109,26 +109,6 @@ html, body, #root {
   display: none;
 }
 
-/* =================================
-   HEADER
-================================= */
-.header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 80px;
-  font-size: var(--font-sm);
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.header-left,
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
 
 
 
