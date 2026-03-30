@@ -8,7 +8,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import usersRouter from "./routes/usersRouter.js";
-import orderRoutes from "./modules/orders/orderRoutes.js";
+import orderRoutes from "./routes/productsRouter.js";
+import productsRouter from "./routes/productsRouter.js";
+
 import loginRoutes from "./routes/loginRoutes.js";
 import { ensureSuperAdmin } from "./controllers/initAdmin.js";
 
@@ -52,6 +54,7 @@ app.get("/test", (req, res) => {
 app.use("/api/users", loginRoutes);
 app.use("/api/users", usersRouter);
 app.use("/api/orders", orderRoutes);
+app.use("/api/products", productsRouter);
 
 /* ===================== */
 /* LOGGER */

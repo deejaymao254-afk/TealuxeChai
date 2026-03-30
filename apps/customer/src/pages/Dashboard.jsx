@@ -198,7 +198,7 @@ export default function Dashboard() {
           {filteredProducts.map((p) => {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || "/default-product.jpg";
+            const previewImage = firstVar?.image_url || "./kripsii-chilli.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
@@ -231,7 +231,7 @@ export default function Dashboard() {
         <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
           <div className="product-modal" onClick={(e) => e.stopPropagation()}>
             <img
-              src={selectedFlavour?.image_url || "/default-product.jpg"}
+              src={selectedFlavour?.image_url || "../assets/kripsii-chilli.png"}
               alt=""
               className="modal-product-image"
             />
