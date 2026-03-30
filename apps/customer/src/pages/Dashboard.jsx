@@ -34,8 +34,11 @@ const [products, setProducts] = useState([]);
 useEffect(() => {
   fetch("https://duka2repo-production.up.railway.app/api/full")
     .then(res => res.json())
-    .then(data => setProducts(data))
-    .catch(err => console.error(err));
+    .then(data => {
+      console.log("Products:", data);
+      setProducts(data);
+    })
+    .catch(err => console.error("Failed to fetch products", err));
 }, []);
 
   // =========================
@@ -103,10 +106,15 @@ useEffect(() => {
   // =========================
   // FILTERING
   // =========================
-  const filteredProducts = products
-    .filter((p) => p.active)
-    .filter((p) => (activeCategory === "All" ? true : p.category === activeCategory))
-    .filter((p) => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+const filteredProducts = products
+  .filter((p) => p.active)
+  .filter((p) => p.variations?.length > 0) // 🔥 ADD THIS
+  .filter((p) =>
+    activeCategory === "All" ? true : p.category === activeCategory
+  )
+  .filter((p) =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // =========================
   // PRODUCT ACTIONS
@@ -121,24 +129,30 @@ useEffect(() => {
     setNotes("");
   };
 
-  const confirmAddToCart = () => {
-    setCart((prev) => [
-      ...prev,
-      {
-        productId: selectedProduct.id,
-        variationId: selectedFlavour.id,
-        weightId: selectedWeight.id,
-        name: selectedProduct.name,
-        flavour: selectedFlavour.flavour,
-        weight: selectedWeight.weight,
-        unitPrice,
-        quantity,
-        total: unitPrice * quantity,
-        notes
-      }
-    ]);
-    setSelectedProduct(null);
-  };
+const confirmAddToCart = () => {
+  if (!selectedFlavour || !selectedWeight) {
+    alert("Please select product options");
+    return;
+  }
+
+  setCart((prev) => [
+    ...prev,
+    {
+      productId: selectedProduct.id,
+      variationId: selectedFlavour.id,
+      weightId: selectedWeight.id,
+      name: selectedProduct.name,
+      flavour: selectedFlavour.flavour,
+      weight: selectedWeight.weight,
+      unitPrice,
+      quantity,
+      total: unitPrice * quantity,
+      notes
+    }
+  ]);
+
+  setSelectedProduct(null);
+};
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -198,9 +212,18 @@ useEffect(() => {
                 <span className="product-price">
                   From KES {Number(previewPrice).toLocaleString()}
                 </span>
-                <button className="add-cart" onClick={() => openProductPopup(p)}>
-                  Order
-                </button>
+<button
+  className="add-cart"
+  onClick={() => {
+    if (!p.variations?.length) {
+      alert("Product not configured yet");
+      return;
+    }
+    openProductPopup(p);
+  }}
+>
+  Order
+</button>
               </div>
             );
           })}
@@ -237,21 +260,27 @@ useEffect(() => {
                 setSelectedWeight(flavour?.weights?.[0]);
               }}
             >
-              {selectedProduct.variations.map((v) => (
-                <option key={v.id} value={v.id}>
-                  {v.flavour}
-                </option>
-              ))}
+{selectedProduct.variations?.length > 0 ? (
+  selectedProduct.variations.map((v) => (
+    <option key={v.id} value={v.id}>
+      {v.flavour}
+    </option>
+  ))
+) : (
+  <option>No variations</option>
+)}
             </select>
 
             <select
               value={selectedWeight?.id || ""}
-              onChange={(e) => {
-                const weight = selectedFlavour.weights.find(
-                  (w) => w.id === Number(e.target.value)
-                );
-                setSelectedWeight(weight);
-              }}
+onChange={(e) => {
+  if (!selectedFlavour) return;
+
+  const weight = selectedFlavour.weights.find(
+    (w) => w.id === Number(e.target.value)
+  );
+  setSelectedWeight(weight);
+}}
             >
               {selectedFlavour?.weights?.map((w) => (
                 <option key={w.id} value={w.id}>
