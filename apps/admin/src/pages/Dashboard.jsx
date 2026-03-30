@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProducts } from "../api/client";
+import { getProducts } from "../api/products";
 import "../App.css";
 
 export default function Dashboard({ onLogout }) {
