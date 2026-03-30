@@ -32,7 +32,7 @@ export default function Dashboard() {
 const [products, setProducts] = useState([]);
 
 useEffect(() => {
-  fetch("/api/full/full")
+  fetch("https://duka2repo-production.up.railway.app/api/full")
     .then(res => res.json())
     .then(data => setProducts(data))
     .catch(err => console.error(err));
