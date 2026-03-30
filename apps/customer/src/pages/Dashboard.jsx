@@ -10,7 +10,6 @@ export default function Dashboard() {
   // =========================
   // STATE
   // =========================
-  const [products] = useState([]);
   const { cart, setCart } = useOutletContext();
   const [darkMode, setDarkMode] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -30,11 +29,14 @@ export default function Dashboard() {
   // =========================
   const unitPrice = Number(selectedWeight?.price || 0);
 
-// fetch products
-fetch("/api/full/full")  // or "/api/full" if you keep Option A
-  .then(res => res.json())
-  .then(data => console.log(data))
-  .catch(err => console.error(err));
+const [products, setProducts] = useState([]);
+
+useEffect(() => {
+  fetch("/api/full/full")
+    .then(res => res.json())
+    .then(data => setProducts(data))
+    .catch(err => console.error(err));
+}, []);
 
   // =========================
   // UI EFFECTS
