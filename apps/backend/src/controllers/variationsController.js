@@ -1,10 +1,10 @@
-import db from "../config/db.js";
+import { pool } from "../config/db.js";
 
 export const addVariation = async (req, res) => {
   try {
     const { product_id, flavour, image_url } = req.body;
 
-    const result = await db.query(
+    const result = await pool.query(
       `INSERT INTO product_variations (product_id, flavour, image_url)
        VALUES ($1, $2, $3)
        RETURNING *`,
@@ -19,7 +19,7 @@ export const addVariation = async (req, res) => {
 
 export const deleteVariation = async (req, res) => {
   try {
-    await db.query(
+    await pool.query(
       `DELETE FROM product_variations WHERE id = $1`,
       [req.params.id]
     );

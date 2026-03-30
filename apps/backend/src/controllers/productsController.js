@@ -1,16 +1,16 @@
-import db from "../config/db.js";
+import { pool } from "../config/db.js";
 
 // ==============================
 // GET FULL PRODUCT TREE
 // ==============================
 export const getFullProducts = async (req, res) => {
   try {
-    const products = await db.query(`SELECT * FROM products ORDER BY id ASC`);
+    const products = await pool.query(`SELECT * FROM products ORDER BY id ASC`);
 
     const result = [];
 
     for (const p of products.rows) {
-      const variations = await db.query(
+      const variations = await pool.query(
         `SELECT * FROM product_variations WHERE product_id = $1`,
         [p.id]
       );
@@ -18,7 +18,7 @@ export const getFullProducts = async (req, res) => {
       const varList = [];
 
       for (const v of variations.rows) {
-        const weights = await db.query(
+        const weights = await pool.query(
           `SELECT * FROM product_weights WHERE variation_id = $1`,
           [v.id]
         );
@@ -49,7 +49,7 @@ export const createProduct = async (req, res) => {
   try {
     const { name, category } = req.body;
 
-    const newProduct = await db.query(
+    const newProduct = await pool.query(
       `INSERT INTO products (name, category)
        VALUES ($1, $2)
        RETURNING *`,
@@ -70,7 +70,7 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, active } = req.body;
 
-    const updated = await db.query(
+    const updated = await pool.query(
       `UPDATE products
        SET name = $1, active = $2
        WHERE id = $3

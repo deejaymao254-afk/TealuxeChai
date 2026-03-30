@@ -1,10 +1,10 @@
-import db from "../config/db.js";
+import { pool } from "../config/db.js";
 
 export const addWeight = async (req, res) => {
   try {
     const { variation_id, weight, price } = req.body;
 
-    const result = await db.query(
+    const result = await pool.query(
       `INSERT INTO product_weights (variation_id, weight, price)
        VALUES ($1, $2, $3)
        RETURNING *`,
@@ -19,7 +19,7 @@ export const addWeight = async (req, res) => {
 
 export const deleteWeight = async (req, res) => {
   try {
-    await db.query(
+    await pool.query(
       `DELETE FROM product_weights WHERE id = $1`,
       [req.params.id]
     );
