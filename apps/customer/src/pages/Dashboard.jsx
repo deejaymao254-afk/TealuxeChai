@@ -188,7 +188,7 @@ useEffect(() => {
           {filteredProducts.map((p) => {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || "./kripsii-chilli.png";
+            const previewImage = firstVar?.image_url || "../assets/kripsii-salted.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
