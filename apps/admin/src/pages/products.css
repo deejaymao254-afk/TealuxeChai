@@ -5,6 +5,8 @@
 
 .products-page input {
   padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .products-page button {
@@ -12,6 +14,6 @@
   cursor: pointer;
 }
 
-.products-page img {
-  object-fit: cover;
+.products-page div {
+  box-sizing: border-box;
 }
