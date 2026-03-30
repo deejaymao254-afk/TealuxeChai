@@ -18,7 +18,7 @@ import {
 const router = express.Router();
 
 // PRODUCTS
-router.get("/full", getFullProducts);
+router.get("/", getFullProducts);
 router.post("/", createProduct);
 router.put("/:id", updateProduct);
 
