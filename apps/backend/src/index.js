@@ -54,7 +54,7 @@ app.get("/test", (req, res) => {
 app.use("/api/users", loginRoutes);
 app.use("/api/users", usersRouter);
 app.use("/api/orders", orderRoutes);
-app.use("/api/products", productsRouter);
+app.use("/api/full", productsRouter);
 
 /* ===================== */
 /* LOGGER */

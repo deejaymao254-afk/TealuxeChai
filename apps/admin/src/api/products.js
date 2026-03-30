@@ -1,7 +1,7 @@
 import api from "./client";
 
 // GET ALL
-export const fetchProducts = () => api.get("/products/products");
+export const fetchProducts = () => api.get("/products/full");
 
 // PRODUCT
 export const createProduct = (data) => api.post("/products", data);
