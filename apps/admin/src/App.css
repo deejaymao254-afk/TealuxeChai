@@ -89,7 +89,7 @@ html, body, #root {
   width: 100%;
   min-height: 100vh;
     background: var(--bg-main); /* fallback, not red */
-
+margin-top: 70px;
 }
 
 
@@ -104,6 +104,10 @@ html, body, #root {
 
   padding: var(--spacing);
   box-sizing: border-box;
+}
+
+.logout-btn {
+  display: none;
 }
 
 /* =================================
