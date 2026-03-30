@@ -5,41 +5,73 @@ import { pool } from "../config/db.js";
 // ==============================
 export const getFullProducts = async (req, res) => {
   try {
-    const products = await pool.query(`SELECT * FROM products ORDER BY id ASC`);
+    const products = await pool.query(`
+      SELECT 
+        p.*,
+        v.id as v_id,
+        v.flavour,
+        v.image_url,
+        w.id as w_id,
+        w.weight,
+        w.price
+      FROM products p
+      LEFT JOIN product_variations v ON v.product_id = p.id
+      LEFT JOIN product_weights w ON w.variation_id = v.id
+      ORDER BY p.id ASC
+    `);
 
-    const result = [];
+    const map = {};
 
-    for (const p of products.rows) {
-      const variations = await pool.query(
-        `SELECT * FROM product_variations WHERE product_id = $1`,
-        [p.id]
-      );
-
-      const varList = [];
-
-      for (const v of variations.rows) {
-        const weights = await pool.query(
-          `SELECT * FROM product_weights WHERE variation_id = $1`,
-          [v.id]
-        );
-
-        varList.push({
-          ...v,
-          weights: weights.rows
-        });
+    for (const row of products.rows) {
+      // PRODUCT
+      if (!map[row.id]) {
+        map[row.id] = {
+          id: row.id,
+          name: row.name,
+          category: row.category,
+          active: row.active,
+          image: row.image || "",
+          variations: []
+        };
       }
 
-      result.push({
-        ...p,
-        variations: varList
-      });
+      // VARIATION
+      if (row.v_id) {
+        let variation = map[row.id].variations.find(v => v.id === row.v_id);
+
+        if (!variation) {
+          variation = {
+            id: row.v_id,
+            flavour: row.flavour,
+            image_url: row.image_url,
+            weights: []
+          };
+          map[row.id].variations.push(variation);
+        }
+
+        // WEIGHT
+        if (row.w_id) {
+          variation.weights.push({
+            id: row.w_id,
+            weight: row.weight,
+            price: row.price
+          });
+        }
+      }
     }
 
-    res.json(result);
+    res.json(Object.values(map));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch products" });
   }
+
+  
+  result.push({
+  ...p,
+  image: p.image || "", // 👈 ADD THIS LINE
+  variations: varList
+});
 };
 
 // ==============================

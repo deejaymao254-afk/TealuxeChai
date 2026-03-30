@@ -21,21 +21,39 @@ export default function Products() {
   const [editedNames, setEditedNames] = useState({});
   const [localImages, setLocalImages] = useState({}); // store local image previews
 
-  useEffect(() => {
-    const loadProducts = async () => {
-      try {
-        const res = await fetchProducts();
-        setProducts(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    loadProducts();
-  }, []);
+useEffect(() => {
+  const loadProducts = async () => {
+    try {
+      const res = await fetchProducts();
 
-  const filtered = products.filter(p =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+      // 🔥 normalize data to prevent crashes
+      const safeData = (res.data || []).map(p => ({
+        ...p,
+        name: p.name || "",
+        category: p.category || "",
+        image: p.image || "",
+        active: p.active ?? true,
+        variations: (p.variations || []).map(v => ({
+          ...v,
+          flavour: v.flavour || "",
+          weights: v.weights || []
+        }))
+      }));
+
+      console.log("PRODUCTS:", safeData); // 👈 DEBUG
+      setProducts(safeData);
+
+    } catch (err) {
+      console.error("LOAD ERROR:", err);
+    }
+  };
+
+  loadProducts();
+}, []);
+
+const filtered = (products || []).filter(p =>
+  (p.name || "").toLowerCase().includes(search.toLowerCase())
+);
 
   // =========================
   // PRODUCT ACTIONS
@@ -152,14 +170,22 @@ export default function Products() {
           <div key={product.id} className="table-row">
             {/* IMAGE */}
             <div className="product-left">
-              <img src={localImages[product.id] || product.image} alt="" />
+              <img
+  src={
+    localImages[product.id] ||
+    product.image ||
+    "https://via.placeholder.com/50"
+  }
+/>
               <input type="file" accept="image/*" onChange={e => handleImageChange(product.id, e.target.files[0])} />
             </div>
 
             {/* NAME */}
             <div>
               <input
-                value={editedNames[product.id] ?? product.name}
+value={editedNames[product.id] !== undefined 
+  ? editedNames[product.id] 
+  : product.name}
                 onChange={e => handleNameChange(product.id, e.target.value)}
               />
             </div>
@@ -189,8 +215,8 @@ export default function Products() {
             {/* EXPANDED VARIATIONS */}
             {expandedId === product.id && (
               <div className="order-details">
-                {product.variations.map(v => (
-                  <div key={v.id} className="variation-card">
+{product.variations?.length > 0 ? product.variations.map(v => (
+                    <div key={v.id} className="variation-card">
                     <div className="variation-header">
                       <input
                         value={v.flavour}
@@ -200,7 +226,7 @@ export default function Products() {
                     </div>
 
                     <div className="weights">
-                      {v.weights.map(w => (
+                      {(v.weights || []).map(w => (
                         <div key={w.id} className="weight-row">
                           <input
                             value={w.weight}
@@ -216,7 +242,8 @@ export default function Products() {
                       <button onClick={() => addWeight(v.id)}>+ Add Weight</button>
                     </div>
                   </div>
-                ))}
+                  
+                )) : <p style={{ fontSize: 12, color: "#888" }}>No variations</p>}
 
                 <div className="detail-actions">
                   <button onClick={() => addVariation(product.id)}>+ Add Variation</button>
