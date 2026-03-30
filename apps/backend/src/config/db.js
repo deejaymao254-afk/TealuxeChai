@@ -1,5 +1,5 @@
 // src/config/db.js
-import pkg from "pg";
+import pg from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
