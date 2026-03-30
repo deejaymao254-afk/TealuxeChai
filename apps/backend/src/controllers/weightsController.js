@@ -29,3 +29,22 @@ export const deleteWeight = async (req, res) => {
     res.status(500).json({ error: "Delete failed" });
   }
 };
+
+export const updateWeight = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { weight, price } = req.body;
+
+    const updated = await pool.query(
+      `UPDATE product_weights
+       SET weight = $1, price = $2
+       WHERE id = $3
+       RETURNING *`,
+      [weight, price, id]
+    );
+
+    res.json(updated.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update weight" });
+  }
+};

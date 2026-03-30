@@ -66,7 +66,7 @@ export const getFullProducts = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch products" });
   }
 
-  
+
   result.push({
   ...p,
   image: p.image || "", // 👈 ADD THIS LINE
@@ -102,13 +102,30 @@ export const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, active } = req.body;
 
-    const updated = await pool.query(
-      `UPDATE products
-       SET name = $1, active = $2
-       WHERE id = $3
-       RETURNING *`,
-      [name, active, id]
-    );
+    const image = req.file ? `/uploads/${req.file.filename}` : null;
+
+    let query;
+    let values;
+
+    if (image) {
+      query = `
+        UPDATE products
+        SET name = $1, active = $2, image = $3
+        WHERE id = $4
+        RETURNING *
+      `;
+      values = [name, active, image, id];
+    } else {
+      query = `
+        UPDATE products
+        SET name = $1, active = $2
+        WHERE id = $3
+        RETURNING *
+      `;
+      values = [name, active, id];
+    }
+
+    const updated = await pool.query(query, values);
 
     res.json(updated.rows[0]);
   } catch (err) {

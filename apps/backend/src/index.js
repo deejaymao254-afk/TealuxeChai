@@ -55,6 +55,7 @@ app.use("/api/users", loginRoutes);
 app.use("/api/users", usersRouter);
 app.use("/api/orders", orderRoutes);
 app.use("/api/full", productsRouter);
+app.use("/uploads", express.static("uploads"));
 
 /* ===================== */
 /* LOGGER */

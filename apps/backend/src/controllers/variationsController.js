@@ -29,3 +29,22 @@ export const deleteVariation = async (req, res) => {
     res.status(500).json({ error: "Delete failed" });
   }
 };
+
+export const updateVariation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { flavour } = req.body;
+
+    const updated = await pool.query(
+      `UPDATE product_variations
+       SET flavour = $1
+       WHERE id = $2
+       RETURNING *`,
+      [flavour, id]
+    );
+
+    res.json(updated.rows[0]);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update variation" });
+  }
+};

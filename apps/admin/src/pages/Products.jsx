@@ -7,6 +7,8 @@ import {
   fetchProducts,
   createProduct,
   updateProduct,
+  updateVariation as apiUpdateVariation,   
+  updateWeight as apiUpdateWeight,        
   addVariation as apiAddVariation,
   deleteVariation as apiDeleteVariation,
   addWeight as apiAddWeight,
@@ -72,6 +74,8 @@ const filtered = (products || []).filter(p =>
     } catch (err) { console.error(err); }
   };
 
+  
+
   const toggleActive = async (product) => {
     try {
       await updateProduct(product.id, { name: product.name, active: !product.active });
@@ -96,11 +100,20 @@ const filtered = (products || []).filter(p =>
     } catch (err) { console.error(err); }
   };
 
-  const handleImageChange = (id, file) => {
-    const url = URL.createObjectURL(file);
-    setLocalImages(prev => ({ ...prev, [id]: url }));
-    // optional: upload file via API
-  };
+const handleImageUpload = async (product, file) => {
+  const formData = new FormData();
+  formData.append("name", product.name);
+  formData.append("active", product.active);
+  formData.append("image", file);
+
+  try {
+    await updateProduct(product.id, formData, true); // 👈 pass flag for multipart
+    const res = await fetchProducts();
+    setProducts(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   // =========================
   // VARIATIONS & WEIGHTS
@@ -118,6 +131,19 @@ const filtered = (products || []).filter(p =>
       } : p)
     );
   };
+
+  const saveVariation = async (variation) => {
+  try {
+    await apiUpdateVariation(variation.id, {
+      flavour: variation.flavour
+    });
+
+    const res = await fetchProducts();
+    setProducts(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const deleteVariation = async (varId) => {
     try { await apiDeleteVariation(varId); const res = await fetchProducts(); setProducts(res.data); }
@@ -145,6 +171,23 @@ const filtered = (products || []).filter(p =>
     try { await apiDeleteWeight(weightId); const res = await fetchProducts(); setProducts(res.data); }
     catch (err) { console.error(err); }
   };
+
+  const saveWeight = async (w) => {
+  try {
+    await apiUpdateWeight(w.id, {
+      weight: w.weight,
+      price: w.price
+    });
+
+    const res = await fetchProducts();
+    setProducts(res.data);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+
+
 
   // =========================
   // RENDER
@@ -177,7 +220,21 @@ const filtered = (products || []).filter(p =>
     "https://via.placeholder.com/50"
   }
 />
-              <input type="file" accept="image/*" onChange={e => handleImageChange(product.id, e.target.files[0])} />
+<input
+  type="file"
+  accept="image/*"
+  onChange={e => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // preview instantly
+    const url = URL.createObjectURL(file);
+    setLocalImages(prev => ({ ...prev, [product.id]: url }));
+
+    // upload to backend
+    handleImageUpload(product, file);
+  }}
+/>
             </div>
 
             {/* NAME */}
@@ -217,13 +274,19 @@ value={editedNames[product.id] !== undefined
               <div className="order-details">
 {product.variations?.length > 0 ? product.variations.map(v => (
                     <div key={v.id} className="variation-card">
-                    <div className="variation-header">
-                      <input
-                        value={v.flavour}
-                        onChange={e => updateVariation(product.id, v.id, "flavour", e.target.value)}
-                      />
-                      <button className="danger" onClick={() => deleteVariation(v.id)}>Delete</button>
-                    </div>
+<div className="variation-header">
+  <input
+    value={v.flavour}
+    onChange={e =>
+      updateVariation(product.id, v.id, "flavour", e.target.value)
+    }
+  />
+
+  <div className="actions">
+    <button onClick={() => saveVariation(v)}>Save</button>
+    <button className="danger" onClick={() => deleteVariation(v.id)}>Delete</button>
+  </div>
+</div>
 
                     <div className="weights">
                       {(v.weights || []).map(w => (
@@ -236,7 +299,10 @@ value={editedNames[product.id] !== undefined
                             value={w.price}
                             onChange={e => updateWeight(product.id, v.id, w.id, "price", e.target.value)}
                           />
-                          <button className="danger" onClick={() => deleteWeight(w.id)}>x</button>
+<div className="actions">
+  <button onClick={() => saveWeight(w)}>Save</button>
+  <button className="danger" onClick={() => deleteWeight(w.id)}>x</button>
+</div>
                         </div>
                       ))}
                       <button onClick={() => addWeight(v.id)}>+ Add Weight</button>
