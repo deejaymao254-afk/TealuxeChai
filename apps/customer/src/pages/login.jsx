@@ -20,9 +20,6 @@ export default function Login() {
     confirmPin: "",
   });
 
-  // =========================
-  // SPLASH SCREEN (RESTORED)
-  // =========================
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
@@ -40,9 +37,6 @@ export default function Login() {
     return p;
   };
 
-  // =========================
-  // LOGIN (UNCHANGED)
-  // =========================
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -50,11 +44,16 @@ export default function Login() {
     const phone = normalizePhone(form.phone);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, pin: form.pin }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phone, pin: form.pin }),
+        }
+      );
 
       const data = await res.json();
 
@@ -70,12 +69,8 @@ export default function Login() {
     }
   };
 
-  // =========================
-  // REGISTER (UNCHANGED)
-  // =========================
   const handleRegister = async (e) => {
     e.preventDefault();
-
     if (form.pin !== form.confirmPin) {
       alert("PINs do not match");
       return;
@@ -86,22 +81,26 @@ export default function Login() {
     const phone = normalizePhone(form.phone);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/users/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          phone,
-          pin: form.pin,
-          firstName: form.firstName,
-          lastName: form.lastName,
-          idNo: form.idNo,
-          shopName: form.shopName,
-          shopAddress: form.shopAddress,
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/users/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone,
+            pin: form.pin,
+            firstName: form.firstName,
+            lastName: form.lastName,
+            idNo: form.idNo,
+            shopName: form.shopName,
+            shopAddress: form.shopAddress,
+          }),
+        }
+      );
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
 
       alert("Registered successfully. Login now.");
@@ -114,9 +113,6 @@ export default function Login() {
     }
   };
 
-  // =========================
-  // SPLASH UI
-  // =========================
   if (loading) {
     return (
       <div className="splash-screen">
@@ -133,7 +129,6 @@ export default function Login() {
       <div className="login-card">
         <h1 className="app-title">Tealuxe</h1>
 
-        {/* ================= LOGIN ================= */}
         {mode === "login" && (
           <form onSubmit={handleLogin}>
             <div className="form-row">
@@ -182,21 +177,14 @@ export default function Login() {
                 Create account
               </span>
             </div>
-            
           </form>
         )}
-        
 
-        {/* ================= REGISTER ================= */}
         {mode === "register" && (
           <form onSubmit={handleRegister}>
             <div className="form-row">
               <label>First Name</label>
-              <input
-                name="firstName"
-                onChange={handleChange}
-                required
-              />
+              <input name="firstName" onChange={handleChange} required />
             </div>
 
             <div className="form-row">
@@ -261,18 +249,15 @@ export default function Login() {
             </button>
 
             <div className="auth-links">
-              <span onClick={() => setMode("login")}>
-                Back to Sign In
-              </span>
+              <span onClick={() => setMode("login")}>Back to Sign In</span>
             </div>
           </form>
         )}
 
-                <footer className="app-footer">
+        <footer className="app-footer">
           <p>Made by ByteForge</p>
           <span>© 2026</span>
         </footer>
-
       </div>
     </div>
   );

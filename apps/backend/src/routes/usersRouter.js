@@ -1,19 +1,24 @@
 import express from "express";
 import bcrypt from "bcryptjs";
+import cors from "cors";
 import { generateToken } from "../controllers/auth.js";
-import { 
-  createUser, 
+import {
+  createUser,
   getUserByPhone,
   getAllUsers,
   getUserStats,
-  getUserDetails
+  getUserDetails,
 } from "../services/userService.js";
 
 const router = express.Router();
 
-/* ===================== */
-/* HELPERS */
-/* ===================== */
+// ===== CORS =====
+router.use(cors({
+  origin: "*", // replace "*" with your frontend URL in production
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 function normalizePhone(phone) {
   let p = phone.replace(/\D/g, "");
   if (p.startsWith("0")) p = "254" + p.slice(1);
@@ -21,36 +26,21 @@ function normalizePhone(phone) {
   return p;
 }
 
-/* ===================== */
-/* REGISTER */
-/* ===================== */
+// ===== REGISTER =====
 router.post("/register", async (req, res) => {
   try {
-    let {
-      phone,
-      pin,
-      firstName,
-      lastName,
-      idNo,
-      shopName,
-      shopAddress,
-    } = req.body;
+    let { phone, pin, firstName, lastName, idNo, shopName, shopAddress } =
+      req.body;
 
-    if (!phone || !pin || !firstName) {
+    if (!phone || !pin || !firstName)
       return res.status(400).json({ message: "Required fields missing" });
-    }
 
     phone = normalizePhone(phone);
 
-    if (pin.length < 4) {
-      return res.status(400).json({ message: "PIN too short" });
-    }
+    if (pin.length < 4) return res.status(400).json({ message: "PIN too short" });
 
     const existing = await getUserByPhone(phone);
-
-    if (existing) {
-      return res.status(400).json({ message: "User already exists" });
-    }
+    if (existing) return res.status(400).json({ message: "User already exists" });
 
     const user = await createUser({
       phone,
@@ -63,33 +53,20 @@ router.post("/register", async (req, res) => {
     });
 
     const token = generateToken(user);
-
     const { pin: _, ...safeUser } = user;
 
-    return res.json({
-      user: safeUser,
-      token,
-      message: "Registered successfully",
-    });
-
+    return res.json({ user: safeUser, token, message: "Registered successfully" });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Registration failed" });
   }
 });
 
-/* ===================== */
-/* GET USERS */
-/* ===================== */
+// ===== OTHER ROUTES =====
 router.get("/", async (req, res) => {
   try {
     const { page = 1, limit = 20 } = req.query;
-
-    const users = await getAllUsers({
-      page: Number(page),
-      limit: Number(limit),
-    });
-
+    const users = await getAllUsers({ page: Number(page), limit: Number(limit) });
     return res.json(users);
   } catch (err) {
     console.error(err);
@@ -97,9 +74,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-/* ===================== */
-/* GET STATS */
-/* ===================== */
 router.get("/stats", async (req, res) => {
   try {
     const stats = await getUserStats();
@@ -110,19 +84,10 @@ router.get("/stats", async (req, res) => {
   }
 });
 
-/* ===================== */
-/* GET CUSTOMER DETAILS */
-/* ===================== */
 router.get("/:id/details", async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const details = await getUserDetails(id);
-
-    if (!details) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    const details = await getUserDetails(req.params.id);
+    if (!details) return res.status(404).json({ message: "User not found" });
     return res.json(details);
   } catch (err) {
     console.error(err);
