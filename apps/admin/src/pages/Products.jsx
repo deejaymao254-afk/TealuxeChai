@@ -4,7 +4,7 @@ import axios from "axios";
 import "./products.css";
 
 // 🔑 CHANGE THIS ONLY (after Railway deploy)
-const API_BASE = "https://tealuxe-api.up.railway.app";
+const API_BASE = "https://iwioeecgwuvibgrjbrvg.supabase.co/api/full";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
