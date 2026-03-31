@@ -121,8 +121,8 @@ export default function Login() {
     return (
       <div className="splash-screen">
         <div className="floating-logo">
-          <span>Duka</span>
-          <span className="logo-orange">2</span>
+          <span>Tealuxe</span>
+          <span className="logo-orange">Chai</span>
         </div>
       </div>
     );
@@ -131,7 +131,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1 className="app-title">Duka2</h1>
+        <h1 className="app-title">Tealuxe</h1>
 
         {/* ================= LOGIN ================= */}
         {mode === "login" && (
@@ -269,7 +269,7 @@ export default function Login() {
         )}
 
                 <footer className="app-footer">
-          <p>Made by AnteDot Africa</p>
+          <p>Made by ByteForge</p>
           <span>© 2026</span>
         </footer>
 

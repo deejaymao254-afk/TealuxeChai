@@ -1,134 +1,88 @@
--- ===============================
--- DATABASE CLEAN SETUP
--- ===============================
+-- ========================================
+-- Tealuxe Chai Database Schema (Supabase)
+-- ========================================
 
--- (RUN ONLY IF YOU WANT A RESET)
--- DROP DATABASE IF EXISTS "Admin";
--- CREATE DATABASE "Admin";
-
--- Connect to DB manually before running the rest:
--- \c Admin
-
--- ===============================
--- SCHEMA
--- ===============================
-
-CREATE SCHEMA IF NOT EXISTS public;
-
--- ===============================
--- USERS TABLE
--- ===============================
+-- USERS
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    phone VARCHAR(15) UNIQUE NOT NULL,
-    pin VARCHAR(255) NOT NULL,
-
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50),
-    id_no VARCHAR(20) UNIQUE,
-
-    shop_name VARCHAR(100),
-    shop_address VARCHAR(200),
-
-    role VARCHAR(20) NOT NULL DEFAULT 'user'
-        CHECK (role IN ('user', 'admin', 'superadmin')),
-
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    password_hash TEXT NOT NULL,
+    role VARCHAR(20) DEFAULT 'customer', -- admin/customer
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ===============================
--- ORDERS TABLE
--- ===============================
-CREATE TABLE IF NOT EXISTS orders (
-    id SERIAL PRIMARY KEY,
-    checkout_request_id VARCHAR(100) UNIQUE NOT NULL,
-
-    user_id INT REFERENCES users(id) ON DELETE SET NULL,
-
-    items JSONB,
-    amount NUMERIC(12,2) DEFAULT 0,
-
-    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
-
-    mpesa_response JSONB,
-    result_desc TEXT,
-    callback_meta JSONB,
-    message TEXT,
-
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
-);
-
--- ===============================
--- PRODUCTS TABLE
--- ===============================
+-- PRODUCTS (TEA BLENDS)
 CREATE TABLE IF NOT EXISTS products (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    category VARCHAR(50),
-    active BOOLEAN DEFAULT TRUE,
-    units_per_carton INT DEFAULT 48,
-
+    name VARCHAR(100) NOT NULL, -- Black Tea, Chamomile, etc.
+    description TEXT,
+    origin VARCHAR(100), -- e.g., Kericho, Nandi
+    aroma_profile VARCHAR(100),
+    caffeine_level VARCHAR(50),
+    health_benefits TEXT,
+    image_url TEXT,
+    base_price NUMERIC(10,2) NOT NULL,
+    stock INT DEFAULT 0,
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ===============================
--- VARIATIONS
--- ===============================
-
-CREATE TABLE IF NOT EXISTS product_variations (
+-- VARIATIONS (Optional flavors or packaging)
+CREATE TABLE IF NOT EXISTS variations (
     id SERIAL PRIMARY KEY,
     product_id INT REFERENCES products(id) ON DELETE CASCADE,
-
-    flavour VARCHAR(100) NOT NULL,
-    image_url TEXT,
-
-    created_at TIMESTAMP DEFAULT NOW()
+    name VARCHAR(50), -- e.g., Ginger infused, Cardamom infused
+    extra_price NUMERIC(10,2) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ===============================
--- WEIGHTS
--- ===============================
-CREATE TABLE IF NOT EXISTS product_weights (
+-- WEIGHTS / PACK SIZES
+CREATE TABLE IF NOT EXISTS weights (
     id SERIAL PRIMARY KEY,
-    variation_id INT REFERENCES product_variations(id) ON DELETE CASCADE,
-
-    weight VARCHAR(20) NOT NULL,
+    product_id INT REFERENCES products(id) ON DELETE CASCADE,
+    size VARCHAR(50), -- e.g., 50g, 100g, 250g
     price NUMERIC(10,2) NOT NULL,
-
-    created_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- ===============================
--- INDEXES
--- ===============================
-CREATE INDEX IF NOT EXISTS idx_users_phone ON users(phone);
-CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id);
-CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
+-- ORDERS
+CREATE TABLE IF NOT EXISTS orders (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    status VARCHAR(50) DEFAULT 'pending', -- pending, paid, shipped, completed
+    total NUMERIC(10,2),
+    payment_method VARCHAR(50), -- e.g., M-PESA, Cash
+    delivery_address TEXT,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
 
--- ===============================
--- AUTO UPDATE FUNCTION
--- ===============================
-CREATE OR REPLACE FUNCTION set_updated_at()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+-- ORDER ITEMS (link products to orders)
+CREATE TABLE IF NOT EXISTS order_items (
+    id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES orders(id) ON DELETE CASCADE,
+    product_id INT REFERENCES products(id),
+    variation_id INT REFERENCES variations(id),
+    weight_id INT REFERENCES weights(id),
+    quantity INT NOT NULL DEFAULT 1,
+    price NUMERIC(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
 
--- ===============================
--- TRIGGERS
--- ===============================
-DROP TRIGGER IF EXISTS trg_users_updated_at ON users;
-CREATE TRIGGER trg_users_updated_at
-BEFORE UPDATE ON users
-FOR EACH ROW EXECUTE FUNCTION set_updated_at();
-
-DROP TRIGGER IF EXISTS trg_orders_updated_at ON orders;
-CREATE TRIGGER trg_orders_updated_at
-BEFORE UPDATE ON orders
-FOR EACH ROW EXECUTE FUNCTION set_updated_at();
-ALTER TABLE users ALTER COLUMN phone TYPE VARCHAR(20);
+-- TRANSACTIONS (MPESA / Payments)
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    order_id INT REFERENCES orders(id),
+    transaction_id VARCHAR(100),
+    amount NUMERIC(10,2),
+    status VARCHAR(50), -- success, failed, pending
+    payment_method VARCHAR(50),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
