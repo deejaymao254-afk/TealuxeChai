@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase"; // make sure this points to the same Supabase project
+import bcrypt from "bcryptjs";
+
 import "./login.css";
 
 export default function Login({ onLogin }) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [showPin, setShowPin] = useState(false);
   const [form, setForm] = useState({ phone: "", pin: "" });
-
-  const API_URL = import.meta.env.VITE_API_URL;
-  console.log("API URL:", API_URL);
 
   /* ===================== */
   /* SPLASH */
@@ -31,7 +33,7 @@ export default function Login({ onLogin }) {
   const normalizePhone = (phone) => {
     let p = phone.replace(/\D/g, "");
     if (p.startsWith("0")) p = "254" + p.slice(1);
-    if (!p.startsWith("254")) p = "254" + p;
+    else if (!p.startsWith("254")) p = "254" + p;
     return p;
   };
 
@@ -46,20 +48,22 @@ export default function Login({ onLogin }) {
     const phone = normalizePhone(form.phone);
 
     try {
-      const res = await fetch(`${API_URL}/api/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone, pin: form.pin })
-      });
+      const { data: user, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("phone", phone)
+        .eq("role", "admin") // only allow admin login
+        .single();
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Login failed");
+      if (error || !user) throw new Error("Admin not found");
 
-      localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
-      localStorage.setItem("duka2_token", data.token);
+      const validPin = await bcrypt.compare(form.pin, user.pin_hash);
+      if (!validPin) throw new Error("Invalid PIN");
 
-      if (typeof onLogin === "function") onLogin(data.user, data.token);
+      localStorage.setItem("duka2_current_user", JSON.stringify(user));
 
+      if (typeof onLogin === "function") onLogin(user);
+      navigate("/admin/dashboard"); // adjust route as per admin panel
     } catch (err) {
       console.error("LOGIN ERROR:", err);
       alert(err.message || "Login failed");
