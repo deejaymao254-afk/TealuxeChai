@@ -16,6 +16,17 @@ import { ensureSuperAdmin } from "./controllers/initAdmin.js";
 
 const app = express();
 
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://tealuxe-chai-app.vercel.app"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
 /* ===================== */
 /* CONFIG */
 /* ===================== */
@@ -51,7 +62,7 @@ app.get("/test", (req, res) => {
   res.json({ ok: true });
 });
 
-app.use("/api/users", loginRoutes);
+app.use("/api/", loginRoutes);
 app.use("/api/users", usersRouter);
 app.use("/api/orders", orderRoutes);
 app.use("/api/full", productsRouter);

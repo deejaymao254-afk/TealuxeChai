@@ -7,10 +7,8 @@ const router = express.Router();
 
 function normalizePhone(phone) {
   let p = phone.replace(/\D/g, "");
-
   if (p.startsWith("0")) p = "254" + p.substring(1);
   if (!p.startsWith("254")) p = "254" + p;
-
   return p;
 }
 
@@ -19,19 +17,16 @@ function normalizePhone(phone) {
 /* ===================== */
 router.post("/login", async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-
     let { phone, pin } = req.body;
 
     if (!phone || !pin) {
-      console.log("Missing fields");
       return res.status(400).json({ message: "Phone and PIN required" });
     }
 
-    const user = await getUserByPhone(phone);
+    // ✅ FIX: normalize BEFORE query
     phone = normalizePhone(phone);
 
-    console.log("USER FOUND:", user);
+    const user = await getUserByPhone(phone);
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -39,16 +34,11 @@ router.post("/login", async (req, res) => {
 
     const valid = await bcrypt.compare(pin, user.pin);
 
-    console.log("PASSWORD VALID:", valid);
-
     if (!valid) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = generateToken(user);
-
-    console.log("TOKEN:", token);
-
     const { pin: _, ...safeUser } = user;
 
     return res.json({

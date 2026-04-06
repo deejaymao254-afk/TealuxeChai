@@ -12,13 +12,6 @@ import {
 
 const router = express.Router();
 
-// ===== CORS =====
-router.use(cors({
-  origin: "*", // replace "*" with your frontend URL in production
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-}));
-
 function normalizePhone(phone) {
   let p = phone.replace(/\D/g, "");
   if (p.startsWith("0")) p = "254" + p.slice(1);
