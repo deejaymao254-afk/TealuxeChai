@@ -1,5 +1,6 @@
+// src/middleware/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode"; // named import for ESM
 
 export default function ProtectedRoute({ children }) {
   const token = localStorage.getItem("duka2_token");
@@ -8,7 +9,7 @@ export default function ProtectedRoute({ children }) {
   if (!token || !user) return <Navigate to="/login" replace />;
 
   try {
-    const decoded = jwtDecode(token);
+    const decoded = jwtDecode(token); // use named import
 
     if (decoded.exp * 1000 < Date.now()) {
       throw new Error("Token expired");
