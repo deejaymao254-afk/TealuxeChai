@@ -1,3 +1,4 @@
+// backend/controllers/productsController.js
 import { pool } from "../config/db.js";
 
 // ==============================
@@ -8,10 +9,10 @@ export const getFullProducts = async (req, res) => {
     const products = await pool.query(`
       SELECT 
         p.*,
-        v.id as v_id,
+        v.id AS v_id,
         v.flavour,
         v.image_url,
-        w.id as w_id,
+        w.id AS w_id,
         w.weight,
         w.price
       FROM products p
@@ -30,7 +31,7 @@ export const getFullProducts = async (req, res) => {
           name: row.name,
           category: row.category,
           active: row.active,
-          image: row.image || "",
+          image: row.image || "", // 👈 ensure image is never null
           variations: []
         };
       }
@@ -43,7 +44,7 @@ export const getFullProducts = async (req, res) => {
           variation = {
             id: row.v_id,
             flavour: row.flavour,
-            image_url: row.image_url,
+            image_url: row.image_url || "",
             weights: []
           };
           map[row.id].variations.push(variation);
@@ -65,13 +66,6 @@ export const getFullProducts = async (req, res) => {
     console.error(err);
     res.status(500).json({ error: "Failed to fetch products" });
   }
-
-
-  result.push({
-  ...p,
-  image: p.image || "", // 👈 ADD THIS LINE
-  variations: varList
-});
 };
 
 // ==============================
@@ -90,6 +84,7 @@ export const createProduct = async (req, res) => {
 
     res.json(newProduct.rows[0]);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Failed to create product" });
   }
 };
@@ -101,34 +96,18 @@ export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, active } = req.body;
-
     const image = req.file ? `/uploads/${req.file.filename}` : null;
 
-    let query;
-    let values;
+    const query = image
+      ? `UPDATE products SET name = $1, active = $2, image = $3 WHERE id = $4 RETURNING *`
+      : `UPDATE products SET name = $1, active = $2 WHERE id = $3 RETURNING *`;
 
-    if (image) {
-      query = `
-        UPDATE products
-        SET name = $1, active = $2, image = $3
-        WHERE id = $4
-        RETURNING *
-      `;
-      values = [name, active, image, id];
-    } else {
-      query = `
-        UPDATE products
-        SET name = $1, active = $2
-        WHERE id = $3
-        RETURNING *
-      `;
-      values = [name, active, id];
-    }
-
+    const values = image ? [name, active, image, id] : [name, active, id];
     const updated = await pool.query(query, values);
 
     res.json(updated.rows[0]);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Update failed" });
   }
 };
