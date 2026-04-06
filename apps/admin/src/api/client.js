@@ -6,7 +6,7 @@ const api = axios.create({
 
 // Attach token automatically
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token"); // must match login
+  const token = localStorage.getItem("duka2_token"); // must match login
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });

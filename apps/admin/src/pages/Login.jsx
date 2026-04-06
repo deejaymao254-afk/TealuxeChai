@@ -48,11 +48,11 @@ export default function Login({ onLogin }) {
       if (!validPin) throw new Error("Invalid PIN");
 
       // ✅ store token and user
-      localStorage.setItem("auth_token", user.token || "");
+      localStorage.setItem("duka2_token", user.token || "");
       localStorage.setItem("duka2_current_user", JSON.stringify(user));
       if (onLogin) onLogin(user);
 
-      navigate("/admin/dashboard");
+      navigate("/");
     } catch (err) {
       console.error("LOGIN ERROR:", err);
       alert(err.message || "Login failed");
