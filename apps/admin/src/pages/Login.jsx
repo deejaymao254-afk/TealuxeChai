@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// Adjust the path to match your project structure
-import { supabase } from "../lib/supabase";
-import { createClient } from "@supabase/supabase-js"; 
+import { supabase } from "../lib/supabase"; // single source of truth
 import bcrypt from "bcryptjs";
 
 import "./login.css";
-
-// ----------------------
-// Supabase client setup
-// ----------------------
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function Login({ onLogin }) {
   const navigate = useNavigate();
@@ -61,7 +52,7 @@ export default function Login({ onLogin }) {
         .from("users")
         .select("*")
         .eq("phone", phone)
-        .in("role", ["admin", "superadmin"]) // allow both admin and superadmin
+        .in("role", ["admin", "superadmin"])
         .single();
 
       if (error || !user) throw new Error("Admin not found");
@@ -73,7 +64,6 @@ export default function Login({ onLogin }) {
 
       if (typeof onLogin === "function") onLogin(user);
 
-      // navigate based on role
       navigate(user.role === "superadmin" ? "/superadmin/dashboard" : "/admin/dashboard");
     } catch (err) {
       console.error("LOGIN ERROR:", err);
