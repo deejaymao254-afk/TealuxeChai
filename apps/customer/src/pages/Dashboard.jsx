@@ -21,11 +21,9 @@ export default function Dashboard() {
   const [selectedFlavour, setSelectedFlavour] = useState(null);
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [products, setProducts] = useState([]);
 
   const navigate = useNavigate();
-
   const unitPrice = Number(selectedWeight?.price || 0);
 
   useEffect(() => {
@@ -65,7 +63,9 @@ export default function Dashboard() {
     const handleTouchMove = (e) => {
       if (selectedProduct) e.preventDefault();
     };
-    document.body.addEventListener("touchmove", handleTouchMove, { passive: false });
+    document.body.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
     return () =>
       document.body.removeEventListener("touchmove", handleTouchMove);
   }, [selectedProduct]);
@@ -169,6 +169,11 @@ export default function Dashboard() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
     >
+      {/* HERO SECTION */}
+      <section className="hero">
+        <h1>Welcome to <span className="accent">Tealuxe</span> — Where Every Sip Tells a Story</h1>
+      </section>
+
       {pullDistance > 0 && (
         <div className="pull-refresh-indicator">↓ Pull to refresh</div>
       )}
@@ -206,7 +211,7 @@ export default function Dashboard() {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
             const previewImage =
-              firstVar?.image_url || "../assets/kripsii-salted.png";
+              firstVar?.image_url || "/assets/kripsii-salted.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
@@ -255,10 +260,7 @@ export default function Dashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={
-                selectedFlavour?.image_url ||
-                "../assets/kripsii-chilli.png"
-              }
+              src={selectedFlavour?.image_url || "/assets/kripsii-chilli.png"}
               alt=""
               className="modal-product-image"
             />
@@ -304,17 +306,11 @@ export default function Dashboard() {
             </select>
 
             <div className="qty-controls">
-              <button
-                onClick={() =>
-                  setQuantity((q) => Math.max(1, q - 1))
-                }
-              >
+              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
                 -
               </button>
               <span>{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)}>
-                +
-              </button>
+              <button onClick={() => setQuantity((q) => q + 1)}>+</button>
             </div>
 
             <div style={{ textAlign: "right", marginTop: 10 }}>
@@ -323,10 +319,7 @@ export default function Dashboard() {
               </strong>
             </div>
 
-            <button
-              className="confirm-btn"
-              onClick={confirmAddToCart}
-            >
+            <button className="confirm-btn" onClick={confirmAddToCart}>
               Add Order
             </button>
           </div>
