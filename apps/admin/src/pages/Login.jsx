@@ -39,7 +39,7 @@ export default function Login({ onLogin }) {
         .from("users")
         .select("*")
         .eq("phone", phone)
-        .eq("role", "admin")
+        .eq("role", "superadmin")
         .single();
 
       if (error || !user) throw new Error("Admin not found");
