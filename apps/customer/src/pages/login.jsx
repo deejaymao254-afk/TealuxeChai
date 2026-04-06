@@ -14,6 +14,7 @@ export default function Login() {
 
   const [form, setForm] = useState({
     phone: "",
+    email: "",
     pin: "",
     firstName: "",
     lastName: "",
@@ -99,6 +100,7 @@ export default function Login() {
       const { error: insertError } = await supabase.from("users").insert([
         {
           phone,
+          email: form.email,
           first_name: form.firstName,
           last_name: form.lastName,
           id_no: form.idNo,
@@ -188,6 +190,16 @@ export default function Login() {
             <div className="form-row">
               <label>Last Name</label>
               <input name="lastName" onChange={handleChange} />
+            </div>
+
+            <div className="form-row">
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="form-row">
