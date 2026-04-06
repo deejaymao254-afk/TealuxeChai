@@ -6,11 +6,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ["jwt-decode"], // externalize if needed
     },
   },
 
-  
+
   server: {
     proxy: {
       '/api': {
