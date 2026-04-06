@@ -10,10 +10,7 @@ export default function Dashboard({ onLogout }) {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const token = localStorage.getItem("auth_token");
-        if (!token) throw new Error("No auth token found");
-
-        const res = await getProducts(token);
+        const res = await getProducts();
         const data = Array.isArray(res) ? res : res.products || [];
         setProducts(data);
       } catch (err) {
