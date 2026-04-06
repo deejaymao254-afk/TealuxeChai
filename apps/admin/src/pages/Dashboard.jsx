@@ -5,17 +5,25 @@ import "../App.css";
 
 export default function Dashboard({ onLogout }) {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [sidebarOpen] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Fetch products from API
+  // Fetch products from API with proper token handling
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await getProducts(); // res should be array or { products: [...] }
+        const token = localStorage.getItem("auth_token"); // get token from storage
+        if (!token) throw new Error("No auth token found");
+
+        const res = await getProducts(token); // pass token to API
         const data = Array.isArray(res) ? res : res.products || [];
         setProducts(data);
       } catch (err) {
         console.error("Failed to fetch products:", err.message);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -48,6 +56,9 @@ export default function Dashboard({ onLogout }) {
       update();
     });
   }, []);
+
+  if (loading) return <div className="loading">Loading dashboard...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
 
   return (
     <div className={`app ${sidebarOpen ? "sidebar-open" : ""}`}>
