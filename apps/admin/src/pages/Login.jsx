@@ -119,3 +119,5 @@ export default function Login({ onLogin }) {
     </div>
   );
 }
+
+console.log("API URL:", API_URL);
