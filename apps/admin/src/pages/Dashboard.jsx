@@ -1,6 +1,5 @@
-// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
-import { getProducts } from "../api/client"; // ✅ correct import
+import { getProducts } from "../api/client";
 import "../App.css";
 
 export default function Dashboard({ onLogout }) {
@@ -9,14 +8,13 @@ export default function Dashboard({ onLogout }) {
   const [sidebarOpen] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch products from API with proper token handling
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const token = localStorage.getItem("auth_token"); // get token from storage
+        const token = localStorage.getItem("auth_token");
         if (!token) throw new Error("No auth token found");
 
-        const res = await getProducts(token); // pass token to API
+        const res = await getProducts(token);
         const data = Array.isArray(res) ? res : res.products || [];
         setProducts(data);
       } catch (err) {
@@ -30,10 +28,8 @@ export default function Dashboard({ onLogout }) {
     loadProducts();
   }, []);
 
-  // KPI ANIMATION
   useEffect(() => {
     const counters = document.querySelectorAll(".value");
-
     counters.forEach((counter) => {
       const raw = counter.innerText;
       const target = parseFloat(raw.replace(/[^\d.]/g, "")) || 0;
@@ -119,6 +115,7 @@ export default function Dashboard({ onLogout }) {
               <span>Action</span>
             </div>
 
+            {products.length === 0 && <div className="table-row">No products available</div>}
             {products.slice(0, 6).map((p) => (
               <div key={p.id} className="table-row">
                 <span>#{p.id}</span>
@@ -129,44 +126,6 @@ export default function Dashboard({ onLogout }) {
                 </span>
               </div>
             ))}
-          </div>
-
-          <div className="table-container">
-            <div className="table-header">
-              <span>Metric</span>
-              <span>Value</span>
-            </div>
-            <div className="table-row">
-              <span>Regions Active</span>
-              <span>12 / 14</span>
-            </div>
-            <div className="table-row">
-              <span>Latency</span>
-              <span>Low</span>
-            </div>
-            <div className="table-row">
-              <span>Sync Status</span>
-              <span className="status confirmed">Stable</span>
-            </div>
-          </div>
-
-          <div className="table-container">
-            <div className="table-header">
-              <span>System Alerts</span>
-              <span>Status</span>
-            </div>
-            <div className="table-row">
-              <span>Inventory sync completed</span>
-              <span className="status delivered">OK</span>
-            </div>
-            <div className="table-row">
-              <span>Route delay · Kisumu</span>
-              <span className="status pending">Warning</span>
-            </div>
-            <div className="table-row">
-              <span>Reconciliation running</span>
-              <span className="status confirmed">Active</span>
-            </div>
           </div>
         </div>
       </main>

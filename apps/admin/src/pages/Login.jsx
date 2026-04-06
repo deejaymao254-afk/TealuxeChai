@@ -47,6 +47,8 @@ export default function Login({ onLogin }) {
       const validPin = await bcrypt.compare(form.pin, user.pin_hash);
       if (!validPin) throw new Error("Invalid PIN");
 
+      // ✅ store token and user
+      localStorage.setItem("auth_token", user.token || ""); 
       localStorage.setItem("duka2_current_user", JSON.stringify(user));
       if (onLogin) onLogin(user);
 

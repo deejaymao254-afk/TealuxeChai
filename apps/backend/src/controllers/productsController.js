@@ -1,11 +1,17 @@
-// backend/controllers/productsController.js
 import { pool } from "../config/db.js";
+import { authMiddleware, verifyToken } from "../api/auth.js";
+import express from "express";
+const router = express.Router();
 
 // ==============================
 // GET FULL PRODUCT TREE
 // ==============================
 export const getFullProducts = async (req, res) => {
   try {
+    const token = req.headers.authorization;
+    const user = verifyToken(token);
+    if (!user) return res.status(401).json({ error: "Invalid or expired token" });
+
     const products = await pool.query(`
       SELECT 
         p.*,
@@ -22,40 +28,35 @@ export const getFullProducts = async (req, res) => {
     `);
 
     const map = {};
-
     for (const row of products.rows) {
-      // PRODUCT
       if (!map[row.id]) {
         map[row.id] = {
           id: row.id,
           name: row.name,
           category: row.category,
           active: row.active,
-          image: row.image || "", // 👈 ensure image is never null
-          variations: []
+          image: row.image || "",
+          variations: [],
         };
       }
 
-      // VARIATION
       if (row.v_id) {
         let variation = map[row.id].variations.find(v => v.id === row.v_id);
-
         if (!variation) {
           variation = {
             id: row.v_id,
             flavour: row.flavour,
             image_url: row.image_url || "",
-            weights: []
+            weights: [],
           };
           map[row.id].variations.push(variation);
         }
 
-        // WEIGHT
         if (row.w_id) {
           variation.weights.push({
             id: row.w_id,
             weight: row.weight,
-            price: row.price
+            price: row.price,
           });
         }
       }
@@ -111,3 +112,5 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ error: "Update failed" });
   }
 };
+
+export default router;
