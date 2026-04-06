@@ -19,13 +19,11 @@ import "./App.css";
 
 export default function App() {
   /* ===================== */
-  /* USER STATE (force logout initially) */
+  /* USER STATE (load from storage) */
   /* ===================== */
   const [user, setUser] = useState(() => {
-    // Clean localStorage on app start
-    localStorage.removeItem("duka2_current_user");
-    localStorage.removeItem("duka2_token");
-    return null;
+    const stored = localStorage.getItem("duka2_current_user");
+    return stored ? JSON.parse(stored) : null;
   });
 
   /* ===================== */
@@ -56,7 +54,7 @@ export default function App() {
       handleLogout();
       alert("Session expired. Please log in again.");
     }, IDLE_TIME);
-  }, [handleLogout, IDLE_TIME]);
+  }, [handleLogout]);
 
   /* ===================== */
   /* TRACK USER ACTIVITY */
@@ -76,8 +74,6 @@ export default function App() {
       clearTimeout(timeoutRef.current);
     };
   }, [user, resetTimer]);
-
-  
 
   /* ===================== */
   /* ROUTES */
