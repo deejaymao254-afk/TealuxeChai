@@ -121,4 +121,55 @@ export default function Login({ onLogin }) {
 }
 
 const API_URL = import.meta.env.VITE_API_URL;
-console.log("API URL:", API_URL);
+console.log("API URL:", API_URL);import { useState } from "react";
+
+export default function Login({ onLogin }) {
+  const [phone, setPhone] = useState("");
+  const [pin, setPin] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // FAKE LOGIN (for testing render only)
+    const fakeUser = {
+      id: 1,
+      phone,
+      name: "Test Admin",
+    };
+
+    const fakeToken = "test-token";
+
+    localStorage.setItem("duka2_current_user", JSON.stringify(fakeUser));
+    localStorage.setItem("duka2_token", fakeToken);
+
+    if (onLogin) onLogin(fakeUser, fakeToken);
+  };
+
+  return (
+    <div>
+      <h2>Login Test</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Phone:</label>
+          <input
+            type="text"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label>PIN:</label>
+          <input
+            type="password"
+            value={pin}
+            onChange={(e) => setPin(e.target.value)}
+          />
+        </div>
+
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  );
+}
