@@ -81,6 +81,7 @@ export default function App() {
         }
       >
         <Route index element={<Dashboard user={user} />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="orders" element={<Orders />} />
         <Route path="products" element={<Products />} />
         <Route path="customers" element={<Customers />} />
