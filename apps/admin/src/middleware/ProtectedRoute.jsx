@@ -6,7 +6,7 @@ export default function ProtectedRoute({ children, user }) {
   const token = localStorage.getItem("duka2_token");
 
   // If no user prop or no token, redirect to login
-  if (!user || !token) return <Navigate to="/login" replace />;
+  if (!user || !token) return <Navigate to="/" replace />;
 
   try {
     const decoded = jwtDecode(token);
