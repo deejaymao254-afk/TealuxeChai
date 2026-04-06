@@ -23,7 +23,7 @@ export default function Footer() {
 
       {/* CENTER */}
       <div className="footer-center">
-        <span className="footer-brand">AnteDot Africa</span>
+        <span className="footer-brand">Tealuxe Chai</span>
       </div>
 
       {/* RIGHT */}

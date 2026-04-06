@@ -2,21 +2,15 @@ import { useEffect, useState } from "react";
 import "./login.css";
 
 export default function Login({ onLogin }) {
-
   const [loading, setLoading] = useState(true);
   const [showPin, setShowPin] = useState(false);
-
-  const [form, setForm] = useState({
-    phone: "",
-    pin: "",
-  });
-
+  const [form, setForm] = useState({ phone: "", pin: "" });
 
   /* ===================== */
   /* SPLASH */
   /* ===================== */
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800); // slightly faster
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -43,37 +37,26 @@ export default function Login({ onLogin }) {
   /* ===================== */
   const handleLogin = async (e) => {
     e.preventDefault();
-
-    if (loading) return; // 🔒 prevent double submit
+    if (loading) return;
 
     setLoading(true);
-
     const phone = normalizePhone(form.phone);
     const API_URL = import.meta.env.VITE_API_URL;
 
     try {
       const res = await fetch(`${API_URL}/api/users/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ phone, pin: form.pin }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, pin: form.pin })
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
 
-      if (!res.ok) {
-        throw new Error(data.message || "Login failed");
-      }
+      localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
+      localStorage.setItem("duka2_token", data.token);
 
-      // 💾 Save auth
-localStorage.setItem("duka2_current_user", JSON.stringify(data.user));
-localStorage.setItem("duka2_token", data.token);
-
-// notify App.jsx
-if (typeof onLogin === "function") {
-  onLogin(data.user, data.token);
-}
+      if (typeof onLogin === "function") onLogin(data.user, data.token);
 
     } catch (err) {
       console.error("LOGIN ERROR:", err);
@@ -103,22 +86,12 @@ if (typeof onLogin === "function") {
   return (
     <div className="login-container">
       <div className="login-card">
-
         <h1 className="app-title">Tealuxe Chai</h1>
-
         <form onSubmit={handleLogin}>
-
           <div className="form-row">
             <label>Phone</label>
-            <input
-              type="tel"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              required
-            />
+            <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
           </div>
-
           <div className="form-row">
             <label>PIN</label>
             <div className="pin-field">
@@ -129,26 +102,19 @@ if (typeof onLogin === "function") {
                 onChange={handleChange}
                 required
               />
-              <span
-                className="pin-toggle"
-                onClick={() => setShowPin(!showPin)}
-              >
+              <span className="pin-toggle" onClick={() => setShowPin(!showPin)}>
                 {showPin ? "🙈" : "👁"}
               </span>
             </div>
           </div>
-
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
-
         </form>
-
         <footer className="app-footer">
-          <p>Made by AnteDot Africa</p>
+          <p>Made by ByteForge</p>
           <span>© 2026</span>
         </footer>
-
       </div>
     </div>
   );

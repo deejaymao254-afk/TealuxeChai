@@ -80,8 +80,6 @@ Duka2
 │  │     │  ├─ variationsController.js
 │  │     │  └─ weightsController.js
 │  │     ├─ index.js
-│  │     ├─ lib
-│  │     │  └─ supabase.js
 │  │     ├─ middleware
 │  │     │  ├─ authMiddleware.js
 │  │     │  ├─ ProtectedRoute.jsx
@@ -176,6 +174,8 @@ Duka2
 │  │  │  ├─ components
 │  │  │  │  └─ BottomNav.jsx
 │  │  │  ├─ index.css
+│  │  │  ├─ lib
+│  │  │  │  └─ supabase.js
 │  │  │  ├─ main.jsx
 │  │  │  ├─ pages
 │  │  │  │  ├─ analytics.css
