@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import { supabase } from "../lib/supabase";
 import "../App.css";
 import "./orders.css";
 
 export default function Orders() {
-const context = useOutletContext() || {};
-const user = context.user;
-
+  const context = useOutletContext() || {};
+  const user = context.user;
 
   const [searchTerm, setSearchTerm] = useState("");
   const [hotOffers] = useState([
@@ -16,33 +16,36 @@ const user = context.user;
   ]);
   const [previousOrders, setPreviousOrders] = useState([]);
 
-  // If user not ready, prevent crash
-  useEffect(() => {
-    if (!user?.id) return;
-  }, [user]);
-
-  // Fetch previous orders
   useEffect(() => {
     async function fetchOrders() {
       if (!user?.id) return;
 
       try {
-        const res = await fetch(`/api/orders?userId=${user.id}`);
-        const data = await res.json();
+        const { data, error } = await supabase
+          .from("orders")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
 
         setPreviousOrders(
-          data.map(order => ({
+          data.map((order) => ({
             id: order.id,
-            items: order.items ? JSON.stringify(order.items) : "No items",
+            items: order.items
+              ? JSON.stringify(order.items)
+              : "No items",
             total: order.amount,
-            date: new Date(order.created_at).toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric"
-            })
+            date: new Date(order.created_at).toLocaleDateString(
+              "en-GB",
+              {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              }
+            ),
           }))
         );
-
       } catch (err) {
         console.error("Failed to fetch previous orders", err);
       }
@@ -51,7 +54,7 @@ const user = context.user;
     fetchOrders();
   }, [user]);
 
-  const filteredOffers = hotOffers.filter(p =>
+  const filteredOffers = hotOffers.filter((p) =>
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -63,25 +66,29 @@ const user = context.user;
           placeholder="Search hot offers..."
           className="search-bar"
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
-      {/* HOT OFFERS */}
       <section className="orders-panel">
         <h2>🔥 Hot Offers</h2>
 
         <div className="orders-grid">
-          {filteredOffers.map(p => (
+          {filteredOffers.map((p) => (
             <div key={p.id} className="order-card shadow-light">
               <div>
                 <h4>{p.name}</h4>
                 <div className="order-meta">
                   <span className="price">KES {p.price}</span>
-                  <span className={`stock-badge ${
-                    p.stock === 0 ? "out" :
-                    p.stock < 10 ? "low" : "ok"
-                  }`}>
+                  <span
+                    className={`stock-badge ${
+                      p.stock === 0
+                        ? "out"
+                        : p.stock < 10
+                        ? "low"
+                        : "ok"
+                    }`}
+                  >
                     {p.stock === 0
                       ? "Out of Stock"
                       : `${p.stock} in stock`}
@@ -100,7 +107,6 @@ const user = context.user;
         </div>
       </section>
 
-      {/* PREVIOUS ORDERS */}
       <section className="orders-panel">
         <h2>Your Previous Orders</h2>
 
@@ -108,7 +114,7 @@ const user = context.user;
           {previousOrders.length === 0 ? (
             <p>No orders yet.</p>
           ) : (
-            previousOrders.map(order => (
+            previousOrders.map((order) => (
               <div key={order.id} className="previous-card">
                 <div>
                   <strong>Order #{order.id}</strong>
@@ -116,7 +122,9 @@ const user = context.user;
                 </div>
 
                 <div className="prev-right">
-                  <div className="prev-total">KES {order.total}</div>
+                  <div className="prev-total">
+                    KES {order.total}
+                  </div>
                   <small>{order.date}</small>
                 </div>
               </div>

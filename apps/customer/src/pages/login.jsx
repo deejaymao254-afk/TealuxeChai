@@ -39,85 +39,86 @@ export default function Login() {
     return p;
   };
 
-const handleLogin = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const phone = normalizePhone(form.phone);
+    const phone = normalizePhone(form.phone);
 
-  try {
-    const { data, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("phone", phone)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("phone", phone)
+        .single();
 
-    if (error || !data) {
-      throw new Error("User not found");
+      if (error || !data) {
+        throw new Error("User not found");
+      }
+
+      if (data.password_hash !== form.pin) {
+        throw new Error("Invalid PIN");
+      }
+
+      localStorage.setItem(
+        "duka2_current_user",
+        JSON.stringify(data)
+      );
+
+      navigate("/app/dashboard");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+
+    if (form.pin !== form.confirmPin) {
+      alert("PINs do not match");
+      return;
     }
 
-    if (data.pin !== form.pin) {
-      throw new Error("Invalid PIN");
+    setLoading(true);
+
+    const phone = normalizePhone(form.phone);
+
+    try {
+      const { data: existing } = await supabase
+        .from("users")
+        .select("id")
+        .eq("phone", phone)
+        .single();
+
+      if (existing) {
+        throw new Error("User already exists");
+      }
+
+      const { error } = await supabase.from("users").insert([
+        {
+          phone,
+          password_hash: form.pin,
+          full_name: `${form.firstName} ${form.lastName}`,
+          id_no: form.idNo,
+          shop_name: form.shopName,
+          shop_address: form.shopAddress,
+        },
+      ]);
+
+      if (error) throw error;
+
+      alert("Registered successfully");
+      setMode("login");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
-
-    localStorage.setItem("duka2_current_user", JSON.stringify(data));
-    navigate("/app/dashboard");
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
-const handleRegister = async (e) => {
-  e.preventDefault();
-
-  if (form.pin !== form.confirmPin) {
-    alert("PINs do not match");
-    return;
-  }
-
-  setLoading(true);
-
-  const phone = normalizePhone(form.phone);
-
-  try {
-    const { data: existing } = await supabase
-      .from("users")
-      .select("id")
-      .eq("phone", phone)
-      .single();
-
-    if (existing) {
-      throw new Error("User already exists");
-    }
-
-    const { error } = await supabase.from("users").insert([
-      {
-        phone,
-        pin: form.pin,
-        first_name: form.firstName,
-        last_name: form.lastName,
-        id_no: form.idNo,
-        shop_name: form.shopName,
-        shop_address: form.shopAddress,
-      },
-    ]);
-
-    if (error) throw error;
-
-    alert("Registered successfully");
-    setMode("login");
-
-  } catch (err) {
-    console.error(err);
-    alert(err.message || "Registration failed");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   if (loading) {
     return (
@@ -255,7 +256,9 @@ const handleRegister = async (e) => {
             </button>
 
             <div className="auth-links">
-              <span onClick={() => setMode("login")}>Back to Sign In</span>
+              <span onClick={() => setMode("login")}>
+                Back to Sign In
+              </span>
             </div>
           </form>
         )}

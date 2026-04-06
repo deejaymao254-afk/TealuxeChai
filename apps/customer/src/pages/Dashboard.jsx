@@ -9,10 +9,8 @@ import "./Dashboard.css";
 const categories = ["All", "Snacks"];
 
 export default function Dashboard() {
-  // =========================
-  // STATE
-  // =========================
   const { cart, setCart } = useOutletContext();
+
   const [darkMode, setDarkMode] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -24,34 +22,39 @@ export default function Dashboard() {
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [products, setProducts] = useState([]);
+
   const navigate = useNavigate();
 
-  // =========================
-  // PRICING
-  // =========================
   const unitPrice = Number(selectedWeight?.price || 0);
 
-const [products, setProducts] = useState([]);
+  useEffect(() => {
+    async function loadProducts() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .eq("active", true)
+        .order("id", { ascending: false });
 
-useEffect(() => {
-  async function loadProducts() {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .order("id", { ascending: false });
+      if (error) {
+        console.error("Supabase error:", error);
+        return;
+      }
 
-    if (error) {
-      console.error(error);
-      return;
+      const normalized = (data || []).map((p) => ({
+        ...p,
+        variations:
+          typeof p.variations === "string"
+            ? JSON.parse(p.variations)
+            : p.variations || [],
+      }));
+
+      setProducts(normalized);
     }
-    setProducts(data);
-  }
-  loadProducts();
-}, []);
 
-  // =========================
-  // UI EFFECTS
-  // =========================
+    loadProducts();
+  }, []);
+
   useEffect(() => {
     const refreshLayout = () => window.dispatchEvent(new Event("resize"));
     const timer = setTimeout(refreshLayout, 200);
@@ -74,7 +77,7 @@ useEffect(() => {
         y: 30,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.1
+        stagger: 0.1,
       });
     });
   }, []);
@@ -97,9 +100,6 @@ useEffect(() => {
     }
   }, [selectedProduct]);
 
-  // =========================
-  // TOUCH HANDLERS
-  // =========================
   const handleTouchStart = (e) => {
     if (window.scrollY === 0) setPullStart(e.touches[0].clientY);
   };
@@ -111,22 +111,15 @@ useEffect(() => {
     }
   };
 
-  // =========================
-  // FILTERING
-  // =========================
-const filteredProducts = products
-  .filter((p) => p.active)
-  .filter((p) => p.variations?.length > 0) // 🔥 ADD THIS
-  .filter((p) =>
-    activeCategory === "All" ? true : p.category === activeCategory
-  )
-  .filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products
+    .filter((p) => p.variations?.length > 0)
+    .filter((p) =>
+      activeCategory === "All" ? true : p.category === activeCategory
+    )
+    .filter((p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-  // =========================
-  // PRODUCT ACTIONS
-  // =========================
   const openProductPopup = (product) => {
     setSelectedProduct(product);
     const firstVar = product.variations?.[0];
@@ -137,39 +130,39 @@ const filteredProducts = products
     setNotes("");
   };
 
-const confirmAddToCart = () => {
-  if (!selectedFlavour || !selectedWeight) {
-    alert("Please select product options");
-    return;
-  }
-
-  setCart((prev) => [
-    ...prev,
-    {
-      productId: selectedProduct.id,
-      variationId: selectedFlavour.id,
-      weightId: selectedWeight.id,
-      name: selectedProduct.name,
-      flavour: selectedFlavour.flavour,
-      weight: selectedWeight.weight,
-      unitPrice,
-      quantity,
-      total: unitPrice * quantity,
-      notes
+  const confirmAddToCart = () => {
+    if (!selectedFlavour || !selectedWeight) {
+      alert("Please select product options");
+      return;
     }
-  ]);
 
-  setSelectedProduct(null);
-};
+    setCart((prev) => [
+      ...prev,
+      {
+        productId: selectedProduct.id,
+        variationId: selectedFlavour.id,
+        weightId: selectedWeight.id,
+        name: selectedProduct.name,
+        flavour: selectedFlavour.flavour,
+        weight: selectedWeight.weight,
+        unitPrice,
+        quantity,
+        total: unitPrice * quantity,
+        notes,
+      },
+    ]);
+
+    setSelectedProduct(null);
+  };
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
-    document.documentElement.setAttribute("data-theme", !darkMode ? "dark" : "light");
+    document.documentElement.setAttribute(
+      "data-theme",
+      !darkMode ? "dark" : "light"
+    );
   };
 
-  // =========================
-  // UI
-  // =========================
   return (
     <div
       className="dashboard-container"
@@ -195,7 +188,9 @@ const confirmAddToCart = () => {
           {categories.map((c, i) => (
             <button
               key={i}
-              className={`category-btn ${activeCategory === c ? "active" : ""}`}
+              className={`category-btn ${
+                activeCategory === c ? "active" : ""
+              }`}
               onClick={() => setActiveCategory(c)}
             >
               {c}
@@ -210,7 +205,8 @@ const confirmAddToCart = () => {
           {filteredProducts.map((p) => {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || "../assets/kripsii-salted.png";
+            const previewImage =
+              firstVar?.image_url || "../assets/kripsii-salted.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
@@ -220,18 +216,19 @@ const confirmAddToCart = () => {
                 <span className="product-price">
                   From KES {Number(previewPrice).toLocaleString()}
                 </span>
-<button
-  className="add-cart"
-  onClick={() => {
-    if (!p.variations?.length) {
-      alert("Product not configured yet");
-      return;
-    }
-    openProductPopup(p);
-  }}
->
-  Order
-</button>
+
+                <button
+                  className="add-cart"
+                  onClick={() => {
+                    if (!p.variations?.length) {
+                      alert("Product not configured yet");
+                      return;
+                    }
+                    openProductPopup(p);
+                  }}
+                >
+                  Order
+                </button>
               </div>
             );
           })}
@@ -249,10 +246,19 @@ const confirmAddToCart = () => {
       </button>
 
       {selectedProduct && (
-        <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
-          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="modal-overlay"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <div
+            className="product-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
-              src={selectedFlavour?.image_url || "../assets/kripsii-chilli.png"}
+              src={
+                selectedFlavour?.image_url ||
+                "../assets/kripsii-chilli.png"
+              }
               alt=""
               className="modal-product-image"
             />
@@ -268,27 +274,27 @@ const confirmAddToCart = () => {
                 setSelectedWeight(flavour?.weights?.[0]);
               }}
             >
-{selectedProduct.variations?.length > 0 ? (
-  selectedProduct.variations.map((v) => (
-    <option key={v.id} value={v.id}>
-      {v.flavour}
-    </option>
-  ))
-) : (
-  <option>No variations</option>
-)}
+              {selectedProduct.variations?.length > 0 ? (
+                selectedProduct.variations.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.flavour}
+                  </option>
+                ))
+              ) : (
+                <option>No variations</option>
+              )}
             </select>
 
             <select
               value={selectedWeight?.id || ""}
-onChange={(e) => {
-  if (!selectedFlavour) return;
+              onChange={(e) => {
+                if (!selectedFlavour) return;
 
-  const weight = selectedFlavour.weights.find(
-    (w) => w.id === Number(e.target.value)
-  );
-  setSelectedWeight(weight);
-}}
+                const weight = selectedFlavour.weights.find(
+                  (w) => w.id === Number(e.target.value)
+                );
+                setSelectedWeight(weight);
+              }}
             >
               {selectedFlavour?.weights?.map((w) => (
                 <option key={w.id} value={w.id}>
@@ -298,18 +304,29 @@ onChange={(e) => {
             </select>
 
             <div className="qty-controls">
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
+              <button
+                onClick={() =>
+                  setQuantity((q) => Math.max(1, q - 1))
+                }
+              >
                 -
               </button>
               <span>{quantity}</span>
-              <button onClick={() => setQuantity((q) => q + 1)}>+</button>
+              <button onClick={() => setQuantity((q) => q + 1)}>
+                +
+              </button>
             </div>
 
             <div style={{ textAlign: "right", marginTop: 10 }}>
-              <strong>Total: KES {(unitPrice * quantity).toLocaleString()}</strong>
+              <strong>
+                Total: KES {(unitPrice * quantity).toLocaleString()}
+              </strong>
             </div>
 
-            <button className="confirm-btn" onClick={confirmAddToCart}>
+            <button
+              className="confirm-btn"
+              onClick={confirmAddToCart}
+            >
               Add Order
             </button>
           </div>
