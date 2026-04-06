@@ -1,7 +1,8 @@
-import { supabaseAdmin } from "../lib/supabaseAdmin";
-import bcrypt from "bcryptjs";
+// src/pages/Login.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import bcrypt from "bcryptjs";
+import { supabaseAdmin } from "../lib/supabaseAdmin"; // fixed import
 import "./login.css";
 
 export default function Login({ onLogin }) {
@@ -27,7 +28,7 @@ export default function Login({ onLogin }) {
     return p;
   };
 
-  const handleLogin = async (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
@@ -76,7 +77,7 @@ export default function Login({ onLogin }) {
     <div className="login-container">
       <div className="login-card">
         <h1 className="app-title">Tealuxe Chai</h1>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLoginSubmit}>
           <div className="form-row">
             <label>Phone</label>
             <input
@@ -97,7 +98,10 @@ export default function Login({ onLogin }) {
                 onChange={handleChange}
                 required
               />
-              <span className="pin-toggle" onClick={() => setShowPin(!showPin)}>
+              <span
+                className="pin-toggle"
+                onClick={() => setShowPin(!showPin)}
+              >
                 {showPin ? "🙈" : "👁"}
               </span>
             </div>
