@@ -1,3 +1,4 @@
+// App.jsx
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
@@ -18,17 +19,11 @@ import ProtectedRoute from "./middleware/ProtectedRoute";
 import "./App.css";
 
 export default function App() {
-  /* ===================== */
-  /* USER STATE (load from storage) */
-  /* ===================== */
   const [user, setUser] = useState(() => {
     const stored = localStorage.getItem("duka2_current_user");
     return stored ? JSON.parse(stored) : null;
   });
 
-  /* ===================== */
-  /* AUTH HANDLERS */
-  /* ===================== */
   const handleLogin = (userData, token) => {
     localStorage.setItem("duka2_current_user", JSON.stringify(userData));
     localStorage.setItem("duka2_token", token);
@@ -41,58 +36,46 @@ export default function App() {
     setUser(null);
   }, []);
 
-  /* ===================== */
-  /* IDLE TIMER SETUP */
-  /* ===================== */
+  // ===================== IDLE TIMER =====================
   const timeoutRef = useRef(null);
   const IDLE_TIME = 10 * 60 * 1000; // 10 minutes
 
   const resetTimer = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
     timeoutRef.current = setTimeout(() => {
       handleLogout();
-      alert("Session expired. Please log in again.");
+      // Use safe alert + navigation
+      setTimeout(() => alert("Session expired. Please log in again."), 50);
     }, IDLE_TIME);
   }, [handleLogout]);
 
-  /* ===================== */
-  /* TRACK USER ACTIVITY */
-  /* ===================== */
   useEffect(() => {
     if (!user) return;
 
     const events = ["mousemove", "keydown", "click", "scroll"];
-    events.forEach((event) => window.addEventListener(event, resetTimer));
+    const handleActivity = () => resetTimer();
 
+    events.forEach((event) => window.addEventListener(event, handleActivity));
     resetTimer();
 
     return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, resetTimer)
-      );
+      events.forEach((event) => window.removeEventListener(event, handleActivity));
       clearTimeout(timeoutRef.current);
     };
   }, [user, resetTimer]);
 
-  /* ===================== */
-  /* ROUTES */
-  /* ===================== */
+  // ===================== ROUTES =====================
   return (
     <Routes>
-      {/* LOGIN */}
       <Route
         path="/login"
-        element={
-          user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />
-        }
+        element={user ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />}
       />
 
-      {/* PROTECTED */}
       <Route
         path="/"
         element={
-          <ProtectedRoute user={user}>
+          <ProtectedRoute>
             <AppLayout user={user} onLogout={handleLogout} />
           </ProtectedRoute>
         }
@@ -107,7 +90,6 @@ export default function App() {
         <Route path="settings" element={<Settings />} />
       </Route>
 
-      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
