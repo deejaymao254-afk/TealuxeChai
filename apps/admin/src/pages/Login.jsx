@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Adjust the path to match your project structure
+import { supabase } from "../lib/supabase";
 import { createClient } from "@supabase/supabase-js"; 
 import bcrypt from "bcryptjs";
 
