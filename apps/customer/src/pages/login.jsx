@@ -39,37 +39,38 @@ export default function Login() {
     return p;
   };
 
-  const handleLogin = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
+    if (typeof window === "undefined") return; // SSR guard
     setLoading(true);
 
     const phone = normalizePhone(form.phone);
 
-    try {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("phone", phone)
-        .single();
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("*")
+          .eq("phone", phone)
+          .single();
 
-      if (error || !data) throw new Error("User not found");
+        if (error || !data) throw new Error("User not found");
+        if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
 
-      if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
-
-      localStorage.setItem("duka2_current_user", JSON.stringify(data));
-
-      navigate("/app/dashboard");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
+        localStorage.setItem("duka2_current_user", JSON.stringify(data));
+        navigate("/app/dashboard");
+      } catch (err) {
+        console.error(err);
+        alert(err.message || "Login failed");
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-
+    if (typeof window === "undefined") return; // SSR guard
     if (form.pin !== form.confirmPin) {
       alert("PINs do not match");
       return;
@@ -78,41 +79,43 @@ export default function Login() {
     setLoading(true);
     const phone = normalizePhone(form.phone);
 
-    try {
-      const { data: existing, error: checkError } = await supabase
-        .from("users")
-        .select("id")
-        .eq("phone", phone)
-        .single();
+    (async () => {
+      try {
+        const { data: existing, error: checkError } = await supabase
+          .from("users")
+          .select("id")
+          .eq("phone", phone)
+          .single();
 
-      if (checkError && checkError.code !== "PGRST116") throw checkError; // ignore not found
-      if (existing) throw new Error("User already exists");
+        if (checkError && checkError.code !== "PGRST116") throw checkError;
+        if (existing) throw new Error("User already exists");
 
-      const { error } = await supabase.auth.signUp({
-        email: `${phone}@duka2.local`,
-        password: form.pin,
-        options: {
-          data: {
-            phone,
-            full_name: `${form.firstName} ${form.lastName}`,
-            id_no: form.idNo,
-            shop_name: form.shopName,
-            shop_address: form.shopAddress,
-            role: "user",
+        const { error } = await supabase.auth.signUp({
+          email: `${phone}@duka2.local`,
+          password: form.pin,
+          options: {
+            data: {
+              phone,
+              full_name: `${form.firstName} ${form.lastName}`,
+              id_no: form.idNo,
+              shop_name: form.shopName,
+              shop_address: form.shopAddress,
+              role: "user",
+            },
           },
-        },
-      });
+        });
 
-      if (error) throw error;
+        if (error) throw error;
 
-      alert("Registered successfully");
-      setMode("login");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Registration failed");
-    } finally {
-      setLoading(false);
-    }
+        alert("Registered successfully");
+        setMode("login");
+      } catch (err) {
+        console.error(err);
+        alert(err.message || "Registration failed");
+      } finally {
+        setLoading(false);
+      }
+    })();
   };
 
   if (loading) {
@@ -167,9 +170,7 @@ export default function Login() {
             </button>
 
             <div className="auth-links">
-              <span onClick={() => setMode("register")}>
-                Create account
-              </span>
+              <span onClick={() => setMode("register")}>Create account</span>
             </div>
           </form>
         )}
@@ -243,9 +244,7 @@ export default function Login() {
             </button>
 
             <div className="auth-links">
-              <span onClick={() => setMode("login")}>
-                Back to Sign In
-              </span>
+              <span onClick={() => setMode("login")}>Back to Sign In</span>
             </div>
           </form>
         )}
