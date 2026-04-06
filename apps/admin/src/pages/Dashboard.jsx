@@ -5,7 +5,6 @@ import "../App.css";
 export default function Dashboard({ onLogout }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -57,7 +56,7 @@ export default function Dashboard({ onLogout }) {
   if (error) return <div className="error">Error: {error}</div>;
 
   return (
-    <div className={`app ${sidebarOpen ? "sidebar-open" : ""}`}>
+    <div className="app">
       <main className="main">
         <div className="orders-header">
           <h2>Dashboard</h2>

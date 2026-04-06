@@ -48,7 +48,7 @@ export default function Login({ onLogin }) {
       if (!validPin) throw new Error("Invalid PIN");
 
       // ✅ store token and user
-      localStorage.setItem("auth_token", user.token || ""); 
+      localStorage.setItem("auth_token", user.token || "");
       localStorage.setItem("duka2_current_user", JSON.stringify(user));
       if (onLogin) onLogin(user);
 
@@ -61,14 +61,15 @@ export default function Login({ onLogin }) {
     }
   };
 
-  if (loading) return (
-    <div className="splash-screen">
-      <div className="floating-logo">
-        <span>Tealuxe</span>
-        <span className="logo-orange">Chai</span>
+  if (loading)
+    return (
+      <div className="splash-screen">
+        <div className="floating-logo">
+          <span>Tealuxe</span>
+          <span className="logo-orange">Chai</span>
+        </div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="login-container">
@@ -77,12 +78,24 @@ export default function Login({ onLogin }) {
         <form onSubmit={handleLogin}>
           <div className="form-row">
             <label>Phone</label>
-            <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
+            <input
+              type="tel"
+              name="phone"
+              value={form.phone}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-row">
             <label>PIN</label>
             <div className="pin-field">
-              <input type={showPin ? "text" : "password"} name="pin" value={form.pin} onChange={handleChange} required />
+              <input
+                type={showPin ? "text" : "password"}
+                name="pin"
+                value={form.pin}
+                onChange={handleChange}
+                required
+              />
               <span className="pin-toggle" onClick={() => setShowPin(!showPin)}>
                 {showPin ? "🙈" : "👁"}
               </span>
