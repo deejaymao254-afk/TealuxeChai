@@ -12,6 +12,17 @@ import {
 
 const router = express.Router();
 
+// ====================
+// Enable CORS for frontend
+// ====================
+router.use(
+  cors({
+    origin: "https://tealuxe-chai-app.vercel.app", // your frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
 function normalizePhone(phone) {
   let p = phone.replace(/\D/g, "");
   if (p.startsWith("0")) p = "254" + p.slice(1);
@@ -55,7 +66,40 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// ===== OTHER ROUTES =====
+// ===== LOGIN =====
+router.post("/login", async (req, res) => {
+  try {
+    let { phone, pin } = req.body;
+
+    if (!phone || !pin) {
+      return res.status(400).json({ message: "Phone and PIN required" });
+    }
+
+    phone = normalizePhone(phone);
+
+    const user = await getUserByPhone(phone);
+
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const valid = await bcrypt.compare(pin, user.pin);
+
+    if (!valid) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = generateToken(user);
+    const { pin: _, ...safeUser } = user;
+
+    return res.json({ user: safeUser, token });
+  } catch (err) {
+    console.error("LOGIN ERROR:", err);
+    return res.status(500).json({ message: "Login failed" });
+  }
+});
+
+// ===== GET ALL USERS =====
 router.get("/", async (req, res) => {
   try {
     const { page = 1, limit = 20 } = req.query;
@@ -67,6 +111,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// ===== GET USER STATS =====
 router.get("/stats", async (req, res) => {
   try {
     const stats = await getUserStats();
@@ -77,6 +122,7 @@ router.get("/stats", async (req, res) => {
   }
 });
 
+// ===== GET USER DETAILS =====
 router.get("/:id/details", async (req, res) => {
   try {
     const details = await getUserDetails(req.params.id);

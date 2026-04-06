@@ -35,7 +35,7 @@ export default function Login() {
   const normalizePhone = (phone) => {
     let p = phone.replace(/\D/g, "");
     if (p.startsWith("0")) p = "254" + p.slice(1);
-    if (!p.startsWith("254")) p = "254" + p;
+    else if (!p.startsWith("254")) p = "254" + p;
     return p;
   };
 
@@ -52,18 +52,11 @@ export default function Login() {
         .eq("phone", phone)
         .single();
 
-      if (error || !data) {
-        throw new Error("User not found");
-      }
+      if (error || !data) throw new Error("User not found");
 
-      if (data.password_hash !== form.pin) {
-        throw new Error("Invalid PIN");
-      }
+      if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
 
-      localStorage.setItem(
-        "duka2_current_user",
-        JSON.stringify(data)
-      );
+      localStorage.setItem("duka2_current_user", JSON.stringify(data));
 
       navigate("/app/dashboard");
     } catch (err) {
@@ -83,7 +76,6 @@ export default function Login() {
     }
 
     setLoading(true);
-
     const phone = normalizePhone(form.phone);
 
     try {
@@ -94,12 +86,10 @@ export default function Login() {
         .single();
 
       if (checkError && checkError.code !== "PGRST116") throw checkError; // ignore not found
-      if (existing) {
-        throw new Error("User already exists");
-      }
+      if (existing) throw new Error("User already exists");
 
       const { error } = await supabase.auth.signUp({
-        email: `${phone}@duka2.local`, // pseudo-email to satisfy Supabase auth
+        email: `${phone}@duka2.local`,
         password: form.pin,
         options: {
           data: {
@@ -149,15 +139,7 @@ export default function Login() {
                 type="tel"
                 name="phone"
                 value={form.phone}
-                onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, "");
-                  if (!value.startsWith("254")) {
-                    value =
-                      "254" +
-                      value.replace(/^0+/, "").replace(/^254?/, "");
-                  }
-                  setForm({ ...form, phone: value });
-                }}
+                onChange={handleChange}
                 required
               />
             </div>
