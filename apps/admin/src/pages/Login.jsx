@@ -1,7 +1,7 @@
 export default function Login() {
   return (
     <div style={{ padding: 20 }}>
-      <h2>Login Page (Placeholder)</h2>
+      <h2>Login  (Placeholder)</h2>
       <p>Click login button to simulate user:</p>
       <button
         onClick={() => {
