@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import { supabase } from "../lib/supabase";
+
 import gsap from "gsap";
 import "../App.css";
 import "./Dashboard.css";
@@ -32,13 +34,19 @@ export default function Dashboard() {
 const [products, setProducts] = useState([]);
 
 useEffect(() => {
-  fetch("https://iwioeecgwuvibgrjbrvg.supabase.co/api/full")
-    .then(res => res.json())
-    .then(data => {
-      console.log("Products:", data);
-      setProducts(data);
-    })
-    .catch(err => console.error("Failed to fetch products", err));
+  async function loadProducts() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("id", { ascending: false });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+    setProducts(data);
+  }
+  loadProducts();
 }, []);
 
   // =========================

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
+
 import "./login.css";
 
 export default function Login() {
@@ -37,81 +39,85 @@ export default function Login() {
     return p;
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    const phone = normalizePhone(form.phone);
+  const phone = normalizePhone(form.phone);
 
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ phone, pin: form.pin }),
-        }
-      );
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("phone", phone)
+      .single();
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message);
-
-      localStorage.setItem("duka2_user", JSON.stringify(data.user));
-      navigate("/app/dashboard");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (form.pin !== form.confirmPin) {
-      alert("PINs do not match");
-      return;
+    if (error || !data) {
+      throw new Error("User not found");
     }
 
-    setLoading(true);
-
-    const phone = normalizePhone(form.phone);
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/users/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phone,
-            pin: form.pin,
-            firstName: form.firstName,
-            lastName: form.lastName,
-            idNo: form.idNo,
-            shopName: form.shopName,
-            shopAddress: form.shopAddress,
-          }),
-        }
-      );
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
-      alert("Registered successfully. Login now.");
-      setMode("login");
-    } catch (err) {
-      console.error(err);
-      alert(err.message || "Registration failed");
-    } finally {
-      setLoading(false);
+    if (data.pin !== form.pin) {
+      throw new Error("Invalid PIN");
     }
-  };
+
+    localStorage.setItem("duka2_current_user", JSON.stringify(data));
+    navigate("/app/dashboard");
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Login failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleRegister = async (e) => {
+  e.preventDefault();
+
+  if (form.pin !== form.confirmPin) {
+    alert("PINs do not match");
+    return;
+  }
+
+  setLoading(true);
+
+  const phone = normalizePhone(form.phone);
+
+  try {
+    const { data: existing } = await supabase
+      .from("users")
+      .select("id")
+      .eq("phone", phone)
+      .single();
+
+    if (existing) {
+      throw new Error("User already exists");
+    }
+
+    const { error } = await supabase.from("users").insert([
+      {
+        phone,
+        pin: form.pin,
+        first_name: form.firstName,
+        last_name: form.lastName,
+        id_no: form.idNo,
+        shop_name: form.shopName,
+        shop_address: form.shopAddress,
+      },
+    ]);
+
+    if (error) throw error;
+
+    alert("Registered successfully");
+    setMode("login");
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Registration failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (loading) {
     return (
