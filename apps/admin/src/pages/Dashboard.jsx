@@ -1,15 +1,25 @@
+// src/pages/Dashboard.jsx
 import { useEffect, useState } from "react";
-import { getProducts } from "../api/products"; // fixed import
+import { getProducts } from "../api/client"; // ✅ correct import
 import "../App.css";
 
 export default function Dashboard({ onLogout }) {
   const [products, setProducts] = useState([]);
   const [sidebarOpen] = useState(false);
 
+  // Fetch products from API
   useEffect(() => {
-    getProducts()
-      .then(setProducts)
-      .catch((err) => console.error("Failed to fetch products:", err.message));
+    const loadProducts = async () => {
+      try {
+        const res = await getProducts(); // res should be array or { products: [...] }
+        const data = Array.isArray(res) ? res : res.products || [];
+        setProducts(data);
+      } catch (err) {
+        console.error("Failed to fetch products:", err.message);
+      }
+    };
+
+    loadProducts();
   }, []);
 
   // KPI ANIMATION
