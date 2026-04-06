@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../lib/supabase"; // use single import
 
 import "./login.css";
 
@@ -79,7 +79,6 @@ export default function Login() {
     try {
       const phone = normalizePhone(form.phone);
 
-      // Check if user exists
       const { data: existing, error: checkError } = await supabase
         .from("users")
         .select("id")
@@ -89,7 +88,6 @@ export default function Login() {
       if (checkError && checkError.code !== "PGRST116") throw checkError;
       if (existing) throw new Error("User already exists");
 
-      // Register user in Supabase Auth
       const { error } = await supabase.auth.signUp({
         email: `${phone}@duka2.local`,
         password: form.pin,
