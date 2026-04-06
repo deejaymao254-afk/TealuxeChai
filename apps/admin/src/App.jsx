@@ -75,7 +75,7 @@ export default function App() {
       <Route
         path="/"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute user={user}>
             <AppLayout user={user} onLogout={handleLogout} />
           </ProtectedRoute>
         }

@@ -1,6 +1,6 @@
 // src/middleware/ProtectedRoute.jsx
 import { Navigate } from "react-router-dom";
-import jwt_decode from "jwt-decode"; // default import works in modern ESM
+import { jwtDecode } from "jwt-decode"; // named import works in ESM
 
 export default function ProtectedRoute({ children, user }) {
   const token = localStorage.getItem("duka2_token");
@@ -9,7 +9,7 @@ export default function ProtectedRoute({ children, user }) {
   if (!user || !token) return <Navigate to="/login" replace />;
 
   try {
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token);
 
     // Token expiration check
     if (decoded.exp * 1000 < Date.now()) {
