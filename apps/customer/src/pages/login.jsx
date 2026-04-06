@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabase"; // use single import
+import { supabase } from "../lib/supabase"; // single import
+import bcrypt from "bcryptjs"; // for hashing PINs
 
 import "./login.css";
 
@@ -39,24 +40,27 @@ export default function Login() {
     return p;
   };
 
+  // ---------------- LOGIN ----------------
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (typeof window === "undefined") return; 
+    if (typeof window === "undefined") return;
     setLoading(true);
 
     try {
       const phone = normalizePhone(form.phone);
 
-      const { data, error } = await supabase
+      const { data: user, error } = await supabase
         .from("users")
         .select("*")
         .eq("phone", phone)
         .single();
 
-      if (error || !data) throw new Error("User not found");
-      if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
+      if (error || !user) throw new Error("User not found");
 
-      localStorage.setItem("duka2_current_user", JSON.stringify(data));
+      const validPin = await bcrypt.compare(form.pin, user.pin_hash);
+      if (!validPin) throw new Error("Invalid PIN");
+
+      localStorage.setItem("duka2_current_user", JSON.stringify(user));
       navigate("/app/dashboard");
     } catch (err) {
       console.error(err);
@@ -66,6 +70,7 @@ export default function Login() {
     }
   };
 
+  // ---------------- REGISTER ----------------
   const handleRegister = async (e) => {
     e.preventDefault();
     if (typeof window === "undefined") return;
@@ -88,22 +93,23 @@ export default function Login() {
       if (checkError && checkError.code !== "PGRST116") throw checkError;
       if (existing) throw new Error("User already exists");
 
-      const { error } = await supabase.auth.signUp({
-        email: `${phone}@duka2.local`,
-        password: form.pin,
-        options: {
-          data: {
-            phone,
-            full_name: `${form.firstName} ${form.lastName}`,
-            id_no: form.idNo,
-            shop_name: form.shopName,
-            shop_address: form.shopAddress,
-            role: "user",
-          },
-        },
-      });
+      // hash the PIN
+      const pin_hash = await bcrypt.hash(form.pin, 10);
 
-      if (error) throw error;
+      const { error: insertError } = await supabase.from("users").insert([
+        {
+          phone,
+          first_name: form.firstName,
+          last_name: form.lastName,
+          id_no: form.idNo,
+          shop_name: form.shopName,
+          shop_address: form.shopAddress,
+          pin_hash,
+          role: "user",
+        },
+      ]);
+
+      if (insertError) throw insertError;
 
       alert("Registered successfully");
       setMode("login");
