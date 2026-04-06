@@ -58,8 +58,8 @@ export default function App() {
     <div className="app-container">
       <header className="app-header">
         <div className="logo">
-          <span className="logo-black">Duka</span>
-          <span className="logo-orange">2</span>
+          <span className="logo-black">Tealuxe</span>
+          <span className="logo-orange">Chai</span>
         </div>
 
         <div className="profile-wrapper" ref={wrapperRef}>

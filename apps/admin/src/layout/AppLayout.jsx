@@ -71,8 +71,8 @@ export default function AppLayout({ user, onLogout }) {
           <div className="header-left">
 
             <div className="logo">
-              <span className="logo-white">Duka</span>
-              <span className="logo-orange">2</span>
+              <span className="logo-white">Tealuxe</span>
+              <span className="logo-orange">Chai</span>
             </div>
           </div>
 

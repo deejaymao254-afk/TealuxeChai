@@ -90,8 +90,8 @@ if (typeof onLogin === "function") {
     return (
       <div className="splash-screen">
         <div className="floating-logo">
-          <span>Duka</span>
-          <span className="logo-orange">2</span>
+          <span>Tealuxe</span>
+          <span className="logo-orange">Chai</span>
         </div>
       </div>
     );
@@ -104,7 +104,7 @@ if (typeof onLogin === "function") {
     <div className="login-container">
       <div className="login-card">
 
-        <h1 className="app-title">Duka2</h1>
+        <h1 className="app-title">Tealuxe Chai</h1>
 
         <form onSubmit={handleLogin}>
 
