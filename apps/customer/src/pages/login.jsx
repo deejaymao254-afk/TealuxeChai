@@ -87,26 +87,31 @@ export default function Login() {
     const phone = normalizePhone(form.phone);
 
     try {
-      const { data: existing } = await supabase
+      const { data: existing, error: checkError } = await supabase
         .from("users")
         .select("id")
         .eq("phone", phone)
         .single();
 
+      if (checkError && checkError.code !== "PGRST116") throw checkError; // ignore not found
       if (existing) {
         throw new Error("User already exists");
       }
 
-      const { error } = await supabase.from("users").insert([
-        {
-          phone,
-          password_hash: form.pin,
-          full_name: `${form.firstName} ${form.lastName}`,
-          id_no: form.idNo,
-          shop_name: form.shopName,
-          shop_address: form.shopAddress,
+      const { error } = await supabase.auth.signUp({
+        email: `${phone}@duka2.local`, // pseudo-email to satisfy Supabase auth
+        password: form.pin,
+        options: {
+          data: {
+            phone,
+            full_name: `${form.firstName} ${form.lastName}`,
+            id_no: form.idNo,
+            shop_name: form.shopName,
+            shop_address: form.shopAddress,
+            role: "user",
+          },
         },
-      ]);
+      });
 
       if (error) throw error;
 
