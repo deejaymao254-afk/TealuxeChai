@@ -57,7 +57,7 @@ h1, h2, h3, h4, h5, h6, .product-name, .brand-name {
       rgba(255, 255, 255, 0.6), 
       rgba(255, 255, 255, 0) 70%
     ), /* overlay */
-    url("../assets/herobg.jpg") center/cover no-repeat; /* background image */
+    url("../assets/herobg.png") center/cover no-repeat; /* background image */
   color: var(--hero-text);
   padding: 60px 28px;
   border-radius: 6px;
@@ -72,7 +72,7 @@ h1, h2, h3, h4, h5, h6, .product-name, .brand-name {
       rgba(0, 0, 0, 0.6), 
       rgba(0, 0, 0, 0) 70%
     ),
-    url("../assets/herobg.jpg") center/cover no-repeat; /* same image, can darken via overlay if needed */
+    url("../assets/herobg.png") center/cover no-repeat; /* same image, can darken via overlay if needed */
   color: var(--hero-text);
 }
 
