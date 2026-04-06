@@ -39,83 +39,82 @@ export default function Login() {
     return p;
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (typeof window === "undefined") return; // SSR guard
+    if (typeof window === "undefined") return; 
     setLoading(true);
 
-    const phone = normalizePhone(form.phone);
+    try {
+      const phone = normalizePhone(form.phone);
 
-    (async () => {
-      try {
-        const { data, error } = await supabase
-          .from("users")
-          .select("*")
-          .eq("phone", phone)
-          .single();
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("phone", phone)
+        .single();
 
-        if (error || !data) throw new Error("User not found");
-        if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
+      if (error || !data) throw new Error("User not found");
+      if (data.password_hash !== form.pin) throw new Error("Invalid PIN");
 
-        localStorage.setItem("duka2_current_user", JSON.stringify(data));
-        navigate("/app/dashboard");
-      } catch (err) {
-        console.error(err);
-        alert(err.message || "Login failed");
-      } finally {
-        setLoading(false);
-      }
-    })();
+      localStorage.setItem("duka2_current_user", JSON.stringify(data));
+      navigate("/app/dashboard");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    if (typeof window === "undefined") return; // SSR guard
+    if (typeof window === "undefined") return;
+
     if (form.pin !== form.confirmPin) {
       alert("PINs do not match");
       return;
     }
 
     setLoading(true);
-    const phone = normalizePhone(form.phone);
+    try {
+      const phone = normalizePhone(form.phone);
 
-    (async () => {
-      try {
-        const { data: existing, error: checkError } = await supabase
-          .from("users")
-          .select("id")
-          .eq("phone", phone)
-          .single();
+      // Check if user exists
+      const { data: existing, error: checkError } = await supabase
+        .from("users")
+        .select("id")
+        .eq("phone", phone)
+        .single();
 
-        if (checkError && checkError.code !== "PGRST116") throw checkError;
-        if (existing) throw new Error("User already exists");
+      if (checkError && checkError.code !== "PGRST116") throw checkError;
+      if (existing) throw new Error("User already exists");
 
-        const { error } = await supabase.auth.signUp({
-          email: `${phone}@duka2.local`,
-          password: form.pin,
-          options: {
-            data: {
-              phone,
-              full_name: `${form.firstName} ${form.lastName}`,
-              id_no: form.idNo,
-              shop_name: form.shopName,
-              shop_address: form.shopAddress,
-              role: "user",
-            },
+      // Register user in Supabase Auth
+      const { error } = await supabase.auth.signUp({
+        email: `${phone}@duka2.local`,
+        password: form.pin,
+        options: {
+          data: {
+            phone,
+            full_name: `${form.firstName} ${form.lastName}`,
+            id_no: form.idNo,
+            shop_name: form.shopName,
+            shop_address: form.shopAddress,
+            role: "user",
           },
-        });
+        },
+      });
 
-        if (error) throw error;
+      if (error) throw error;
 
-        alert("Registered successfully");
-        setMode("login");
-      } catch (err) {
-        console.error(err);
-        alert(err.message || "Registration failed");
-      } finally {
-        setLoading(false);
-      }
-    })();
+      alert("Registered successfully");
+      setMode("login");
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
