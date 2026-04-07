@@ -171,7 +171,7 @@ export default function Dashboard() {
     >
       {/* HERO SECTION */}
       <section className="hero">
-        <h1>Welcome to <span className="accent">Tealuxe</span> — Where Every Sip Tells a Story</h1>
+        <h1>A World of <span className="accent">Tea,</span><br/> — A Sip of Luxury</h1>
       </section>
 
       {pullDistance > 0 && (

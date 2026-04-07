@@ -4,9 +4,6 @@ Duka2
 ├─ (
 ├─ apps
 │  ├─ admin
-│  │  ├─ .vercel
-│  │  │  ├─ project.json
-│  │  │  └─ README.txt
 │  │  ├─ duka2_logs.txt
 │  │  ├─ eslint.config.js
 │  │  ├─ index.html
@@ -38,6 +35,8 @@ Duka2
 │  │  │  ├─ index.css
 │  │  │  ├─ layout
 │  │  │  │  └─ AppLayout.jsx
+│  │  │  ├─ lib
+│  │  │  │  └─ supabaseAdmin.js
 │  │  │  ├─ main.jsx
 │  │  │  ├─ middleware
 │  │  │  │  ├─ ErrorBoundary.jsx
@@ -110,17 +109,6 @@ Duka2
 │  │        └─ logger.js
 │  ├─ customer
 │  │  ├─ !o)}
-│  │  ├─ .vercel
-│  │  │  ├─ builders
-│  │  │  │  ├─ package-lock.json
-│  │  │  │  └─ package.json
-│  │  │  ├─ output
-│  │  │  │  ├─ builds.json
-│  │  │  │  ├─ config.json
-│  │  │  │  └─ diagnostics
-│  │  │  │     └─ cli_traces.json
-│  │  │  ├─ project.json
-│  │  │  └─ README.txt
 │  │  ├─ concurrently
 │  │  ├─ duka2-preview@0.0.0
 │  │  ├─ eslint.config.js
@@ -144,6 +132,7 @@ Duka2
 │  │  │  │  ├─ default-product.jpg
 │  │  │  │  ├─ grain.png
 │  │  │  │  ├─ herobg.jpg
+│  │  │  │  ├─ herobg.png
 │  │  │  │  ├─ Krackles11.jpg
 │  │  │  │  ├─ Krackles2.png
 │  │  │  │  ├─ krackles3.jpg

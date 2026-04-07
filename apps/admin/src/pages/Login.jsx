@@ -54,7 +54,7 @@ export default function Login({ onLogin }) {
       localStorage.setItem("duka2_current_user", JSON.stringify(user));
       if (onLogin) onLogin(user, token);
 
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       console.error("LOGIN ERROR:", err);
       alert(err.message || "Login failed");
