@@ -15,23 +15,23 @@
   --hero-text: #ffffff;
   --h-text: #111;
   --p-text: #4d4d4d;
-  --accent-color: #ff8a00;
+  --accent-color: #06be00;
   --btn-bg: #fff;
   --btn-text: #111;
   --btn-border: #eee;
-  --btn-hover-bg: #ff8a00;
+  --btn-hover-bg: #008b00;
   --btn-hover-text: #fff;
-  --btn-primary-bg: #ff8a00;
+  --btn-primary-bg: #008b00;
   --btn-primary-text: #fff;
-  --btn-primary-hover-bg: #e07a00;
-  --floating-bg: #ff8a00;
+  --btn-primary-hover-bg: #008b00;
+  --floating-bg: #008b00;
   --floating-text: #fff;
   --grey-border: #eee;
   --shadow: rgba(0,0,0,0.1);
   --label-text: #111; /* panel label text */
   --text-main: #111;
 --text-light: #4d4d4d;
---orange-main: #ff8a00;
+--orange-main: #008b00;
 
 }
 
@@ -43,16 +43,16 @@
   --hero-text: #eee;
   --h-text: #eee;
   --p-text: #ccc;
-  --accent-color: #ffb347;
+  --accent-color: #008b00;
   --btn-bg: #444;
   --btn-text: #eee;
   --btn-border: #555;
-  --btn-hover-bg: #ffb347;
+  --btn-hover-bg: #008b00;
   --btn-hover-text: #111;
-  --btn-primary-bg: #ffb347;
+  --btn-primary-bg: #008b00;
   --btn-primary-text: #111;
-  --btn-primary-hover-bg: #ff9933;
-  --floating-bg: #ffb347;
+  --btn-primary-hover-bg: #008b00;
+  --floating-bg: #008b00;
   --floating-text: #111;
   --grey-border: #444;
   --shadow: rgba(0,0,0,0.4);
