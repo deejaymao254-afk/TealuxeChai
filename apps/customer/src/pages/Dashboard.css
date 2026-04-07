@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6, .product-name, .brand-name {
   background: 
     linear-gradient(
       to right, 
-      rgba(255, 255, 255, 0.6), 
+      rgba(0, 0, 0, 0.205), 
       rgba(255, 255, 255, 0) 70%
     ), /* overlay */
     url("../assets/herobg.png") center/cover no-repeat; /* background image */
