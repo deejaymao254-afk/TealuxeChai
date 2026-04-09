@@ -7,6 +7,7 @@ import "../App.css";
 import "./Dashboard.css";
 
 import blackTea from "../assets/blackTea.png";
+import teabg from "../assets/teabg.png";
 
 
 // Tea variants/categories
@@ -325,7 +326,7 @@ export default function Dashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={selectedFlavour?.image_url || blackTea}
+              src={selectedFlavour?.image_url || teabg}
               alt=""
               className="modal-product-image"
             />
