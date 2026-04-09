@@ -8,26 +8,95 @@ export default function Products() {
   const [categoryFilter, setCategoryFilter] = useState("ALL");
   const [expandedId, setExpandedId] = useState(null);
 
-  // 🔹 PLACEHOLDER PRODUCTS (replace with API later)
+  // 🔹 TEA PRODUCTS
   const [products] = useState([
     {
-      id: "PRD-1001",
-      name: "Kripsii - BBQ",
-      category: "Snacks",
-      basePrice: 200,
+      id: "TEA-001",
+      name: "Black Tea",
+      category: "Black",
+      basePrice: 250,
       variations: [
-        { flavour: "BBQ", weights: [{ weight: "50g", price: 200 }] },
-        { flavour: "Chilli", weights: [{ weight: "50g", price: 210 }] }
+        { flavour: "Classic Black", weights: [{ weight: "100g", price: 250 }] }
       ],
       active: true,
     },
     {
-      id: "PRD-1002",
-      name: "Kripsii - Salted",
-      category: "Snacks",
-      basePrice: 200,
+      id: "TEA-002",
+      name: "Ginger Tea",
+      category: "Ginger",
+      basePrice: 300,
       variations: [
-        { flavour: "Salted", weights: [{ weight: "50g", price: 200 }] }
+        { flavour: "Ginger", weights: [{ weight: "100g", price: 300 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-003",
+      name: "Cardamom Tea",
+      category: "Cardamom",
+      basePrice: 350,
+      variations: [
+        { flavour: "Cardamom", weights: [{ weight: "100g", price: 350 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-004",
+      name: "Peppermint Tea",
+      category: "Peppermint",
+      basePrice: 320,
+      variations: [
+        { flavour: "Peppermint", weights: [{ weight: "100g", price: 320 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-005",
+      name: "Hibiscus Tea",
+      category: "Hibiscus",
+      basePrice: 280,
+      variations: [
+        { flavour: "Hibiscus", weights: [{ weight: "100g", price: 280 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-006",
+      name: "Lemon Balm Tea",
+      category: "Lemon Balm",
+      basePrice: 300,
+      variations: [
+        { flavour: "Lemon Balm", weights: [{ weight: "100g", price: 300 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-007",
+      name: "Cinnamon Tea",
+      category: "Cinnamon",
+      basePrice: 310,
+      variations: [
+        { flavour: "Cinnamon", weights: [{ weight: "100g", price: 310 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-008",
+      name: "Rosemary Tea",
+      category: "Rosemary",
+      basePrice: 330,
+      variations: [
+        { flavour: "Rosemary", weights: [{ weight: "100g", price: 330 }] }
+      ],
+      active: true,
+    },
+    {
+      id: "TEA-009",
+      name: "Chamomile Tea",
+      category: "Chamomile",
+      basePrice: 400,
+      variations: [
+        { flavour: "Chamomile", weights: [{ weight: "50g", price: 400 }] }
       ],
       active: true,
     }
@@ -59,8 +128,9 @@ export default function Products() {
             onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="ALL">All Categories</option>
-            <option value="Snacks">Snacks</option>
-            {/* Add more categories as needed */}
+            {products.map((p) => (
+              <option key={p.id} value={p.category}>{p.category}</option>
+            ))}
           </select>
         </div>
       </div>
