@@ -6,11 +6,8 @@ import gsap from "gsap";
 import "../App.css";
 import "./Dashboard.css";
 
-import blackTea from "./assets/blackTea.png";
-import gingerTea from "./assets/earlgrey.png";
-import chamomile from "./assets/chamomile.png";
-import oolong from "./assets/oolong.png";
-import silverNeedle from "./assets/silverneedle.png";
+import blackTea from "../assets/blackTea.png";
+
 
 // Tea variants/categories
 const teaCategories = ["Black", "Ginger", "Cardamom", "Peppermint", "Hibiscus", "Lemon Balm", "Cinnamon", "Rosemary", "Chamomile"];
@@ -65,7 +62,7 @@ export default function Dashboard() {
               {
                 id: 102,
                 flavour: "Ginger",
-                image_url: gingerTea,
+                image_url: blackTea,
                 weights: [{ id: 202, weight: "100g", price: 600 }],
               },
             ],
@@ -78,7 +75,7 @@ export default function Dashboard() {
               {
                 id: 103,
                 flavour: "Chamomile",
-                image_url: chamomile,
+                image_url: blackTea,
                 weights: [{ id: 203, weight: "50g", price: 400 }],
               },
             ],
@@ -91,7 +88,7 @@ export default function Dashboard() {
               {
                 id: 104,
                 flavour: "Tie Guan Yin",
-                image_url: oolong,
+                image_url: blackTea,
                 weights: [{ id: 204, weight: "100g", price: 700 }],
               },
             ],
@@ -104,7 +101,7 @@ export default function Dashboard() {
               {
                 id: 105,
                 flavour: "Silver Needle",
-                image_url: silverNeedle,
+                image_url: blackTea,
                 weights: [{ id: 205, weight: "50g", price: 900 }],
               },
             ],
