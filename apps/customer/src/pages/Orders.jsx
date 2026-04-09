@@ -10,9 +10,10 @@ export default function Orders() {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [hotOffers] = useState([
-    { id: 1, name: "Krispii Salted 50g", price: 35, stock: 120 },
-    { id: 2, name: "Ola Classic 100g", price: 65, stock: 8 },
-    { id: 3, name: "Krackles BBQ 150g", price: 95, stock: 0 },
+    { id: 1, name: "Tealuxe Black Tea 100g", price: 250, stock: 120 },
+    { id: 2, name: "Ginger Tea 100g", price: 300, stock: 8 },
+    { id: 3, name: "Chamomile 50g", price: 400, stock: 0 },
+
   ]);
   const [previousOrders, setPreviousOrders] = useState([]);
 
