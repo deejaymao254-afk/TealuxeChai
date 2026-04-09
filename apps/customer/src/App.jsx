@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import BottomNav from "./components/BottomNav";
-import profileIcon from "./assets/profile.png";
+import profileIcon from "../public/assets/profile.png";
 import "./App.css";
 
 export default function App() {

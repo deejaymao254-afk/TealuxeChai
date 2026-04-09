@@ -6,10 +6,6 @@ import gsap from "gsap";
 import "../App.css";
 import "./Dashboard.css";
 
-import blackTea from "../assets/blackTea.png";
-import teabg from "../assets/teabg.png";
-
-
 // Tea variants/categories
 const teaCategories = ["Black", "Ginger", "Cardamom", "Peppermint", "Hibiscus", "Lemon Balm", "Cinnamon", "Rosemary", "Chamomile"];
 
@@ -40,7 +36,6 @@ export default function Dashboard() {
         .order("id", { ascending: false });
 
       if (error || !data?.length) {
-        // fallback: hardcoded 5 teas
         setProducts([
           {
             id: 1,
@@ -50,7 +45,7 @@ export default function Dashboard() {
               {
                 id: 101,
                 flavour: "Black Tea",
-                image_url: blackTea,
+                image_url: "/assets/blackTea.png",
                 weights: [{ id: 201, weight: "100g", price: 250 }],
               },
             ],
@@ -63,7 +58,7 @@ export default function Dashboard() {
               {
                 id: 102,
                 flavour: "Ginger",
-                image_url: blackTea,
+                image_url: "/assets/gingerTea.png",
                 weights: [{ id: 202, weight: "100g", price: 600 }],
               },
             ],
@@ -76,7 +71,7 @@ export default function Dashboard() {
               {
                 id: 103,
                 flavour: "Chamomile",
-                image_url: blackTea,
+                image_url: "/assets/chamomile.png",
                 weights: [{ id: 203, weight: "50g", price: 400 }],
               },
             ],
@@ -89,7 +84,7 @@ export default function Dashboard() {
               {
                 id: 104,
                 flavour: "Tie Guan Yin",
-                image_url: blackTea,
+                image_url: "/assets/oolong.png",
                 weights: [{ id: 204, weight: "100g", price: 700 }],
               },
             ],
@@ -102,7 +97,7 @@ export default function Dashboard() {
               {
                 id: 105,
                 flavour: "Silver Needle",
-                image_url: blackTea,
+                image_url: "/assets/silverneedle.png",
                 weights: [{ id: 205, weight: "50g", price: 900 }],
               },
             ],
@@ -277,7 +272,7 @@ export default function Dashboard() {
           {filteredProducts.map((p) => {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || blackTea;
+            const previewImage = firstVar?.image_url || "/assets/blackTea.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
@@ -326,7 +321,7 @@ export default function Dashboard() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={selectedFlavour?.image_url || teabg}
+              src={selectedFlavour?.image_url || "/assets/teabg.png"}
               alt=""
               className="modal-product-image"
             />
