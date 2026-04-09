@@ -46,7 +46,7 @@ export default function Dashboard() {
               {
                 id: 101,
                 flavour: "Black Tea",
-                image_url: "/src/assets/BlackTea.png",
+                image_url: "/src/assets/blackTea.png",
                 weights: [{ id: 201, weight: "100g", price: 250 }],
               },
             ],
@@ -275,7 +275,7 @@ export default function Dashboard() {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
             const previewImage =
-              firstVar?.image_url || "/src/assets/BlackTea.png";
+              firstVar?.image_url || "/src/assets/blackTea.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (
