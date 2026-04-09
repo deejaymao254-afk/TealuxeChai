@@ -6,7 +6,8 @@ import gsap from "gsap";
 import "../App.css";
 import "./Dashboard.css";
 
-const categories = ["All", "Snacks"];
+// Tea variants/categories
+const teaCategories = ["Black", "Ginger", "Cardamom", "Peppermint", "Hibiscus", "Lemon Balm", "Cinnamon", "Rosemary", "Chamomile"];
 
 export default function Dashboard() {
   const { cart, setCart } = useOutletContext();
@@ -15,7 +16,7 @@ export default function Dashboard() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState(teaCategories[0]);
   const [pullStart, setPullStart] = useState(null);
   const [pullDistance, setPullDistance] = useState(0);
   const [selectedFlavour, setSelectedFlavour] = useState(null);
@@ -34,8 +35,75 @@ export default function Dashboard() {
         .eq("active", true)
         .order("id", { ascending: false });
 
-      if (error) {
-        console.error("Supabase error:", error);
+      if (error || !data?.length) {
+        // fallback: hardcoded 5 teas
+        setProducts([
+          {
+            id: 1,
+            name: "Tealuxe Black Tea",
+            category: "Black",
+            variations: [
+              {
+                id: 101,
+                flavour: "Black Tea",
+                image_url: "/src/assets/BlackTea.png",
+                weights: [{ id: 201, weight: "100g", price: 250 }],
+              },
+            ],
+          },
+          {
+            id: 2,
+            name: "Tealuxe Ginger Tea",
+            category: "Ginger",
+            variations: [
+              {
+                id: 102,
+                flavour: "Ginger",
+                image_url: "/assets/earlgrey.png",
+                weights: [{ id: 202, weight: "100g", price: 600 }],
+              },
+            ],
+          },
+          {
+            id: 3,
+            name: "Chamomile",
+            category: "Herbal",
+            variations: [
+              {
+                id: 103,
+                flavour: "Chamomile",
+                image_url: "/assets/chamomile.png",
+                weights: [{ id: 203, weight: "50g", price: 400 }],
+              },
+            ],
+          },
+          {
+            id: 4,
+            name: "Tie Guan Yin",
+            category: "Oolong",
+            variations: [
+              {
+                id: 104,
+                flavour: "Tie Guan Yin",
+                image_url: "/assets/oolong.png",
+                weights: [{ id: 204, weight: "100g", price: 700 }],
+              },
+            ],
+          },
+          {
+            id: 5,
+            name: "Silver Needle",
+            category: "White Tea",
+            variations: [
+              {
+                id: 105,
+                flavour: "Silver Needle",
+                image_url: "/assets/silverneedle.png",
+                weights: [{ id: 205, weight: "50g", price: 900 }],
+              },
+            ],
+          },
+        ]);
         return;
       }
 
@@ -113,9 +181,7 @@ export default function Dashboard() {
 
   const filteredProducts = products
     .filter((p) => p.variations?.length > 0)
-    .filter((p) =>
-      activeCategory === "All" ? true : p.category === activeCategory
-    )
+    .filter((p) => p.category === activeCategory)
     .filter((p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -190,12 +256,10 @@ export default function Dashboard() {
 
       <section className="categories">
         <div className="categories-scroll">
-          {categories.map((c, i) => (
+          {teaCategories.map((c, i) => (
             <button
               key={i}
-              className={`category-btn ${
-                activeCategory === c ? "active" : ""
-              }`}
+              className={`category-btn ${activeCategory === c ? "active" : ""}`}
               onClick={() => setActiveCategory(c)}
             >
               {c}
@@ -211,7 +275,7 @@ export default function Dashboard() {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
             const previewImage =
-              firstVar?.image_url || "/assets/kripsii-salted.png";
+              firstVar?.image_url || "/src/assets/BlackTea.png";
             const previewPrice = firstWeight?.price || 0;
 
             return (

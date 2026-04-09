@@ -26,12 +26,14 @@
   --btn-primary-hover-bg: #008b00;
   --floating-bg: #008b00;
   --floating-text: #fff;
-  --grey-border: #eee;
-  --shadow: rgba(0,0,0,0.1);
+  --grey-border: #bebebe;
+  --shadow: rgba(0,0,0,1);
   --label-text: #111; /* panel label text */
   --text-main: #111;
 --text-light: #4d4d4d;
 --orange-main: #008b00;
+--orange-hover: #00d400;
+
 
 }
 
@@ -59,7 +61,8 @@
   --label-text: #eee; /* dark mode label text */
   --text-main: #eee;
 --text-light: #ccc;
---orange-main: #ffb347;
+--orange-main: #06e606;
+--orange-hover: #ffb347;
 
 }
 
@@ -135,7 +138,7 @@ h1, h2, h3, .product-name {
 }
 
 .logo-orange {
-  color: var(--accent-color);
+  color: var(--orange-main);
 }
 
 

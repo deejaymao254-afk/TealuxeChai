@@ -1,43 +1,186 @@
 // src/pages/Dashboard.jsx
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import "../App.css";
 
-export default function Dashboard({ user }) {
-  const navigate = useNavigate();
+export default function Dashboard({ onLogout }) {
+  const [products, setProducts] = useState([]);
+  const [sidebarOpen] = useState(false);
 
+  // ✅ FAKE DATA (safe)
   useEffect(() => {
-    console.log("Dashboard mounted");
-    console.log("User received:", user);
+    const mockProducts = [
+      { id: 1, name: "Masala Chai", status: "ACTIVE" },
+      { id: 2, name: "Ginger Tea", status: "ACTIVE" },
+      { id: 3, name: "Green Tea", status: "LOW STOCK" },
+      { id: 4, name: "Cardamom Blend", status: "ACTIVE" },
+      { id: 5, name: "Iced Chai", status: "INACTIVE" },
+      { id: 6, name: "Vanilla Chai", status: "ACTIVE" },
+    ];
 
-    if (!user) {
-      console.warn("No user found, redirecting to login");
-      navigate("/login", { replace: true });
-    }
+    setProducts(mockProducts);
+  }, []);
 
-    return () => console.log("Dashboard unmounted");
-  }, [user, navigate]);
+  // ✅ SAFE KPI ANIMATION
+  useEffect(() => {
+    const counters = document.querySelectorAll(".value");
 
-  if (!user) {
-    return (
-      <div style={{ padding: 40, color: "#ff0000" }}>
-        <h2>No user detected. Redirecting...</h2>
-      </div>
-    );
-  }
+    counters.forEach((counter) => {
+      try {
+        const raw = counter.innerText;
+        const target = parseFloat(raw.replace(/[^\d.]/g, "")) || 0;
+        let count = 0;
+
+        const update = () => {
+          count += Math.ceil(target / 40);
+
+          if (count < target) {
+            counter.innerText = raw.includes("%")
+              ? count + "%"
+              : raw.includes("h")
+              ? count + "h"
+              : count;
+            requestAnimationFrame(update);
+          } else {
+            counter.innerText = raw;
+          }
+        };
+
+        update();
+      } catch (err) {
+        console.error("KPI animation error:", err);
+      }
+    });
+  }, []);
 
   return (
-    <div style={{ padding: 40, fontFamily: "sans-serif" }}>
-      <h1>Welcome, {user.name || user.phone || "Admin"}!</h1>
-      <p>This is your placeholder admin dashboard.</p>
+    <div className={`app ${sidebarOpen ? "sidebar-open" : ""}`}>
+      <main className="main">
+        {/* HEADER */}
+        <div className="orders-header">
+          <h2>Dashboard</h2>
 
-      <div style={{ marginTop: 20, padding: 20, border: "1px solid #ccc" }}>
-        <h3>Debug Info</h3>
-        <pre>{JSON.stringify(user, null, 2)}</pre>
-        <p>LocalStorage token: {localStorage.getItem("duka2_token") || "none"}</p>
-        <p>
-          Current timestamp: {new Date().toLocaleString()}
-        </p>
-      </div>
+          <div className="header-right">
+            <button className="logout-btn" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* KPIs */}
+        <section className="kpis">
+          <div className="kpi">
+            <div className="kpi-top">
+              <span className="label">Active Orders</span>
+              <span className="trend up">+12%</span>
+            </div>
+            <span className="value">124</span>
+            <span className="sub">vs yesterday</span>
+          </div>
+
+          <div className="kpi">
+            <div className="kpi-top">
+              <span className="label">Revenue Today</span>
+              <span className="trend up">+8%</span>
+            </div>
+            <span className="value">KES 84K</span>
+            <span className="sub">daily total</span>
+          </div>
+
+          <div className="kpi">
+            <div className="kpi-top">
+              <span className="label">Customers</span>
+              <span className="trend down">-3%</span>
+            </div>
+            <span className="value">342</span>
+            <span className="sub">active users</span>
+          </div>
+
+          <div className="kpi">
+            <div className="kpi-top">
+              <span className="label">Conversion</span>
+              <span className="trend up">+2%</span>
+            </div>
+            <span className="value">94%</span>
+            <span className="sub">checkout rate</span>
+          </div>
+        </section>
+
+        {/* GRID */}
+        <div className="grid">
+          {/* PRODUCTS TABLE */}
+          <div className="table-container">
+            <div className="table-header">
+              <span>ID</span>
+              <span>Product</span>
+              <span>Status</span>
+              <span>Action</span>
+            </div>
+
+            {products.length === 0 && (
+              <div className="table-row">No products available</div>
+            )}
+
+            {products.map((p) => (
+              <div key={p.id} className="table-row">
+                <span>#{p.id}</span>
+                <span>{p.name}</span>
+                <span className="status processing">
+                  {p.status || "ACTIVE"}
+                </span>
+                <span className="actions">
+                  <button className="btn-sm">View</button>
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* SYSTEM SUMMARY */}
+          <div className="table-container">
+            <div className="table-header">
+              <span>Metric</span>
+              <span>Value</span>
+            </div>
+
+            <div className="table-row">
+              <span>Regions Active</span>
+              <span>12 / 14</span>
+            </div>
+
+            <div className="table-row">
+              <span>Latency</span>
+              <span>Low</span>
+            </div>
+
+            <div className="table-row">
+              <span>Sync Status</span>
+              <span className="status confirmed">Stable</span>
+            </div>
+          </div>
+
+          {/* ALERTS */}
+          <div className="table-container">
+            <div className="table-header">
+              <span>System Alerts</span>
+              <span>Status</span>
+            </div>
+
+            <div className="table-row">
+              <span>Inventory sync completed</span>
+              <span className="status delivered">OK</span>
+            </div>
+
+            <div className="table-row">
+              <span>Route delay · Kisumu</span>
+              <span className="status pending">Warning</span>
+            </div>
+
+            <div className="table-row">
+              <span>Reconciliation running</span>
+              <span className="status confirmed">Active</span>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

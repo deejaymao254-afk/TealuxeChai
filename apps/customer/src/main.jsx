@@ -17,12 +17,14 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Routes>
-
       {/* Public route */}
       <Route path="/" element={<Login />} />
 
-      {/* Protected App (nested under /app) */}
+      {/* Protected App */}
       <Route path="/app" element={<App />}>
+        {/* Redirect /app to /app/dashboard */}
+        <Route index element={<Navigate to="dashboard" replace />} />
+
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="orders" element={<Orders />} />
         <Route path="cart" element={<Cart />} />
@@ -32,8 +34,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="checkout" element={<Checkout />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" />} />
-
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   </BrowserRouter>
 );

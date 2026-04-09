@@ -11,7 +11,6 @@ export default function App() {
 
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("duka2_current_user");
-
     if (!storedUser) return null;
 
     try {
@@ -39,14 +38,12 @@ export default function App() {
         setOpen(false);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   const handleSignOut = () => {
     setOpen(false);
-
     if (window.confirm("Are you sure you want to sign out?")) {
       localStorage.removeItem("duka2_current_user");
       setUser(null);
@@ -82,7 +79,7 @@ export default function App() {
               <button
                 onClick={() => {
                   setOpen(false);
-                  navigate("/profile");
+                  navigate("/app/profile");
                 }}
               >
                 My Profile
@@ -91,7 +88,7 @@ export default function App() {
               <button
                 onClick={() => {
                   setOpen(false);
-                  navigate("/orders");
+                  navigate("/app/orders");
                 }}
               >
                 Orders
@@ -109,7 +106,7 @@ export default function App() {
         <Outlet context={{ cart, setCart, user }} />
       </main>
 
-      <BottomNav cartCount={cart.length} />
+      <BottomNav cartCount={cart.length} isAuthenticated={!!user} />
     </div>
   );
 }
