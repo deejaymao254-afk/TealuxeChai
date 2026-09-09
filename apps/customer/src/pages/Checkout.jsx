@@ -110,7 +110,7 @@ setOrderRef(stk.CheckoutRequestID);
             stableContext.setCart?.([]);
             setPopup(null);
             setPolling(false);
-            navigate("/signin", { replace: true });
+            navigate("/app/orders", { replace: true });
           }, 4000);
 
           clearInterval(intervalRef.current);
