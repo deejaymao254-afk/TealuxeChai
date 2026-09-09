@@ -332,50 +332,94 @@ export default function Dashboard() {
 
       <section className="panel products">
         <h2>Order Now</h2>
-        <div className="product-grid">
-          {filteredProducts.map((p) => {
-            const firstVar = p.variations?.[0];
-            const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
-            const previewPrice = firstWeight?.price || 0;
+        
+        {/* Deal of the Week */}
+        {filteredProducts.length > 0 && (
+          <div className="deal-of-week">
+            <div className="deal-badge">🔥 Deal of the Week</div>
+            {(() => {
+              const dealProduct = filteredProducts[0];
+              const firstVar = dealProduct.variations?.[0];
+              const firstWeight = firstVar?.weights?.[0];
+              const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
+              const previewPrice = firstWeight?.price || 0;
+              
+              return (
+                <div className="deal-card">
+                  <img 
+                    src={previewImage} 
+                    alt={dealProduct.name} 
+                    className="deal-image"
+                    onError={(e) => {
+                      e.target.src = "/assets/default-product.jpg";
+                    }}
+                  />
+                  <div className="deal-info">
+                    <h3 className="deal-name">{dealProduct.name}</h3>
+                    <span className="deal-price">
+                      KES {Number(previewPrice).toLocaleString()}
+                    </span>
+                    <button
+                      className="deal-order-btn"
+                      onClick={() => {
+                        if (!dealProduct.variations?.length) {
+                          alert("Product not configured yet");
+                          return;
+                        }
+                        openProductPopup(dealProduct);
+                      }}
+                    >
+                      Order Now
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        )}
 
-            return (
-              <div key={p.id} className="product-card">
-                <img 
-                  src={previewImage} 
-                  alt={p.name} 
-                  onError={(e) => {
-                    e.target.src = "/assets/default-product.jpg";
-                  }}
-                />
-                <span className="product-name">{p.name}</span>
-                <span className="product-price">
-                  From KES {Number(previewPrice).toLocaleString()}
-                </span>
+        {/* Regular Products - Show 3 */}
+        <div className="regular-products">
+          <h3>More Products</h3>
+          <div className="product-grid">
+            {filteredProducts.slice(1, 4).map((p) => {
+              const firstVar = p.variations?.[0];
+              const firstWeight = firstVar?.weights?.[0];
+              const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
+              const previewPrice = firstWeight?.price || 0;
 
-                <button
-                  className="add-cart"
-                  onClick={() => {
-                    if (!p.variations?.length) {
-                      alert("Product not configured yet");
-                      return;
-                    }
-                    openProductPopup(p);
-                  }}
-                >
-                  Order
-                </button>
-              </div>
-            );
-          })}
+              return (
+                <div key={p.id} className="product-card">
+                  <img 
+                    src={previewImage} 
+                    alt={p.name} 
+                    onError={(e) => {
+                      e.target.src = "/assets/default-product.jpg";
+                    }}
+                  />
+                  <span className="product-name">{p.name}</span>
+                  <span className="product-price">
+                    From KES {Number(previewPrice).toLocaleString()}
+                  </span>
+
+                  <button
+                    className="add-cart"
+                    onClick={() => {
+                      if (!p.variations?.length) {
+                        alert("Product not configured yet");
+                        return;
+                      }
+                      openProductPopup(p);
+                    }}
+                  >
+                    Order
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
-
-      {cart.length > 0 && (
-        <div className="floating-cart" onClick={() => navigate("/cart")}>
-          🛒 {cart.length}
-        </div>
-      )}
 
       <button className="theme-switch" onClick={toggleTheme}>
         {darkMode ? "☀️" : "🌙"}
