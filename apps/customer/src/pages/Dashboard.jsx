@@ -136,7 +136,7 @@ export default function Dashboard() {
         return {
           id: p.id || index + 1,
           name: category + " Tea",
-          category: category,
+          category: category, // Keep capitalized category for proper matching
           base_price: Number(p.base_price) || 250,
           stock: p.stock || 100,
           caffeine_level: p.caffeine_level,
@@ -230,7 +230,7 @@ export default function Dashboard() {
       // More flexible category matching
       const productCategory = p.category?.toLowerCase() || "";
       const activeCat = activeCategory?.toLowerCase() || "";
-      const matches = productCategory === activeCat || productCategory.includes(activeCat);
+      const matches = productCategory === activeCat || productCategory.includes(activeCat) || activeCat.includes(productCategory);
       console.log(`🔍 Filtering: "${p.name}" (category: "${productCategory}") vs active: "${activeCat}" -> ${matches}`);
       return matches;
     })
