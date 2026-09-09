@@ -1,0 +1,351 @@
+/* =========================
+   LAYOUT (STRICT ALIGNMENT)
+========================= */
+.customers-page {
+  padding: 20px 30px;
+  color: var(--text-main);
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 30px;
+
+}
+
+/* =========================
+   FILTERS (same as Orders)
+========================= */
+.filters {
+  display: flex;
+  gap: 10px;
+}
+
+.filters input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-border);
+  background: var(--panel);
+  color: var(--text-main);
+  outline: none;
+  font-size: 13px;
+}
+
+.filters input:focus {
+  border-color: var(--orange-main);
+}
+
+
+
+/* =========================
+   ACTION BUTTONS (MATCH ORDERS)
+========================= */
+
+.btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--grey-border);
+  background: transparent;
+  color: var(--text-main);
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover {
+  border-color: var(--orange-main);
+  color: var(--orange-main);
+  transform: translateY(-1px);
+}
+
+/* PRIMARY */
+.btn.primary {
+  background: var(--orange-main);
+  border-color: var(--orange-main);
+  color: #fff;
+}
+
+.btn.primary:hover {
+  background: #e67700;
+}
+
+/* DANGER */
+.btn.danger {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.btn.danger:hover {
+  background: #f44336;
+  color: #fff;
+}
+
+/* ICON BUTTON */
+.btn.icon {
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   STATS
+========================= */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat {
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  box-shadow: 0 8px 25px var(--shadow);
+  transition: 0.2s;
+}
+
+.stat:hover {
+  transform: translateY(-3px);
+  border-color: var(--orange-main);
+}
+
+.stat span {
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.stat strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 20px;
+}
+
+/* =========================
+   CONTROLS (UPGRADED)
+========================= */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.controls input,
+.controls select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--grey-border);
+  background: var(--panel);
+  color: var(--text-main);
+  font-size: 13px;
+  outline: none;
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: var(--orange-main);
+}
+
+/* =========================
+   TABLE STRUCTURE (MATCH ORDERS GRID)
+========================= */
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1.5fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 16px;
+}
+
+.table-header {
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  border-bottom: 1px solid var(--grey-border);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--grey-border);
+  font-size: 14px;
+  transition: 0.2s;
+  padding-inline: 20px;
+}
+
+.table-row:hover {
+  background: rgba(255, 138, 0, 0.05);
+}
+
+.card {  
+  margin-top: 20px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px var(--shadow);
+}
+
+/* ROWS */
+.row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--grey-border);
+  transition: 0.2s;
+}
+
+.row.header {
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.row:hover {
+  background: rgba(255, 138, 0, 0.05);
+}
+
+/* =========================
+   TABLE ACTIONS (NEW)
+========================= */
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.actions .btn {
+  padding: 6px 8px;
+  font-size: 12px;
+}
+
+/* =========================
+   STATUS
+========================= */
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  border: 1px solid var(--grey-border);
+}
+
+.status.active {
+  color: #4caf50;
+  border-color: rgba(76, 175, 80, 0.4);
+}
+
+.status.normal {
+  color: #03a9f4;
+  border-color: rgba(3, 169, 244, 0.4);
+}
+
+.status.inactive {
+  color: #f44336;
+  border-color: rgba(244, 67, 54, 0.4);
+}
+
+/* =========================
+   LOADING (REAL UX)
+========================= */
+.skeleton {
+  height: 14px;
+  background: linear-gradient(90deg, #eee, #ddd, #eee);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite;
+  border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* =========================
+   EMPTY STATE (FIXED)
+========================= */
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* =========================
+   PAGINATION
+========================= */
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* =========================
+   DRAWER (UPGRADED)
+========================= */
+.drawer {
+  margin-top: 20px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--grey-border);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px var(--shadow);
+  animation: fadeIn 0.3s ease;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+    margin-top: 10px;
+font-size: 12px;
+}
+
+.drawer-body {
+  margin-top: 10px;
+}
+
+/* DRAWER ACTIONS */
+.drawer-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+/* =========================
+   FOCUS STATES (IMPORTANT)
+========================= */
+button:focus,
+input:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 138, 0, 0.25);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .customers-page {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr 1.2fr 1fr 1fr;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+}
