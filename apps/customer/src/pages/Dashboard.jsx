@@ -113,13 +113,50 @@ export default function Dashboard() {
         return;
       }
 
-      const normalized = (data || []).map((p) => ({
-        ...p,
-        variations:
-          typeof p.variations === "string"
-            ? JSON.parse(p.variations)
-            : p.variations || [],
-      }));
+      // Map database structure to frontend expected structure
+      const normalized = (data || []).map((p, index) => {
+        // Derive category from image_url or caffeine_level
+        let category = "Herbal";
+        const imageUrl = p.image_url || "";
+        
+        if (imageUrl.includes("ginger")) category = "Ginger";
+        else if (imageUrl.includes("hibiscus")) category = "Hibiscus";
+        else if (imageUrl.includes("cinnamon")) category = "Cinnamon";
+        else if (imageUrl.includes("cardamom")) category = "Cardamom";
+        else if (imageUrl.includes("lemon")) category = "Lemon Balm";
+        else if (imageUrl.includes("peppermint")) category = "Peppermint";
+        else if (imageUrl.includes("rosemary")) category = "Rosemary";
+        else if (imageUrl.includes("chamomile")) category = "Chamomile";
+        else if (p.caffeine_level === "Medium") category = "Black";
+        
+        // Fallback image if image_url is empty or starts with /uploads/
+        const fallbackImage = "/assets/default-product.jpg";
+        const safeImageUrl = (imageUrl && !imageUrl.startsWith("/uploads/")) ? imageUrl : fallbackImage;
+
+        return {
+          id: p.id || index + 1,
+          name: category + " Tea",
+          category: category,
+          base_price: Number(p.base_price) || 250,
+          stock: p.stock || 100,
+          caffeine_level: p.caffeine_level,
+          health_benefits: p.health_benefits,
+          variations: [
+            {
+              id: index * 100 + 1,
+              flavour: category,
+              image_url: safeImageUrl,
+              weights: [
+                {
+                  id: index * 200 + 1,
+                  weight: "100g",
+                  price: Number(p.base_price) || 250
+                }
+              ]
+            }
+          ]
+        };
+      });
 
       console.log("✅ Normalized products:", normalized);
       console.log("🏷️ Product categories:", normalized.map(p => ({ id: p.id, name: p.name, category: p.category, hasVariations: p.variations?.length > 0 })));
@@ -294,12 +331,18 @@ export default function Dashboard() {
           {filteredProducts.map((p) => {
             const firstVar = p.variations?.[0];
             const firstWeight = firstVar?.weights?.[0];
-            const previewImage = firstVar?.image_url || "/assets/blackTea.png";
+            const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
             const previewPrice = firstWeight?.price || 0;
 
             return (
               <div key={p.id} className="product-card">
-                <img src={previewImage} alt={p.name} />
+                <img 
+                  src={previewImage} 
+                  alt={p.name} 
+                  onError={(e) => {
+                    e.target.src = "/assets/default-product.jpg";
+                  }}
+                />
                 <span className="product-name">{p.name}</span>
                 <span className="product-price">
                   From KES {Number(previewPrice).toLocaleString()}
@@ -346,6 +389,9 @@ export default function Dashboard() {
               src={selectedFlavour?.image_url || "/assets/teabg.png"}
               alt=""
               className="modal-product-image"
+              onError={(e) => {
+                e.target.src = "/assets/default-product.jpg";
+              }}
             />
             <h3>{selectedProduct.name}</h3>
 
