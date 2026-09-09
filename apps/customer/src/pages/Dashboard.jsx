@@ -29,13 +29,20 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadProducts() {
+      console.log("🔄 Starting to load products from Supabase");
+      
       const { data, error } = await supabase
         .from("products")
         .select("*")
         .eq("active", true)
         .order("id", { ascending: false });
 
+      console.log("📥 Supabase response:", { data, error });
+      console.log("📊 Data length:", data?.length);
+      console.log("🔍 Sample data structure:", data?.[0]);
+
       if (error || !data?.length) {
+        console.log("⚠️ Using fallback products due to error or no data");
         setProducts([
           {
             id: 1,
@@ -114,6 +121,8 @@ export default function Dashboard() {
             : p.variations || [],
       }));
 
+      console.log("✅ Normalized products:", normalized);
+      console.log("🏷️ Product categories:", normalized.map(p => ({ id: p.id, name: p.name, category: p.category, hasVariations: p.variations?.length > 0 })));
       setProducts(normalized);
     }
 
@@ -184,11 +193,19 @@ export default function Dashboard() {
       // More flexible category matching
       const productCategory = p.category?.toLowerCase() || "";
       const activeCat = activeCategory?.toLowerCase() || "";
-      return productCategory === activeCat || productCategory.includes(activeCat);
+      const matches = productCategory === activeCat || productCategory.includes(activeCat);
+      console.log(`🔍 Filtering: "${p.name}" (category: "${productCategory}") vs active: "${activeCat}" -> ${matches}`);
+      return matches;
     })
     .filter((p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+  console.log("📋 Filtering summary:");
+  console.log(`  Active category: "${activeCategory}"`);
+  console.log(`  Search term: "${searchTerm}"`);
+  console.log(`  Total products: ${products.length}`);
+  console.log(`  Filtered products: ${filteredProducts.length}`);
 
   const openProductPopup = (product) => {
     setSelectedProduct(product);
