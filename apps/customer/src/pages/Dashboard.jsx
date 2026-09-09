@@ -16,7 +16,7 @@ export default function Dashboard() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState("");
-  const [activeCategory, setActiveCategory] = useState(teaCategories[0]);
+  const [activeCategory, setActiveCategory] = useState("Chamomile");
   const [pullStart, setPullStart] = useState(null);
   const [pullDistance, setPullDistance] = useState(0);
   const [selectedFlavour, setSelectedFlavour] = useState(null);
@@ -130,6 +130,7 @@ export default function Dashboard() {
         else if (imageUrl.toLowerCase().includes("rosemary")) category = "Rosemary";
         else if (imageUrl.toLowerCase().includes("chamomile")) category = "Chamomile";
         else if (p.caffeine_level === "Medium") category = "Black";
+        else if (p.name.toLowerCase().includes("black")) category = "Black";
         
         console.log(`✅ Assigned category: "${category}"`);
         
