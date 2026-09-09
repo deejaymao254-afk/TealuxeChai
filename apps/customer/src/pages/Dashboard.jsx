@@ -119,15 +119,19 @@ export default function Dashboard() {
         let category = "Herbal";
         const imageUrl = p.image_url || "";
         
-        if (imageUrl.includes("ginger")) category = "Ginger";
-        else if (imageUrl.includes("hibiscus")) category = "Hibiscus";
-        else if (imageUrl.includes("cinnamon")) category = "Cinnamon";
-        else if (imageUrl.includes("cardamom")) category = "Cardamom";
-        else if (imageUrl.includes("lemon")) category = "Lemon Balm";
-        else if (imageUrl.includes("peppermint")) category = "Peppermint";
-        else if (imageUrl.includes("rosemary")) category = "Rosemary";
-        else if (imageUrl.includes("chamomile")) category = "Chamomile";
+        console.log(`🔧 Processing product ${index}:`, { name: p.name, imageUrl, caffeine: p.caffeine_level });
+        
+        if (imageUrl.toLowerCase().includes("ginger")) category = "Ginger";
+        else if (imageUrl.toLowerCase().includes("hibiscus")) category = "Hibiscus";
+        else if (imageUrl.toLowerCase().includes("cinnamon")) category = "Cinnamon";
+        else if (imageUrl.toLowerCase().includes("cardamom")) category = "Cardamom";
+        else if (imageUrl.toLowerCase().includes("lemon")) category = "Lemon Balm";
+        else if (imageUrl.toLowerCase().includes("peppermint")) category = "Peppermint";
+        else if (imageUrl.toLowerCase().includes("rosemary")) category = "Rosemary";
+        else if (imageUrl.toLowerCase().includes("chamomile")) category = "Chamomile";
         else if (p.caffeine_level === "Medium") category = "Black";
+        
+        console.log(`✅ Assigned category: "${category}"`);
         
         // Fallback image if image_url is empty or starts with /uploads/
         const fallbackImage = "/assets/default-product.jpg";
