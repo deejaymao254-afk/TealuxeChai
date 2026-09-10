@@ -24,7 +24,7 @@ export default function Cart() {
   };
 
   const subtotal = cart.reduce(
-    (sum, item) => sum + item.unitPrice * item.quantity * 48,
+    (sum, item) => sum + item.unitPrice * item.quantity,
     0
   );
   const deliveryFee = cart.length > 0 ? 150 : 0;
@@ -62,7 +62,7 @@ export default function Cart() {
           </div>
 
           <div className="item-total">
-            KES {(item.unitPrice * item.quantity * 48).toLocaleString()}
+            KES {(item.unitPrice * item.quantity).toLocaleString()}
           </div>
         </div>
       ))}

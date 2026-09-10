@@ -37,7 +37,6 @@ export default function BottomNav({ cartCount, isAuthenticated }) {
         onClick={() => goTo("/cart")}
         className={`bottom-nav__item ${isActive("/cart") ? "bottom-nav__item--active" : ""}`}
       >
-        <span className="bottom-nav__icon">🛒</span>
         {cartCount > 0 && <span className="bottom-nav__badge">{cartCount}</span>}
         <p>Cart</p>
       </button>

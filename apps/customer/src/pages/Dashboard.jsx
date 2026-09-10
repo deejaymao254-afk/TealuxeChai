@@ -29,20 +29,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function loadProducts() {
-      console.log("🔄 Starting to load products from Supabase");
-      
       const { data, error } = await supabase
         .from("products")
         .select("*")
         .eq("active", true)
         .order("id", { ascending: false });
 
-      console.log("📥 Supabase response:", { data, error });
-      console.log("📊 Data length:", data?.length);
-      console.log("🔍 Sample data structure:", data?.[0]);
-
       if (error || !data?.length) {
-        console.log("⚠️ Using fallback products due to error or no data");
         setProducts([
           {
             id: 1,
@@ -119,8 +112,6 @@ export default function Dashboard() {
         let category = "Herbal";
         const imageUrl = p.image_url || "";
         
-        console.log(`🔧 Processing product ${index}:`, { name: p.name, imageUrl, caffeine: p.caffeine_level });
-        
         if (imageUrl.toLowerCase().includes("ginger")) category = "Ginger";
         else if (imageUrl.toLowerCase().includes("hibiscus")) category = "Hibiscus";
         else if (imageUrl.toLowerCase().includes("cinnamon")) category = "Cinnamon";
@@ -131,8 +122,6 @@ export default function Dashboard() {
         else if (imageUrl.toLowerCase().includes("chamomile")) category = "Chamomile";
         else if (p.caffeine_level === "Medium") category = "Black";
         else if (p.name.toLowerCase().includes("black")) category = "Black";
-        
-        console.log(`✅ Assigned category: "${category}"`);
         
         // Fallback image if image_url is empty or starts with /uploads/
         const fallbackImage = "/assets/default-product.jpg";
@@ -163,8 +152,6 @@ export default function Dashboard() {
         };
       });
 
-      console.log("✅ Normalized products:", normalized);
-      console.log("🏷️ Product categories:", normalized.map(p => ({ id: p.id, name: p.name, category: p.category, hasVariations: p.variations?.length > 0 })));
       setProducts(normalized);
     }
 
@@ -236,18 +223,11 @@ export default function Dashboard() {
       const productCategory = p.category?.toLowerCase() || "";
       const activeCat = activeCategory?.toLowerCase() || "";
       const matches = productCategory === activeCat || productCategory.includes(activeCat) || activeCat.includes(productCategory);
-      console.log(`🔍 Filtering: "${p.name}" (category: "${productCategory}") vs active: "${activeCat}" -> ${matches}`);
       return matches;
     })
     .filter((p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-  console.log("📋 Filtering summary:");
-  console.log(`  Active category: "${activeCategory}"`);
-  console.log(`  Search term: "${searchTerm}"`);
-  console.log(`  Total products: ${products.length}`);
-  console.log(`  Filtered products: ${filteredProducts.length}`);
 
   const openProductPopup = (product) => {
     setSelectedProduct(product);
@@ -274,7 +254,7 @@ export default function Dashboard() {
         name: selectedProduct.name,
         flavour: selectedFlavour.flavour,
         weight: selectedWeight.weight,
-        unitPrice,
+        unitPrice: unitPrice,
         quantity,
         total: unitPrice * quantity,
         notes,
@@ -378,11 +358,15 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* Regular Products - Show 3 */}
+        {/* Regular Products - Show 3 from different categories */}
         <div className="regular-products">
           <h3>More Products</h3>
           <div className="product-grid">
-            {filteredProducts.slice(1, 4).map((p) => {
+            {products
+              .filter((p) => p.variations?.length > 0)
+              .filter((p) => p.category !== activeCategory)
+              .slice(0, 3)
+              .map((p) => {
               const firstVar = p.variations?.[0];
               const firstWeight = firstVar?.weights?.[0];
               const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
@@ -418,6 +402,95 @@ export default function Dashboard() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Additional Sections */}
+      <section className="panel featured-section">
+        <h2>🌟 Best Sellers</h2>
+        <div className="product-grid">
+          {products
+            .filter((p) => p.variations?.length > 0)
+            .slice(0, 2)
+            .map((p) => {
+              const firstVar = p.variations?.[0];
+              const firstWeight = firstVar?.weights?.[0];
+              const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
+              const previewPrice = firstWeight?.price || 0;
+
+              return (
+                <div key={p.id} className="product-card">
+                  <img 
+                    src={previewImage} 
+                    alt={p.name} 
+                    onError={(e) => {
+                      e.target.src = "/assets/default-product.jpg";
+                    }}
+                  />
+                  <span className="product-name">{p.name}</span>
+                  <span className="product-price">
+                    KES {Number(previewPrice).toLocaleString()}
+                  </span>
+
+                  <button
+                    className="add-cart"
+                    onClick={() => {
+                      if (!p.variations?.length) {
+                        alert("Product not configured yet");
+                        return;
+                      }
+                      openProductPopup(p);
+                    }}
+                  >
+                    Order
+                  </button>
+                </div>
+              );
+            })}
+        </div>
+      </section>
+
+      <section className="panel featured-section">
+        <h2>🍃 Seasonal Favorites</h2>
+        <div className="product-grid">
+          {products
+            .filter((p) => p.variations?.length > 0)
+            .slice(2, 4)
+            .map((p) => {
+              const firstVar = p.variations?.[0];
+              const firstWeight = firstVar?.weights?.[0];
+              const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
+              const previewPrice = firstWeight?.price || 0;
+
+              return (
+                <div key={p.id} className="product-card">
+                  <img 
+                    src={previewImage} 
+                    alt={p.name} 
+                    onError={(e) => {
+                      e.target.src = "/assets/default-product.jpg";
+                    }}
+                  />
+                  <span className="product-name">{p.name}</span>
+                  <span className="product-price">
+                    KES {Number(previewPrice).toLocaleString()}
+                  </span>
+
+                  <button
+                    className="add-cart"
+                    onClick={() => {
+                      if (!p.variations?.length) {
+                        alert("Product not configured yet");
+                        return;
+                      }
+                      openProductPopup(p);
+                    }}
+                  >
+                    Order
+                  </button>
+                </div>
+              );
+            })}
         </div>
       </section>
 

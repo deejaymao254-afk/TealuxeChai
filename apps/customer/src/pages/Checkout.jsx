@@ -16,7 +16,7 @@ export default function Checkout() {
   const intervalRef = useRef(null); // to store interval id
 
   const currentUser = JSON.parse(localStorage.getItem("duka2_current_user")) || {};
-  const subtotal = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity * 48, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
   const deliveryFee = 150;
   const total = subtotal + deliveryFee;
 
@@ -169,7 +169,7 @@ setOrderRef(stk.CheckoutRequestID);
             <div key={item.id} className="checkout-item">
               <span>{item.name} ({item.flavour})</span>
               <span>Qty: {item.quantity} cartons</span>
-              <span>KES {(item.unitPrice * item.quantity * 48).toLocaleString()}</span>
+              <span>KES {(item.unitPrice * item.quantity).toLocaleString()}</span>
             </div>
           ))}
 
