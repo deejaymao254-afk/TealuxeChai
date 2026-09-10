@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [selectedWeight, setSelectedWeight] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
+  const [activeTab, setActiveTab] = useState("deals");
 
   const navigate = useNavigate();
   const unitPrice = Number(selectedWeight?.price || 0);
@@ -216,6 +217,15 @@ export default function Dashboard() {
     }
   };
 
+  const handleTouchEnd = () => {
+    if (pullDistance > 100) {
+      // Trigger refresh
+      window.location.reload();
+    }
+    setPullStart(null);
+    setPullDistance(0);
+  };
+
   const filteredProducts = products
     .filter((p) => p.variations?.length > 0)
     .filter((p) => {
@@ -277,6 +287,7 @@ export default function Dashboard() {
       className="dashboard-container"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       <section className="hero">
         <h1>A World of <span className="accent">Tea,</span><br/> — A Sip of Luxury</h1>
@@ -297,19 +308,48 @@ export default function Dashboard() {
       </div>
 
       <section className="categories">
-        <div className="categories-scroll">
-          {teaCategories.map((c, i) => (
-            <button
-              key={i}
-              className={`category-btn ${activeCategory === c ? "active" : ""}`}
-              onClick={() => setActiveCategory(c)}
-            >
-              {c}
-            </button>
-          ))}
+        <div className="dropdown-wrapper">
+          <select 
+            className="category-dropdown"
+            value={activeCategory}
+            onChange={(e) => setActiveCategory(e.target.value)}
+          >
+            {teaCategories.map((c, i) => (
+              <option key={i} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
       </section>
 
+      {/* Section Tabs */}
+      <section className="section-tabs">
+        <button 
+          className={`tab-btn ${activeTab === "deals" ? "active" : ""}`}
+          onClick={() => setActiveTab("deals")}
+        >
+          🔥 Deals
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === "more" ? "active" : ""}`}
+          onClick={() => setActiveTab("more")}
+        >
+          📦 More
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === "best" ? "active" : ""}`}
+          onClick={() => setActiveTab("best")}
+        >
+          ⭐ Best
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === "seasonal" ? "active" : ""}`}
+          onClick={() => setActiveTab("seasonal")}
+        >
+          🍃 Seasonal
+        </button>
+      </section>
+
+      {activeTab === "deals" && (
       <section className="panel products">
         <h2>Order Now</h2>
         
@@ -357,16 +397,18 @@ export default function Dashboard() {
             })()}
           </div>
         )}
+      </section>
+      )}
 
-        {/* Regular Products - Show 3 from different categories */}
-        <div className="regular-products">
-          <h3>More Products</h3>
-          <div className="product-grid">
-            {products
-              .filter((p) => p.variations?.length > 0)
-              .filter((p) => p.category !== activeCategory)
-              .slice(0, 3)
-              .map((p) => {
+      {activeTab === "more" && (
+      <section className="panel products">
+        <h2>More Products</h2>
+        <div className="product-grid">
+          {products
+            .filter((p) => p.variations?.length > 0)
+            .filter((p) => p.category !== activeCategory)
+            .slice(0, 6)
+            .map((p) => {
               const firstVar = p.variations?.[0];
               const firstWeight = firstVar?.weights?.[0];
               const previewImage = firstVar?.image_url || "/assets/default-product.jpg";
@@ -401,17 +443,17 @@ export default function Dashboard() {
                 </div>
               );
             })}
-          </div>
         </div>
       </section>
+      )}
 
-      {/* Additional Sections */}
+      {activeTab === "best" && (
       <section className="panel featured-section">
         <h2>🌟 Best Sellers</h2>
         <div className="product-grid">
           {products
             .filter((p) => p.variations?.length > 0)
-            .slice(0, 2)
+            .slice(0, 4)
             .map((p) => {
               const firstVar = p.variations?.[0];
               const firstWeight = firstVar?.weights?.[0];
@@ -449,13 +491,15 @@ export default function Dashboard() {
             })}
         </div>
       </section>
+      )}
 
+      {activeTab === "seasonal" && (
       <section className="panel featured-section">
         <h2>🍃 Seasonal Favorites</h2>
         <div className="product-grid">
           {products
             .filter((p) => p.variations?.length > 0)
-            .slice(2, 4)
+            .slice(4, 8)
             .map((p) => {
               const firstVar = p.variations?.[0];
               const firstWeight = firstVar?.weights?.[0];
@@ -492,6 +536,50 @@ export default function Dashboard() {
               );
             })}
         </div>
+      </section>
+      )}
+
+      {/* About Section */}
+      <section className="panel about-section">
+        <h2>🍵 About Tealuxe Chai</h2>
+        <p>Experience the finest handcrafted tea blends from Kenya's lush tea gardens. Our premium selection includes traditional favorites and unique herbal infusions, carefully sourced and blended for the perfect cup.</p>
+        <div className="about-features">
+          <div className="feature-item">
+            <span>🌱</span>
+            <h4>Organic</h4>
+            <p>100% natural ingredients</p>
+          </div>
+          <div className="feature-item">
+            <span>🌍</span>
+            <h4>Sustainably Sourced</h4>
+            <p>Ethically from Kenya</p>
+          </div>
+          <div className="feature-item">
+            <span>⭐</span>
+            <h4>Premium Quality</h4>
+            <p>Hand-selected blends</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="panel contact-section">
+        <h2>📞 Contact Us</h2>
+        <div className="contact-info">
+          <div className="contact-item">
+            <span>📱</span>
+            <p>+254 704 939 762</p>
+          </div>
+          <div className="contact-item">
+            <span>📧</span>
+            <p>hello@tealuxe.co.ke</p>
+          </div>
+          <div className="contact-item">
+            <span>📍</span>
+            <p>Nairobi, Kenya</p>
+          </div>
+        </div>
+        <button className="contact-btn">Get in Touch</button>
       </section>
 
       <button className="theme-switch" onClick={toggleTheme}>
