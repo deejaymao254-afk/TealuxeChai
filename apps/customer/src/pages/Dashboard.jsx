@@ -448,7 +448,7 @@ export default function Dashboard() {
       )}
 
       {activeTab === "best" && (
-      <section className="panel featured-section">
+      <section className="panel featured-section best-sellers">
         <h2>🌟 Best Sellers</h2>
         <div className="product-grid">
           {products
@@ -494,7 +494,7 @@ export default function Dashboard() {
       )}
 
       {activeTab === "seasonal" && (
-      <section className="panel featured-section">
+      <section className="panel featured-section seasonal-favorites">
         <h2>🍃 Seasonal Favorites</h2>
         <div className="product-grid">
           {products
@@ -541,8 +541,12 @@ export default function Dashboard() {
 
       {/* About Section */}
       <section className="panel about-section">
-        <h2>🍵 About Tealuxe Chai</h2>
-        <p>Experience the finest handcrafted tea blends from Kenya's lush tea gardens. Our premium selection includes traditional favorites and unique herbal infusions, carefully sourced and blended for the perfect cup.</p>
+        <div className="about-hero">
+          <div className="about-hero-content">
+            <h2>🍵 About Tealuxe Chai</h2>
+            <p>Experience the finest handcrafted tea blends from Kenya's lush tea gardens. Our premium selection includes traditional favorites and unique herbal infusions, carefully sourced and blended for the perfect cup.</p>
+          </div>
+        </div>
         <div className="about-features">
           <div className="feature-item">
             <span>🌱</span>
@@ -568,7 +572,7 @@ export default function Dashboard() {
         <div className="contact-info">
           <div className="contact-item">
             <span>📱</span>
-            <p>+254 704 939 762</p>
+            <p>0700 000 000</p>
           </div>
           <div className="contact-item">
             <span>📧</span>
